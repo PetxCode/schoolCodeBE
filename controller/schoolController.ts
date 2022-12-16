@@ -6,6 +6,9 @@ import crypto from "crypto";
 import { config } from "dotenv";
 import { resetMyPassword, verifiedUser } from "../utils/email";
 config();
+import cloudinary from "../utils/cloudinary";
+import streamifier from "streamifier";
+
 const proc: any = config().parsed;
 
 export const getSchools = async (
@@ -42,15 +45,34 @@ export const getSchool = async (
   }
 };
 
-export const updateSchool = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const updateSchool = async (req, res): Promise<Response> => {
   try {
-    const { name } = req.body;
+    // let streamUpload = (req) => {
+    //   return new Promise(async (resolve, reject) => {
+    //     let stream = await cloudinary.uploader.upload_stream(
+    //       (error, result) => {
+    //         if (result) {
+    //           console.log("result: ", result);
+    //           console.log("show");
+    //           return resolve(result);
+    //         } else {
+    //           return reject(error);
+    //         }
+    //       }
+    //     );
+
+    //     streamifier.createReadStream(req?.file!.buffer).pipe(stream);
+    //   });
+    // };
+    // const image: any = await streamUpload(req);
+
+    const image: { secure_url: string } = await cloudinary.uploader.upload(
+      req?.file!.path
+    );
+
     const user = await schoolModel.findByIdAndUpdate(
       req.params.id,
-      { name },
+      { logo: image.secure_url! },
       { new: true }
     );
     return res.status(200).json({

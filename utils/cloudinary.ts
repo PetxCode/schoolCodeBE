@@ -1,4 +1,6 @@
-import { v2 as cloudinary } from "cloudinary";
+import cloud, { v2 } from "cloudinary";
+const cloudinary: typeof v2 = cloud.v2;
+
 import { config } from "dotenv";
 config();
 

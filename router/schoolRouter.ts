@@ -8,6 +8,7 @@ import {
   changePassword,
   resetPassword,
 } from "../controller/schoolController";
+import upload from "../utils/multer";
 
 import { Router } from "express";
 
@@ -16,7 +17,7 @@ const router = Router();
 router.route("/").get(getSchools);
 router.route("/:id").get(getSchool);
 
-router.route("/:id").patch(updateSchool);
+router.route("/:id").patch(upload, updateSchool);
 router.route("/verified/:id").get(verifiedSchool);
 
 router.route("/create").post(createSchool);
