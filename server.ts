@@ -17,6 +17,7 @@ db;
 const app: Application = express();
 app.use(cors());
 app.use(express.json());
+
 app.use(
   session({
     resave: false,
@@ -24,19 +25,42 @@ app.use(
     name: "sessionID",
     secret: "This is Safe",
     cookie: {
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 4,
+      //   secure: true,
+      maxAge: 1000 * 60 * 1,
     },
   })
 );
 
 app.use("/api/school", school);
 
-app.use("/", (req: Request, res: Response): Response => {
-  return res.status(200).json({
-    message: "This is the Home Page!",
-  });
-});
+const protect = (req, res, next) => {
+  if (!req.session.sessionID) {
+    app.use("/out", (req: Request, res: Response): Response => {
+      return res.status(200).json({
+        message: "Get Out!",
+      });
+    });
+  } else {
+    return next();
+  }
+};
+
+const protectedData = (req, res, next) => {
+  if (!req.session.sessionID) {
+    return res.status(200).json({
+      message: "Get Out!",
+    });
+  } else {
+    return next();
+  }
+};
+
+// app.use("/", (req: Request, res: Response): Response => {
+//   console.log(req.session);
+//   return res.status(200).json({
+//     message: "This is the Home Page!",
+//   });
+// });
 
 app.listen(port, () => {
   console.log("server is ready");

@@ -10,7 +10,9 @@ interface iSchool {
   verified?: boolean;
 }
 
-interface iSchoolData extends iSchool, mongoose.Document {}
+interface iSchoolData extends iSchool, mongoose.Document {
+  _doc;
+}
 
 const schoolModel = new mongoose.Schema(
   {
