@@ -6,7 +6,7 @@ import session from "express-session";
 import { config } from "dotenv";
 
 import school from "./router/schoolRouter";
-import { use } from "bcrypt/promises";
+import teacher from "./router/teacherRouter";
 
 config();
 const proc: any = config().parsed;
@@ -32,6 +32,7 @@ app.use(
 );
 
 app.use("/api/school", school);
+app.use("/api/teacher", teacher);
 
 const protect = (req, res, next) => {
   if (!req.session.sessionID) {

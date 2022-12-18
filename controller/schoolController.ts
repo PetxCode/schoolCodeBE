@@ -4,12 +4,22 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { config } from "dotenv";
-import { resetMyPassword, verifiedUser } from "../utils/email";
+import { resetMyPasswordSchoolMail, verifiedSchoolMail } from "../utils/email";
 config();
 import cloudinary from "../utils/cloudinary";
 import streamifier from "streamifier";
 
 const proc: any = config().parsed;
+
+interface iSchool {
+  schoolName?: string;
+  email: string;
+  password: string;
+  logo?: string;
+  token?: string;
+  verified?: boolean;
+  _id?: string;
+}
 
 export const getSchools = async (
   req: Request,
@@ -91,7 +101,7 @@ export const createSchool = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { name, email, password } = req.body;
+    const { schoolName, email, password } = req.body;
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -99,13 +109,13 @@ export const createSchool = async (
     const token = jwt.sign({ hash }, proc.SECRET);
 
     const school = await schoolModel.create({
-      name,
+      schoolName,
       email,
       password: hash,
       token,
     });
 
-    verifiedUser(school)
+    verifiedSchoolMail(school)
       .then((result) => {
         console.log("message been sent to you: ");
       })
@@ -220,7 +230,7 @@ export const resetPassword = async (
           { new: true }
         );
 
-        resetMyPassword(school, myToken)
+        resetMyPasswordSchoolMail(school, myToken)
           .then((result) => {
             console.log("message been sent to you: ");
           })

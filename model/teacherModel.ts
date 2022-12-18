@@ -1,27 +1,29 @@
 import mongoose from "mongoose";
 
-interface iSchool {
+interface iTeacher {
+  name?: string;
   schoolName?: string;
   email?: string;
   password?: string;
-  logo?: string;
+  image?: string;
   token?: string;
-  schoolCode?: string;
+  teacherCode?: string;
   verified?: boolean;
-  teachers?: {}[];
 }
 
-interface iSchoolData extends iSchool, mongoose.Document {
+interface iTeacherData extends iTeacher, mongoose.Document {
   _doc;
-  _id: string;
 }
 
-const schoolModel = new mongoose.Schema(
+const teacherModel = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      require: true,
+    },
     schoolName: {
       type: String,
       require: true,
-      unique: true,
     },
     email: {
       type: String,
@@ -34,23 +36,21 @@ const schoolModel = new mongoose.Schema(
     token: {
       type: String,
     },
-    logo: {
+    image: {
       type: String,
     },
     verified: {
       type: Boolean,
     },
-    schoolCode: {
+    teacherCode: {
       type: String,
     },
-    teachers: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "teachers",
-      },
-    ],
+    school: {
+      type: mongoose.Types.ObjectId,
+      ref: "schools",
+    },
   },
   { timestamps: true }
 );
 
-export default mongoose.model<iSchoolData>("schools", schoolModel);
+export default mongoose.model<iTeacherData>("teachers", teacherModel);

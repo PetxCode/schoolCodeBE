@@ -16,64 +16,7 @@ oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 
 const url: string = "http:localhost:2244";
 
-interface iData {
-  name?: {};
-  email: string;
-  password: string;
-  image?: string;
-  token?: string;
-  verified?: boolean;
-  superAdmin?: boolean;
-  _id?: string;
-}
-
-export const verifiedUser = async (school) => {
-  try {
-    const accessToken = await oAuth.getAccessToken();
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: "ajwalletcoins@gmail.com",
-        refreshToken: accessToken.token,
-        clientId: GOOGLE_ID,
-        clientSecret: GOOGLE_SECRET,
-        accessToken: GOOGLE_REFRESHTOKEN,
-      },
-    });
-
-    const myTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Gideonekeke64@gmail.com",
-        pass: "sgczftichnkcqksx",
-      },
-    });
-    const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
-
-    const data = await ejs.renderFile(buildFile, {
-      name: school.name,
-      id: school._id,
-      school: school.name,
-      url,
-    });
-
-    const mailOptions = {
-      from: "SchoolCode ❤❤❤ <newstudentsportal2@gmail.com>",
-      to: school.email,
-      subject: "Account Verification",
-      html: data,
-    };
-
-    transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
-    });
-  } catch (error) {
-    return error;
-  }
-};
-
-export const resetMyPassword = async (school, myToken) => {
+export const resetMyPasswordSchoolMail = async (school, myToken) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -99,9 +42,9 @@ export const resetMyPassword = async (school, myToken) => {
     const buildFile = path.join(__dirname, "../views/resetPassword.ejs");
     console.log(school.token);
     const data = await ejs.renderFile(buildFile, {
-      name: school.name,
+      name: school.schoolName,
       id: school._id,
-      school: school.name,
+      school: school.schoolName,
       myToken,
       url,
     });
@@ -121,194 +64,151 @@ export const resetMyPassword = async (school, myToken) => {
   }
 };
 
-// export const verifiedByAdmin = async (generateToken: iData) => {
-//   try {
-//     const accessToken = await oAuth.getAccessToken();
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         type: "OAuth2",
-//         user: "ajwalletcoins@gmail.com",
-//         refreshToken: accessToken.token,
-//         clientId: GOOGLE_ID,
-//         clientSecret: GOOGLE_SECRET,
-//         accessToken: GOOGLE_REFRESHTOKEN,
-//       },
-//     });
+export const resetMyPasswordTeacherMail = async (teacher, myToken) => {
+  try {
+    const accessToken = await oAuth.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "ajwalletcoins@gmail.com",
+        refreshToken: accessToken.token,
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+        accessToken: GOOGLE_REFRESHTOKEN,
+      },
+    });
 
-//     const myTransporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: "Gideonekeke64@gmail.com",
-//         pass: "sgczftichnkcqksx",
-//       },
-//     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
 
-//     const buildFile = path.join(__dirname, "../views/viewByAdmin.ejs");
+    const buildFile = path.join(__dirname, "../views/resetPasswordTeacher.ejs");
 
-//     const data = await ejs.renderFile(buildFile, {
-//       name: generateToken?.fullName,
-//       organisation: generateToken?.orgName,
-//       id: generateToken?._id,
-//       code: generateToken.voteCode,
-//     });
+    const data = await ejs.renderFile(buildFile, {
+      name: teacher.name,
+      id: teacher._id,
+      school: teacher.schoolName,
+      myToken,
+      url,
+    });
 
-//     const mailOptions = {
-//       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-//       to: generateToken?.orgEmail,
-//       subject: "Please Verify this Account",
-//       html: data,
-//     };
+    const mailOptions = {
+      from: "SchoolCode ❤❤❤ <newstudentsportal2@gmail.com>",
+      to: teacher?.email,
+      subject: "Reset Password",
+      html: data,
+    };
 
-//     myTransporter.sendMail(mailOptions, () => {
-//       console.log("sent successfully");
-//     });
-//   } catch (error) {
-//     return error;
-//   }
-// };
+    transporter.sendMail(mailOptions, () => {
+      console.log("sent successfully");
+    });
+  } catch (error) {
+    return error;
+  }
+};
 
-// export const verifiedByAdminFinally = async (generateToken: iData) => {
-//   try {
-//     const accessToken = await oAuth.getAccessToken();
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         type: "OAuth2",
-//         user: "ajwalletcoins@gmail.com",
-//         refreshToken: accessToken.token,
-//         clientId: GOOGLE_ID,
-//         clientSecret: GOOGLE_SECRET,
-//         accessToken: GOOGLE_REFRESHTOKEN,
-//       },
-//     });
-//     const myTransporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: "Gideonekeke64@gmail.com",
-//         pass: "sgczftichnkcqksx",
-//       },
-//     });
+export const verifiedSchoolMail = async (school) => {
+  try {
+    const accessToken = await oAuth.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "ajwalletcoins@gmail.com",
+        refreshToken: accessToken.token,
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+        accessToken: GOOGLE_REFRESHTOKEN,
+      },
+    });
 
-//     console.log("userData: ", generateToken);
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
+    const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
+    console.log(school);
 
-//     const buildFile = path.join(__dirname, "../views/voterCode.ejs");
+    const data = await ejs.renderFile(buildFile, {
+      schooName: school.schoolName,
+      id: school?._id,
+      school: school.schoolName,
+      url,
+    });
 
-//     const data = await ejs.renderFile(buildFile, {
-//       name: generateToken?.fullName,
-//       organisation: generateToken?.orgName,
-//       id: generateToken?._id,
-//       code: generateToken.voteCode,
-//     });
+    console.log(school.email);
+    console.log("ajwalletcoins@gmail.com");
 
-//     const mailOptions = {
-//       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-//       to: generateToken?.orgEmail,
-//       subject: `${generateToken?.fullName}'s Account has been Verify`,
-//       html: data,
-//     };
+    const mailOptions = {
+      from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
+      to: school.email,
+      subject: "Account Verification",
+      html: data,
+    };
 
-//     myTransporter.sendMail(mailOptions, () => {
-//       console.log("sent successfully");
-//     });
-//   } catch (error) {
-//     return error;
-//   }
-// };
+    transporter.sendMail(mailOptions, () => {
+      console.log("sent successfully");
+    });
+  } catch (error) {
+    return error;
+  }
+};
 
-// export const verifiedSignUser = async (findUser: iData) => {
-//   try {
-//     const accessToken = await oAuth.getAccessToken();
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         type: "OAuth2",
-//         user: "ajwalletcoins@gmail.com",
-//         refreshToken: accessToken.token,
-//         clientId: GOOGLE_ID,
-//         clientSecret: GOOGLE_SECRET,
-//         accessToken: GOOGLE_REFRESHTOKEN,
-//       },
-//     });
+export const verifiedTeacherMail = async (teacher) => {
+  try {
+    const accessToken = await oAuth.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "ajwalletcoins@gmail.com",
+        refreshToken: accessToken.token,
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+        accessToken: GOOGLE_REFRESHTOKEN,
+      },
+    });
 
-//     const myTransporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: "Gideonekeke64@gmail.com",
-//         pass: "sgczftichnkcqksx",
-//       },
-//     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
+    const buildFile = path.join(
+      __dirname,
+      "../views/AccountCreatedTeacher.ejs"
+    );
+    console.log(teacher);
 
-//     const buildFile = path.join(__dirname, "../views/signinAccount.ejs");
+    const data = await ejs.renderFile(buildFile, {
+      name: teacher.name,
+      id: teacher?._id,
+      school: teacher.schoolName,
+      schoolName: teacher.schoolName,
+      url,
+    });
 
-//     const data = await ejs.renderFile(buildFile, {
-//       name: findUser?.fullName,
-//       id: findUser?._id,
-//       myToken: findUser?.token,
-//     });
+    const mailOptions = {
+      from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
+      to: teacher.email,
+      subject: "Account Verification",
+      html: data,
+    };
 
-//     const mailOptions = {
-//       from: "AJ Vote ❤❤❤  <newstudentsportal2@gmail.com>",
-//       to: findUser?.email,
-//       subject: "Account re-Verification",
-//       html: data,
-//     };
-
-//     myTransporter.sendMail(mailOptions, () => {
-//       console.log("sent successfully");
-//     });
-//   } catch (error) {
-//     return error;
-//   }
-// };
-
-// export const acceptance = async (
-//   email: string,
-//   positioned: iData,
-//   fullName: string
-// ) => {
-//   try {
-//     console.log("position from email: ", positioned?.position);
-
-//     const accessToken = await oAuth.getAccessToken();
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         type: "OAuth2",
-//         user: "ajwalletcoins@gmail.com",
-//         refreshToken: accessToken.token,
-//         clientId: GOOGLE_ID,
-//         clientSecret: GOOGLE_SECRET,
-//         accessToken: GOOGLE_REFRESHTOKEN,
-//       },
-//     });
-
-//     const myTransporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: "Gideonekeke64@gmail.com",
-//         pass: "sgczftichnkcqksx",
-//       },
-//     });
-//     const buildFile = path.join(__dirname, "../views/Acceptance.ejs");
-
-//     const data = await ejs.renderFile(buildFile, {
-//       name: positioned?.fullName,
-//       position: positioned?.position,
-//       email: email,
-//     });
-
-//     const mailOptions = {
-//       from: "AJ Vote ❤❤❤  <newstudentsportal2@gmail.com>",
-//       to: email,
-//       subject: `Acceptance for the Position of ${positioned?.position}`,
-//       html: data,
-//     };
-
-//     myTransporter.sendMail(mailOptions, () => {
-//       console.log("sent successfully");
-//     });
-//   } catch (error) {
-//     return error;
-//   }
-// };
+    transporter.sendMail(mailOptions, () => {
+      console.log("sent successfully");
+    });
+  } catch (error) {
+    return error;
+  }
+};
