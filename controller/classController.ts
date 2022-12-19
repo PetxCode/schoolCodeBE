@@ -150,10 +150,7 @@ export const changePassword = async (
   }
 };
 
-export const loginTeacher = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const loginTeacher = async (req, res): Promise<Response> => {
   try {
     const { email, password } = req.body;
     console.log(req.session);
@@ -190,23 +187,6 @@ export const loginTeacher = async (
 
 export const updateTeacherImage = async (req, res): Promise<Response> => {
   try {
-    // let streamUpload = (req) => {
-    //   return new Promise(async (resolve, reject) => {
-    //     let stream = await cloudinary.uploader.upload_stream(
-    //       (error, result) => {
-    //         if (result) {
-    //           return resolve(result);
-    //         } else {
-    //           return reject(error);
-    //         }
-    //       }
-    //     );
-
-    //     streamifier.createReadStream(req?.file!.buffer).pipe(stream);
-    //   });
-    // };
-    // const image: any = await streamUpload(req);
-
     const image: { secure_url: string } = await cloudinary.uploader.upload(
       req?.file!.path
     );
@@ -223,44 +203,6 @@ export const updateTeacherImage = async (req, res): Promise<Response> => {
   } catch (err) {
     return res.status(404).json({
       message: "Error",
-    });
-  }
-};
-
-export const getSchoolTeacher = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const teachers = await schoolModel
-      .findById(req.params.id)
-      .populate({ path: "teachers", options: { sort: { createdAt: -1 } } });
-
-    return res.status(200).json({
-      message: "Here are your Teachers",
-      data: teachers,
-    });
-  } catch (err) {
-    return res.status(404).json({
-      message: `Error: ${err}`,
-    });
-  }
-};
-
-export const getSchoolTeacherInfo = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const teachers = await teacherModel.findById(req.params.id);
-
-    return res.status(200).json({
-      message: "Here are your Teachers",
-      data: teachers,
-    });
-  } catch (err) {
-    return res.status(404).json({
-      message: `Error: ${err}`,
     });
   }
 };

@@ -284,3 +284,23 @@ export const changePassword = async (
     return res.status(404).json({ message: "An Error Occur" });
   }
 };
+
+export const getSchoolTeacher = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const teachers = await schoolModel
+      .findById(req.params.id)
+      .populate({ path: "teachers", options: { sort: { createdAt: -1 } } });
+
+    return res.status(200).json({
+      message: "Here are your Teachers",
+      data: teachers,
+    });
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};

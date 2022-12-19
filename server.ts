@@ -25,7 +25,7 @@ app.use(
     name: "sessionID",
     secret: "This is Safe",
     cookie: {
-      //   secure: true,
+      secure: true,
       maxAge: 1000 * 60 * 1,
     },
   })

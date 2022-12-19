@@ -7,6 +7,7 @@ import {
   loginSchool,
   changePassword,
   resetPassword,
+  getSchoolTeacher,
 } from "../controller/schoolController";
 import upload from "../utils/multer";
 
@@ -25,5 +26,7 @@ router.route("/login").post(loginSchool);
 
 router.route("/reset/password").patch(resetPassword);
 router.route("/:id/:token/reset").post(changePassword);
+
+router.route("/:id/teachers").get(getSchoolTeacher);
 
 export default router;
