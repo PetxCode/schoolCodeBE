@@ -9,6 +9,7 @@ import school from "./router/schoolRouter";
 import teacher from "./router/teacherRouter";
 import classes from "./router/classRouter";
 import viewTest from "./router/testRouter";
+import { env } from "process";
 
 config();
 const proc: any = config().parsed;
@@ -142,6 +143,6 @@ const protectedData = (req: any, res: any, next: any) => {
 //   }
 // );
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log("server is ready");
 });
