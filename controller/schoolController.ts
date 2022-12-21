@@ -115,9 +115,6 @@ export const createSchool = async (
       token,
     });
 
-    console.log("school");
-    // console.log(school);
-
     verifiedSchoolMail(school)
       .then((result) => {
         console.log("message been sent to you: ");

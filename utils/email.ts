@@ -157,7 +157,7 @@ export const verifiedSchoolMail = async (school: any) => {
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
+    transporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {

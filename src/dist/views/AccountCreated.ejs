@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css" />
+  <title>Document</title>
+</head>
+<body>
+  <container>
+    <row>
+      <columns small="12" >
+        
+        <table class="one-column" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-spacing:0; border-left:1px solid #e8e7e5; border-right:1px solid #e8e7e5; border-bottom:1px solid #e8e7e5; padding: 10px" bg="#FFFFFF">
+          
+          <div width="650px" height="250px" align="center" style="border-radius: 4px">
+           <img src="https://res.cloudinary.com/dv4dlmp4e/image/upload/v1669292465/iw92d0vivvcrojxwxaby.png" width="250px" height="120px" style="padding-top:5px" alt="" border="0"/>
+           
+          </div>
+
+          <tr>
+            <td align="center" style="padding:0px 40px 40px 40px"><p style="color:#262626; font-size:32px; text-align:center; font-family: Verdana, Geneva, sans-serif">Hello <%= schooName %>!</p>
+                <b style="color:#000000; font-size:16px; text-align:left; font-family: Verdana, Geneva, sans-serif; line-height:22px ">
+                Congratulations!!!</b><br/>
+                Thank you for coming on-board with school code", 
+                <br/>Now you can track all activitives virtually that goes on in your school <br/>
+                
+                <strong style="color: red">Please follow the instruction to finish up!</strong>  </br>
+                <br/>
+                <br/>
+                Use this Button below to get your school on track with <strong > <%= school %> virtual code</strong>!
+
+                <div>
+                  <br/>
+                  <br/>
+                  <a 
+                    href="<%= url %>/api/school/verified/<%= id %>" 
+                  referrerpolicy="no-referrer" target="_blank" 
+                  style="text-decoration: none;
+                  padding: 20px 30px;
+                  color: white;
+                  margin-top: 50px;
+                  background-color: #000269;
+                  border-radius: 2px;
+                  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                  "
+                  >Activate <%= school %> </a>
+                </div>
+          
+                <br />
+            </p></td>
+          </tr>
+        </table>
+      </columns>
+    </row>
+</container>
+</body>
+</html>
