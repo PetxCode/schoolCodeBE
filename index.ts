@@ -1,8 +1,6 @@
 import express, { Application, Response, Request } from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import db from "./utils/db";
-import session from "express-session";
 import { config } from "dotenv";
 
 import school from "./router/schoolRouter";
@@ -10,7 +8,6 @@ import teacher from "./router/teacherRouter";
 import classes from "./router/classRouter";
 import viewTest from "./router/testRouter";
 import performance from "./router/performanceRouter";
-import { env } from "process";
 
 config();
 const proc: any = config().parsed;
@@ -21,6 +18,23 @@ db;
 const app: Application = express();
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/school", school);
+app.use("/api/teacher", teacher);
+app.use("/api/class", classes);
+app.use("/api/test", viewTest);
+app.use("/api/performance", performance);
+
+app.use("/", (req: Request, res: Response): Response => {
+  console.log(req.session);
+  return res.status(200).json({
+    message: "This is the Home Page!",
+  });
+});
+
+app.listen(process.env.PORT || port, () => {
+  console.log("server is ready");
+});
 
 // app.use(
 //   session({
@@ -34,31 +48,6 @@ app.use(express.json());
 //     },
 //   })
 // );
-
-app.use("/api/school", school);
-app.use("/api/teacher", teacher);
-app.use("/api/class", classes);
-app.use("/api/test", viewTest);
-app.use("/api/performance", performance);
-
-const protect = (req: any, res: any, next: any) => {
-  if (!req.session.sessionID) {
-    app.use("/out", (req: Request, res: Response): Response => {
-      return res.status(200).json({
-        message: "Get Out!",
-      });
-    });
-  } else {
-    return next();
-  }
-};
-
-app.use("/", (req: Request, res: Response): Response => {
-  console.log(req.session);
-  return res.status(200).json({
-    message: "This is the Home Page!",
-  });
-});
 
 // const protectedData = (req: any, res: any, next: any) => {
 //   if (!req.session.sessionID) {
@@ -144,6 +133,14 @@ app.use("/", (req: Request, res: Response): Response => {
 //   }
 // );
 
-app.listen(process.env.PORT || port, () => {
-  console.log("server is ready");
-});
+// const protect = (req: any, res: any, next: any) => {
+//   if (!req.session.sessionID) {
+//     app.use("/out", (req: Request, res: Response): Response => {
+//       return res.status(200).json({
+//         message: "Get Out!",
+//       });
+//     });
+//   } else {
+//     return next();
+//   }
+// };

@@ -11,6 +11,8 @@ import {
 } from "../utils/email";
 import cloudinary from "../utils/cloudinary";
 import streamifier from "streamifier";
+import studentModel from "../model/studentModel";
+import classModel from "../model/classModel";
 
 export const createTeacher = async (req: Request, res: Response) => {
   try {
@@ -243,6 +245,41 @@ export const getSchoolTeacherInfo = async (
       message: "Here are your Teachers",
       data: teachers,
     });
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};
+
+export const assignStudentToClass = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { name } = req.body;
+
+    const teacher = await teacherModel.findById(req.params.id);
+    const student = await studentModel.findOne({ name });
+
+    if (teacher!?.schoolName === student!.schoolName) {
+      const myClass = await classModel.findOne({ className: teacher!.classes });
+      if (myClass!.className === teacher!.classes) {
+        myClass!.students!.push(new mongoose.Types.ObjectId(student!._id));
+        return res.status(200).json({
+          message: "Here are your Teachers",
+          data: teacher,
+        });
+      } else {
+        return res.status(200).json({
+          message: "something went wrong",
+        });
+      }
+    } else {
+      return res.status(200).json({
+        message: "something went wrong",
+      });
+    }
   } catch (err) {
     return res.status(404).json({
       message: `Error: ${err}`,
