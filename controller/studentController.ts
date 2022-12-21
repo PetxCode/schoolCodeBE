@@ -16,8 +16,8 @@ import streamifier from "streamifier";
 
 export const createStudent = async (req: Request, res: Response) => {
   try {
-    const { email, name, schoolName, password } = req.body;
-    const getSchool = await schoolModel.findOne({ name: schoolName });
+    const { name, schoolName } = req.body;
+    const getSchool = await schoolModel.findOne({ schoolName });
 
     if (getSchool) {
       const pass = `${name.split(" ")[0] + name.split(" ")[1]}`;

@@ -2,3 +2,4 @@
 # /.env
 /uploads
 /dist
+/utils/db.ts

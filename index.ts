@@ -9,6 +9,7 @@ import school from "./router/schoolRouter";
 import teacher from "./router/teacherRouter";
 import classes from "./router/classRouter";
 import viewTest from "./router/testRouter";
+import performance from "./router/performanceRouter";
 import { env } from "process";
 
 config();
@@ -21,23 +22,24 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    name: "sessionID",
-    secret: "This is Safe",
-    cookie: {
-      secure: true,
-      maxAge: 1000 * 60 * 1,
-    },
-  })
-);
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     name: "sessionID",
+//     secret: "This is Safe",
+//     cookie: {
+//       secure: true,
+//       maxAge: 1000 * 60 * 1,
+//     },
+//   })
+// );
 
 app.use("/api/school", school);
 app.use("/api/teacher", teacher);
 app.use("/api/class", classes);
 app.use("/api/test", viewTest);
+app.use("/api/performance", performance);
 
 const protect = (req: any, res: any, next: any) => {
   if (!req.session.sessionID) {
@@ -51,23 +53,22 @@ const protect = (req: any, res: any, next: any) => {
   }
 };
 
-const protectedData = (req: any, res: any, next: any) => {
-  if (!req.session.sessionID) {
-    return res.status(200).json({
-      message: "Get Out!",
-    });
-  } else {
-    return next();
-  }
-};
+app.use("/", (req: Request, res: Response): Response => {
+  console.log(req.session);
+  return res.status(200).json({
+    message: "This is the Home Page!",
+  });
+});
 
-// app.use("/", (req: Request, res: Response): Response => {
-//   console.log(req.session);
-//   return res.status(200).json({
-//     message: "This is the Home Page!",
-//   });
-// });
-
+// const protectedData = (req: any, res: any, next: any) => {
+//   if (!req.session.sessionID) {
+//     return res.status(200).json({
+//       message: "Get Out!",
+//     });
+//   } else {
+//     return next();
+//   }
+// };
 // import { google } from "googleapis";
 // import googleOAuth from "passport-google-oauth20";
 // import passport from "passport";
