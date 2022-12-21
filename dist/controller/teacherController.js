@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
+exports.assignStudentToClass = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -32,6 +32,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const crypto_1 = __importDefault(require("crypto"));
 const email_1 = require("../utils/email");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
+const studentModel_1 = __importDefault(require("../model/studentModel"));
+const classModel_1 = __importDefault(require("../model/classModel"));
 const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, name, schoolName, password } = req.body;
@@ -232,3 +234,36 @@ const getSchoolTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getSchoolTeacherInfo = getSchoolTeacherInfo;
+const assignStudentToClass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { name } = req.body;
+        const teacher = yield teacherModel_1.default.findById(req.params.id);
+        const student = yield studentModel_1.default.findOne({ name });
+        if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === student.schoolName) {
+            const myClass = yield classModel_1.default.findOne({ className: teacher.classes });
+            if (myClass.className === teacher.classes) {
+                myClass.students.push(new mongoose_1.default.Types.ObjectId(student._id));
+                return res.status(200).json({
+                    message: "Here are your Teachers",
+                    data: teacher,
+                });
+            }
+            else {
+                return res.status(200).json({
+                    message: "something went wrong",
+                });
+            }
+        }
+        else {
+            return res.status(200).json({
+                message: "something went wrong",
+            });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.assignStudentToClass = assignStudentToClass;

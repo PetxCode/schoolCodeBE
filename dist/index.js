@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const db_1 = __importDefault(require("./utils/db"));
-const express_session_1 = __importDefault(require("express-session"));
 const dotenv_1 = require("dotenv");
 const schoolRouter_1 = __importDefault(require("./router/schoolRouter"));
 const teacherRouter_1 = __importDefault(require("./router/teacherRouter"));
 const classRouter_1 = __importDefault(require("./router/classRouter"));
 const testRouter_1 = __importDefault(require("./router/testRouter"));
+const performanceRouter_1 = __importDefault(require("./router/performanceRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -19,48 +19,41 @@ db_1.default;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.use((0, express_session_1.default)({
-    resave: false,
-    saveUninitialized: false,
-    name: "sessionID",
-    secret: "This is Safe",
-    cookie: {
-        secure: true,
-        maxAge: 1000 * 60 * 1,
-    },
-}));
 app.use("/api/school", schoolRouter_1.default);
 app.use("/api/teacher", teacherRouter_1.default);
 app.use("/api/class", classRouter_1.default);
 app.use("/api/test", testRouter_1.default);
-const protect = (req, res, next) => {
-    if (!req.session.sessionID) {
-        app.use("/out", (req, res) => {
-            return res.status(200).json({
-                message: "Get Out!",
-            });
-        });
-    }
-    else {
-        return next();
-    }
-};
-const protectedData = (req, res, next) => {
-    if (!req.session.sessionID) {
-        return res.status(200).json({
-            message: "Get Out!",
-        });
-    }
-    else {
-        return next();
-    }
-};
-// app.use("/", (req: Request, res: Response): Response => {
-//   console.log(req.session);
-//   return res.status(200).json({
-//     message: "This is the Home Page!",
-//   });
-// });
+app.use("/api/performance", performanceRouter_1.default);
+app.use("/", (req, res) => {
+    console.log(req.session);
+    return res.status(200).json({
+        message: "This is the Home Page!",
+    });
+});
+app.listen(process.env.PORT || port, () => {
+    console.log("server is ready");
+});
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     name: "sessionID",
+//     secret: "This is Safe",
+//     cookie: {
+//       secure: true,
+//       maxAge: 1000 * 60 * 1,
+//     },
+//   })
+// );
+// const protectedData = (req: any, res: any, next: any) => {
+//   if (!req.session.sessionID) {
+//     return res.status(200).json({
+//       message: "Get Out!",
+//     });
+//   } else {
+//     return next();
+//   }
+// };
 // import { google } from "googleapis";
 // import googleOAuth from "passport-google-oauth20";
 // import passport from "passport";
@@ -125,6 +118,14 @@ const protectedData = (req, res, next) => {
 //     // res.redirect("/");
 //   }
 // );
-app.listen(port, () => {
-    console.log("server is ready");
-});
+// const protect = (req: any, res: any, next: any) => {
+//   if (!req.session.sessionID) {
+//     app.use("/out", (req: Request, res: Response): Response => {
+//       return res.status(200).json({
+//         message: "Get Out!",
+//       });
+//     });
+//   } else {
+//     return next();
+//   }
+// };

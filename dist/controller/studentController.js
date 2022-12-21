@@ -22,8 +22,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, name, schoolName, password } = req.body;
-        const getSchool = yield schoolModel_1.default.findOne({ name: schoolName });
+        const { name, schoolName } = req.body;
+        const getSchool = yield schoolModel_1.default.findOne({ schoolName });
         if (getSchool) {
             const pass = `${name.split(" ")[0] + name.split(" ")[1]}`;
             const salt = yield bcrypt_1.default.genSalt(10);
