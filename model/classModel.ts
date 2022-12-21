@@ -6,12 +6,12 @@ interface iClass {
   classTeacher?: string;
   classToken?: string;
   teacherCode?: string;
-  school?: {};
   students?: {}[];
+  test?: {}[];
 }
 
 interface iClassData extends iClass, mongoose.Document {
-  _doc;
+  _doc: any;
 }
 
 const classModel = new mongoose.Schema(
@@ -19,7 +19,6 @@ const classModel = new mongoose.Schema(
     className: {
       type: String,
       require: true,
-      unique: true,
     },
     classTeacher: {
       type: String,
@@ -34,14 +33,17 @@ const classModel = new mongoose.Schema(
     schoolName: {
       type: String,
     },
-    // schoolName: {
-    //   type: mongoose.Types.ObjectId,
-    //   ref: "schools",
-    // },
+
     students: [
       {
         type: mongoose.Types.ObjectId,
         ref: "students",
+      },
+    ],
+    test: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "tests",
       },
     ],
   },

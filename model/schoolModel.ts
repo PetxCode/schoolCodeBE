@@ -9,10 +9,12 @@ interface iSchool {
   schoolCode?: string;
   verified?: boolean;
   teachers?: {}[];
+  classes?: {}[];
+  students?: {}[];
 }
 
 interface iSchoolData extends iSchool, mongoose.Document {
-  _doc;
+  _doc: any;
   _id: string;
 }
 
@@ -47,6 +49,18 @@ const schoolModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "teachers",
+      },
+    ],
+    students: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "students",
+      },
+    ],
+    classes: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "classes",
       },
     ],
   },

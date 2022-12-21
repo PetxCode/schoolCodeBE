@@ -16,7 +16,7 @@ oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 
 const url: string = "http:localhost:2244";
 
-export const resetMyPasswordSchoolMail = async (school, myToken) => {
+export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -64,7 +64,10 @@ export const resetMyPasswordSchoolMail = async (school, myToken) => {
   }
 };
 
-export const resetMyPasswordTeacherMail = async (teacher, myToken) => {
+export const resetMyPasswordTeacherMail = async (
+  teacher: any,
+  myToken: any
+) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -112,7 +115,7 @@ export const resetMyPasswordTeacherMail = async (teacher, myToken) => {
   }
 };
 
-export const verifiedSchoolMail = async (school) => {
+export const verifiedSchoolMail = async (school: any) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -162,7 +165,7 @@ export const verifiedSchoolMail = async (school) => {
   }
 };
 
-export const verifiedTeacherMail = async (teacher) => {
+export const verifiedTeacherMail = async (teacher: any) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({

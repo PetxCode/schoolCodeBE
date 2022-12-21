@@ -4,31 +4,47 @@ import mongoose from "mongoose";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import classModel from "../model/classModel";
+import studentModel from "../model/studentModel";
+import testModel from "../model/testModel";
+import performanceModel from "../model/performanceModel";
 
-export const createClass = async (req: Request, res: Response) => {
+export const createPerformance = async (req: Request, res: Response) => {
   try {
-    const { className } = req.body;
+    const { totalScore, right, failed, testCode } = req.body;
 
-    const getSchool = await schoolModel.findById(req.params.id);
+    const getStudent = await studentModel.findById(req.params.id);
+    const getTest = await testModel.findOne({
+      testCode,
+    });
 
-    if (getSchool) {
-      const code = crypto.randomBytes(2).toString("hex");
+    let gradeScore = getTest?.gradeScore;
 
-      const classes = await classModel.create({
-        className,
-        classToken: code,
-        schoolName: getSchool.schoolName,
-      });
+    if (getStudent) {
+      if (getTest) {
+        const performance = await performanceModel.create({
+          right,
+          failed,
+          gradeScore: getTest?.gradeScore,
+          totalScore: gradeScore! * right,
+          testName: getTest?.subjectTest,
+          studentName: getStudent?.name,
+          class: getStudent?.className,
+        });
 
-      getSchool!.classes!.push(new mongoose.Types.ObjectId(classes._id));
-      getSchool?.save();
+        getStudent!.performance!.push(
+          new mongoose.Types.ObjectId(performance._id)
+        );
+        getStudent?.save();
 
-      return res.status(201).json({
-        message: "class created",
-        data: classes,
-      });
+        return res.status(201).json({
+          message: "performance created",
+          data: performance,
+        });
+      } else {
+        return res.status(404).json({ message: "Get a Test Code to continue" });
+      }
     } else {
-      return res.status(404).json({ message: "School can't be found" });
+      return res.status(404).json({ message: "Student can't be found" });
     }
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });

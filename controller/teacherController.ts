@@ -7,7 +7,6 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import {
   resetMyPasswordTeacherMail,
-  verifiedSchoolMail,
   verifiedTeacherMail,
 } from "../utils/email";
 import cloudinary from "../utils/cloudinary";
@@ -45,7 +44,7 @@ export const createTeacher = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "School can't be found" });
     }
   } catch (error) {
-    return res.status(404).json({ message: `Error: ${error.message}` });
+    return res.status(404).json({ message: `Error: ${error}` });
   }
 };
 
@@ -72,7 +71,7 @@ export const verifiedTeacher = async (req: Request, res: Response) => {
       return res.status(200).json({ message: `Check your account` });
     }
   } catch (error) {
-    return res.status(404).json({ message: `Error: ${error.message}` });
+    return res.status(404).json({ message: `Error: ${error}` });
   }
 };
 
@@ -188,7 +187,10 @@ export const loginTeacher = async (
   }
 };
 
-export const updateTeacherImage = async (req, res): Promise<Response> => {
+export const updateTeacherImage = async (
+  req: any,
+  res: any
+): Promise<Response> => {
   try {
     // let streamUpload = (req) => {
     //   return new Promise(async (resolve, reject) => {
@@ -227,32 +229,15 @@ export const updateTeacherImage = async (req, res): Promise<Response> => {
   }
 };
 
-export const getSchoolTeacher = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    const teachers = await schoolModel
-      .findById(req.params.id)
-      .populate({ path: "teachers", options: { sort: { createdAt: -1 } } });
-
-    return res.status(200).json({
-      message: "Here are your Teachers",
-      data: teachers,
-    });
-  } catch (err) {
-    return res.status(404).json({
-      message: `Error: ${err}`,
-    });
-  }
-};
-
 export const getSchoolTeacherInfo = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const teachers = await teacherModel.findById(req.params.id);
+    const teachers = await schoolModel.findById(req.params.id).populate({
+      path: "teachers",
+      options: { sort: { createdAt: -1 } },
+    });
 
     return res.status(200).json({
       message: "Here are your Teachers",

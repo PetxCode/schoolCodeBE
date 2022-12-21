@@ -55,7 +55,7 @@ export const getSchool = async (
   }
 };
 
-export const updateSchool = async (req, res): Promise<Response> => {
+export const updateSchool = async (req: any, res: any): Promise<Response> => {
   try {
     // let streamUpload = (req) => {
     //   return new Promise(async (resolve, reject) => {
