@@ -12,6 +12,7 @@ const teacherRouter_1 = __importDefault(require("./router/teacherRouter"));
 const classRouter_1 = __importDefault(require("./router/classRouter"));
 const testRouter_1 = __importDefault(require("./router/testRouter"));
 const performanceRouter_1 = __importDefault(require("./router/performanceRouter"));
+const attendanceRouter_1 = __importDefault(require("./router/attendanceRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -24,6 +25,7 @@ app.use("/api/teacher", teacherRouter_1.default);
 app.use("/api/class", classRouter_1.default);
 app.use("/api/test", testRouter_1.default);
 app.use("/api/performance", performanceRouter_1.default);
+app.use("/api/attendance", attendanceRouter_1.default);
 app.use("/", (req, res) => {
     console.log(req.session);
     return res.status(200).json({

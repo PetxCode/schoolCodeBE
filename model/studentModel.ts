@@ -11,6 +11,7 @@ interface iStudent {
   verified?: boolean;
   className: string;
   performance?: {}[];
+  attendance?: {}[];
 }
 
 interface iStudentData extends iStudent, mongoose.Document {
@@ -49,6 +50,13 @@ const studentModel = new mongoose.Schema(
     teacherName: {
       type: String,
     },
+
+    attendance: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "attendances",
+      },
+    ],
 
     classes: {
       type: mongoose.Types.ObjectId,

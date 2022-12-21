@@ -11,6 +11,7 @@ interface iTeacher {
   verified?: boolean;
   classes?: string;
   test?: {}[];
+  attendance?: {}[];
 }
 
 interface iTeacherData extends iTeacher, mongoose.Document {
@@ -54,6 +55,12 @@ const teacherModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "tests",
+      },
+    ],
+    attendance: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "attendances",
       },
     ],
     school: {

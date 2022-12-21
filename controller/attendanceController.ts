@@ -1,0 +1,129 @@
+import schoolModel from "../model/schoolModel";
+import teacherModel from "../model/teacherModel";
+import mongoose from "mongoose";
+import { Request, Response } from "express";
+import crypto from "crypto";
+import classModel from "../model/classModel";
+import studentModel from "../model/studentModel";
+import performanceModel from "../model/performanceModel";
+import attendanceModel from "../model/attendanceModel";
+import moment from "moment";
+
+export const createAttendancePresent = async (req: Request, res: Response) => {
+  try {
+    const { className, present, absent, studentName, classTeacher } = req.body;
+
+    const getTeacher = await teacherModel.findById(req.params.id);
+    const getStudent = await studentModel.findById(req.params.studentID);
+
+    if (getTeacher) {
+      const code = crypto.randomBytes(2).toString("hex");
+      const dater = Date.now();
+
+      const attendance = await attendanceModel.create({
+        className: getStudent!.className,
+        classToken: code,
+        present: true,
+        absent: false,
+        studentName: getStudent!.name,
+        classTeacher: getTeacher!.name,
+        dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
+
+        date: `${moment(dater).format("dddd")}`,
+      });
+
+      getTeacher!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getTeacher?.save();
+
+      getStudent!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getStudent?.save();
+
+      return res.status(201).json({
+        message: "attendance recorded-student is Absent",
+      });
+    } else {
+      return res.status(404).json({ message: "School can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const createAttendanceAbsent = async (req: Request, res: Response) => {
+  try {
+    const { className, present, absent, studentName, classTeacher } = req.body;
+
+    const getTeacher = await teacherModel.findById(req.params.id);
+    const getStudent = await studentModel.findById(req.params.studentID);
+
+    if (getTeacher) {
+      const code = crypto.randomBytes(2).toString("hex");
+      const dater = Date.now();
+
+      const attendance = await attendanceModel.create({
+        className: getStudent!.className,
+        classToken: code,
+        present: false,
+        absent: true,
+        studentName: getStudent!.name,
+        classTeacher: getTeacher!.name,
+        dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
+
+        date: `${moment(dater).format("dddd")}`,
+      });
+
+      getTeacher!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getTeacher?.save();
+
+      getStudent!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getStudent?.save();
+
+      return res.status(201).json({
+        message: "attendance recorded-student is Absent",
+      });
+    } else {
+      return res.status(404).json({ message: "School can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const viewStudentAttendanceByTeacher = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const student = await teacherModel.findById(req.params.id).populate({
+      path: "attendance",
+      options: { sort: { date: -1 } },
+    });
+
+    return res.status(200).json({
+      message: `Viewing student attendance detail...!`,
+      data: student,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const viewStudentAttendance = async (req: Request, res: Response) => {
+  try {
+    const student = await studentModel.findById(req.params.id).populate({
+      path: "attendance",
+      options: { sort: { createdAt: -1 } },
+    });
+
+    return res.status(200).json({
+      message: `Viewing student attendance detail...!`,
+      data: student,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};

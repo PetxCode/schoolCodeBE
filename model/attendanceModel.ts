@@ -7,6 +7,8 @@ interface iClass {
   className?: string;
   classTeacher?: string;
   students?: {};
+  date?: string;
+  dateTime?: string;
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -15,6 +17,10 @@ interface iClassData extends iClass, mongoose.Document {
 
 const attendanceModel = new mongoose.Schema(
   {
+    date: {
+      type: String,
+      require: true,
+    },
     studentName: {
       type: String,
       require: true,

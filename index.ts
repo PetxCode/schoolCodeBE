@@ -8,6 +8,8 @@ import teacher from "./router/teacherRouter";
 import classes from "./router/classRouter";
 import viewTest from "./router/testRouter";
 import performance from "./router/performanceRouter";
+import attendance from "./router/attendanceRouter";
+import student from "./router/studentRouter";
 
 config();
 const proc: any = config().parsed;
@@ -24,6 +26,7 @@ app.use("/api/teacher", teacher);
 app.use("/api/class", classes);
 app.use("/api/test", viewTest);
 app.use("/api/performance", performance);
+app.use("/api/attendance", attendance);
 
 app.use("/", (req: Request, res: Response): Response => {
   console.log(req.session);
