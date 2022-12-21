@@ -175,8 +175,6 @@ export const verifiedSchool = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { email, password } = req.body;
-
     const school = await schoolModel.findById(req.params.id);
 
     if (school) {
