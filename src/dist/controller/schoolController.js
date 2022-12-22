@@ -29,8 +29,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
 const dotenv_1 = require("dotenv");
-const email_1 = require("../utils/email");
 (0, dotenv_1.config)();
+const email_1 = require("../utils/email");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const proc = (0, dotenv_1.config)().parsed;
 const getSchools = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -133,12 +133,13 @@ const loginSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (school) {
             if (school.verified) {
                 const passCheck = yield bcrypt_1.default.compare(password, school.password);
-                req.session.sessionID = school._id;
+                const token = jsonwebtoken_1.default.sign({ id: school._id }, proc.SECRET);
+                // req!.session!.sessionID = school._id;
                 if (passCheck) {
                     const _a = school._doc, { password } = _a, info = __rest(_a, ["password"]);
                     return res.status(200).json({
                         message: "school found",
-                        data: Object.assign(Object.assign({}, info), { session: req.session, id: req.session.id }),
+                        data: Object.assign(Object.assign({}, info), { token }),
                     });
                 }
                 else {
@@ -164,7 +165,6 @@ const loginSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.loginSchool = loginSchool;
 const verifiedSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.body;
         const school = yield schoolModel_1.default.findById(req.params.id);
         if (school) {
             if (!school.verified && school.token !== "") {

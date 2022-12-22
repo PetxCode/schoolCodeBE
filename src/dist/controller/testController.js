@@ -22,20 +22,16 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const code = crypto_1.default.randomBytes(3).toString("hex");
         const { subjectTest, time, testDetails, gradeScore } = req.body;
-        const getClass = yield classModel_1.default.findById(req.params.id);
-        const getTeacher = yield teacherModel_1.default.findOne({
-            name: getClass.classTeacher,
-        });
-        console.log("class: ", getClass);
-        console.log("teacher: ", getTeacher);
-        if (getClass) {
+        const getClass = yield classModel_1.default.findById(req.params.classID);
+        const getTeacher = yield teacherModel_1.default.findById(req.params.id);
+        if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getTeacher) {
             const test = yield testModel_1.default.create({
                 testCode: code,
                 gradeScore,
                 subjectTest,
                 time,
                 testDetails,
-                teacherName: getClass.classTeacher,
+                teacherName: getTeacher.name,
             });
             console.log("test");
             getClass.test.push(new mongoose_1.default.Types.ObjectId(test._id));
@@ -60,7 +56,6 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.createTest = createTest;
 const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("checking");
         const test = yield classModel_1.default.findById(req.params.id).populate({
             path: "test",
             options: {

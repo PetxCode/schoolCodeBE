@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 interface iClass {
-  present?: string;
-  absent?: string;
+  present?: boolean;
+  absent?: boolean;
   studentName?: string;
   className?: string;
   classTeacher?: string;
@@ -35,11 +35,16 @@ const attendanceModel = new mongoose.Schema(
     },
 
     present: {
-      type: String,
+      type: Boolean,
       require: true,
     },
 
     absent: {
+      type: Boolean,
+      require: true,
+    },
+
+    dateTime: {
       type: String,
       require: true,
     },

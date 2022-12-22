@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewClasses = exports.viewClassDetailInfo = exports.viewClassDetailFromSchool = exports.assigClassTeacher = exports.createClass = void 0;
+exports.viewClasses = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacher = exports.createClass = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -98,6 +98,31 @@ const viewClassDetailFromSchool = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.viewClassDetailFromSchool = viewClassDetailFromSchool;
+const viewClassStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const classStudents = yield classModel_1.default.findById(req.params.id);
+        const code = crypto_1.default.randomBytes(2).toString("hex");
+        if (classStudents) {
+            const myClass = yield classModel_1.default.findById(classStudents._id).populate({
+                path: "students",
+                options: {
+                    sort: { createdAt: -1 },
+                },
+            });
+            return res.status(200).json({
+                message: `Viewing class detail...!`,
+                data: myClass,
+            });
+        }
+        else {
+            return res.status(404).json({ message: `Please fixed the school Name` });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewClassStudents = viewClassStudents;
 const viewClassDetailInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const myClass = yield classModel_1.default.findById(req.params.id);

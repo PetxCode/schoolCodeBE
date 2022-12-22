@@ -27,6 +27,7 @@ export const createPerformance = async (req: Request, res: Response) => {
           gradeScore: getTest?.gradeScore,
           totalScore: gradeScore! * right,
           testName: getTest?.subjectTest,
+          teacherName: getTest?.teacherName,
           studentName: getStudent?.name,
           class: getStudent?.className,
         });

@@ -9,6 +9,7 @@ interface iClass {
   studentName?: string;
   class?: string;
   testName?: string;
+  teacherName?: string;
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -40,6 +41,10 @@ const performanceModel = new mongoose.Schema(
     student: {
       type: mongoose.Types.ObjectId,
       ref: "students",
+    },
+
+    teacherName: {
+      type: String,
     },
 
     studentName: {

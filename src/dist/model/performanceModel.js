@@ -25,6 +25,9 @@ const performanceModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "students",
     },
+    teacherName: {
+        type: String,
+    },
     studentName: {
         type: String,
     },

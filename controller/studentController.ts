@@ -14,6 +14,10 @@ import {
 import cloudinary from "../utils/cloudinary";
 import streamifier from "streamifier";
 
+import { config } from "dotenv";
+config();
+const proc: any = config().parsed;
+
 export const createStudent = async (req: Request, res: Response) => {
   try {
     const { name, schoolName } = req.body;
@@ -29,7 +33,7 @@ export const createStudent = async (req: Request, res: Response) => {
       const student = await studentModel.create({
         email: `${name.split(" ")[0] + name.split(" ")[1]}@${
           schoolName.split(" ")[0]
-        }.com`,
+        }.com`.toLowerCase(),
         name,
         schoolName: getSchool.schoolName,
         password: hash,
@@ -82,5 +86,46 @@ export const assigningStudentToClass = async (req: Request, res: Response) => {
     }
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const loginStudent = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { email, password } = req.body;
+    const student = await studentModel.findOne({ email });
+
+    if (student) {
+      if (student.verified) {
+        const passCheck = await bcrypt.compare(password, student.password);
+        // req!.session!.sessionID = student._id;
+        if (passCheck) {
+          const { password, ...info } = student._doc;
+          const token = jwt.sign({ id: student._id }, proc.SECRET);
+          return res.status(200).json({
+            message: "student found",
+            data: {
+              ...info,
+              token,
+              // session: req.session, id: req!.session!.id
+            },
+          });
+        } else {
+          return res.status(404).json({ message: "password is not correct" });
+        }
+      } else {
+        return res
+          .status(404)
+          .json({ message: "You have not yet been verified" });
+      }
+    } else {
+      return res.status(404).json({ message: "teacher cannot be found" });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
   }
 };

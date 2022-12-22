@@ -8,11 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.assigningStudentToClass = exports.createStudent = void 0;
+exports.loginStudent = exports.assigningStudentToClass = exports.createStudent = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
@@ -20,6 +31,9 @@ const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+const proc = (0, dotenv_1.config)().parsed;
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, schoolName } = req.body;
@@ -30,7 +44,7 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             const hash = yield bcrypt_1.default.hash(pass, salt);
             const token = jsonwebtoken_1.default.sign({ hash }, "ThisisStart");
             const student = yield studentModel_1.default.create({
-                email: `${name.split(" ")[0] + name.split(" ")[1]}@${schoolName.split(" ")[0]}.com`,
+                email: `${name.split(" ")[0] + name.split(" ")[1]}@${schoolName.split(" ")[0]}.com`.toLowerCase(),
                 name,
                 schoolName: getSchool.schoolName,
                 password: hash,
@@ -79,3 +93,40 @@ const assigningStudentToClass = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.assigningStudentToClass = assigningStudentToClass;
+const loginStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = req.body;
+        const student = yield studentModel_1.default.findOne({ email });
+        if (student) {
+            if (student.verified) {
+                const passCheck = yield bcrypt_1.default.compare(password, student.password);
+                // req!.session!.sessionID = student._id;
+                if (passCheck) {
+                    const _a = student._doc, { password } = _a, info = __rest(_a, ["password"]);
+                    const token = jsonwebtoken_1.default.sign({ id: student._id }, proc.SECRET);
+                    return res.status(200).json({
+                        message: "student found",
+                        data: Object.assign(Object.assign({}, info), { token }),
+                    });
+                }
+                else {
+                    return res.status(404).json({ message: "password is not correct" });
+                }
+            }
+            else {
+                return res
+                    .status(404)
+                    .json({ message: "You have not yet been verified" });
+            }
+        }
+        else {
+            return res.status(404).json({ message: "teacher cannot be found" });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.loginStudent = loginStudent;

@@ -10,23 +10,18 @@ export const createTest = async (req: Request, res: Response) => {
     const code = crypto.randomBytes(3).toString("hex");
     const { subjectTest, time, testDetails, gradeScore } = req.body;
 
-    const getClass = await classModel.findById(req.params.id);
+    const getClass = await classModel.findById(req.params.classID);
 
-    const getTeacher = await teacherModel.findOne({
-      name: getClass!.classTeacher,
-    });
+    const getTeacher = await teacherModel.findById(req.params.id);
 
-    console.log("class: ", getClass);
-    console.log("teacher: ", getTeacher);
-
-    if (getClass) {
+    if (getTeacher?.classes === getClass?.className || getTeacher) {
       const test = await testModel.create({
         testCode: code,
         gradeScore,
         subjectTest,
         time,
         testDetails,
-        teacherName: getClass!.classTeacher,
+        teacherName: getTeacher!.name,
       });
 
       console.log("test");
@@ -53,7 +48,6 @@ export const createTest = async (req: Request, res: Response) => {
 
 export const viewTest = async (req: Request, res: Response) => {
   try {
-    console.log("checking");
     const test = await classModel.findById(req.params.id).populate({
       path: "test",
       options: {

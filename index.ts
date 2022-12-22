@@ -27,9 +27,9 @@ app.use("/api/class", classes);
 app.use("/api/test", viewTest);
 app.use("/api/performance", performance);
 app.use("/api/attendance", attendance);
+app.use("/api/student", student);
 
 app.use("/", (req: Request, res: Response): Response => {
-  console.log(req.session);
   return res.status(200).json({
     message: "This is the Home Page!",
   });

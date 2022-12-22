@@ -10,8 +10,8 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/:id/present").post(createAttendancePresent);
-router.route("/:id/absent").post(createAttendanceAbsent);
+router.route("/:id/:studentID/present").post(createAttendancePresent);
+router.route("/:id/:studentID/absent").post(createAttendanceAbsent);
 
 router
   .route("/:id/teacher-viewing-student-attendance")

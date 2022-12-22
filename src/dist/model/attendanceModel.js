@@ -22,10 +22,14 @@ const attendanceModel = new mongoose_1.default.Schema({
         require: true,
     },
     present: {
-        type: String,
+        type: Boolean,
         require: true,
     },
     absent: {
+        type: Boolean,
+        require: true,
+    },
+    dateTime: {
         type: String,
         require: true,
     },

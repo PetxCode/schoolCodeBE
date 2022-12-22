@@ -9,7 +9,7 @@ const proc = dotenv_1.default.config().parsed;
 const newURL = process.env.DB;
 // const LOCALDB = proc.LOCALDB;
 const LOCALDB = proc.ONLINEDB;
-const url = process.env.LOCALBD;
+// const url = process.env.LOCALBD;
 mongoose_1.default.connect(LOCALDB, () => {
     console.log("database is now connected...!");
 });

@@ -34,11 +34,14 @@ const email_1 = require("../utils/email");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+const proc = (0, dotenv_1.config)().parsed;
 const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, name, schoolName, password } = req.body;
         const getSchool = yield schoolModel_1.default.findOne({ name: schoolName });
-        if (getSchool) {
+        if (getSchool === null || getSchool === void 0 ? void 0 : getSchool.verified) {
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(password, salt);
             const token = jsonwebtoken_1.default.sign({ hash }, "ThisisStart");
@@ -151,17 +154,17 @@ exports.changePassword = changePassword;
 const loginTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        console.log(req.session);
         const teacher = yield teacherModel_1.default.findOne({ email });
         if (teacher) {
             if (teacher.verified) {
                 const passCheck = yield bcrypt_1.default.compare(password, teacher.password);
-                req.session.sessionID = teacher._id;
+                // req!.session!.sessionID = teacher._id;
                 if (passCheck) {
                     const _a = teacher._doc, { password } = _a, info = __rest(_a, ["password"]);
+                    const token = jsonwebtoken_1.default.sign({ id: teacher._id }, proc.SECRET);
                     return res.status(200).json({
                         message: "teacher found",
-                        data: Object.assign(Object.assign({}, info), { session: req.session, id: req.session.id }),
+                        data: Object.assign({}, info),
                     });
                 }
                 else {

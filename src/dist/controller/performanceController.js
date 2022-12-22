@@ -33,6 +33,7 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     gradeScore: getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore,
                     totalScore: gradeScore * right,
                     testName: getTest === null || getTest === void 0 ? void 0 : getTest.subjectTest,
+                    teacherName: getTest === null || getTest === void 0 ? void 0 : getTest.teacherName,
                     studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
                     class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
                 });

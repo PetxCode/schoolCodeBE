@@ -14,12 +14,16 @@ import streamifier from "streamifier";
 import studentModel from "../model/studentModel";
 import classModel from "../model/classModel";
 
+import { config } from "dotenv";
+config();
+const proc: any = config().parsed;
+
 export const createTeacher = async (req: Request, res: Response) => {
   try {
     const { email, name, schoolName, password } = req.body;
     const getSchool = await schoolModel.findOne({ name: schoolName });
 
-    if (getSchool) {
+    if (getSchool?.verified) {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
 
@@ -157,19 +161,21 @@ export const loginTeacher = async (
 ): Promise<Response> => {
   try {
     const { email, password } = req.body;
-    console.log(req.session);
     const teacher = await teacherModel.findOne({ email });
 
     if (teacher) {
       if (teacher.verified) {
         const passCheck = await bcrypt.compare(password, teacher.password);
-        req!.session!.sessionID = teacher._id;
+        // req!.session!.sessionID = teacher._id;
         if (passCheck) {
           const { password, ...info } = teacher._doc;
-
+          const token = jwt.sign({ id: teacher._id }, proc.SECRET);
           return res.status(200).json({
             message: "teacher found",
-            data: { ...info, session: req.session, id: req!.session!.id },
+            data: {
+              ...info,
+              // session: req.session, id: req!.session!.id
+            },
           });
         } else {
           return res.status(404).json({ message: "password is not correct" });

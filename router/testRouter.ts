@@ -10,11 +10,11 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/:id/creating-test").post(createTest);
+router.route("/:id/:classID/creating-test").post(createTest);
 router.route("/:id/view-class-test").get(viewTest);
-router.route("/:id/view-assign-test").get(viewTopTest);
+router.route("/:id/view-recent-test").get(viewTopTest);
 
-router.route("/:id/view-teacher-test").get(viewTeacherAllTest);
-router.route("/:id/view-teacher-assign-test").get(viewTeacherTest);
+router.route("/:id/view-all-teacher-test").get(viewTeacherAllTest);
+router.route("/:id/view-teacher-recent-tests").get(viewTeacherTest);
 
 export default router;

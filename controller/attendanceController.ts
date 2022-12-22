@@ -11,12 +11,10 @@ import moment from "moment";
 
 export const createAttendancePresent = async (req: Request, res: Response) => {
   try {
-    const { className, present, absent, studentName, classTeacher } = req.body;
-
     const getTeacher = await teacherModel.findById(req.params.id);
     const getStudent = await studentModel.findById(req.params.studentID);
 
-    if (getTeacher) {
+    if (getTeacher?.classes === getStudent?.className) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
 
@@ -41,10 +39,11 @@ export const createAttendancePresent = async (req: Request, res: Response) => {
       getStudent?.save();
 
       return res.status(201).json({
-        message: "attendance recorded-student is Absent",
+        message: "student has been marked Present for today",
+        data: attendance,
       });
     } else {
-      return res.status(404).json({ message: "School can't be found" });
+      return res.status(404).json({ message: "student can't be found" });
     }
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });
@@ -58,7 +57,7 @@ export const createAttendanceAbsent = async (req: Request, res: Response) => {
     const getTeacher = await teacherModel.findById(req.params.id);
     const getStudent = await studentModel.findById(req.params.studentID);
 
-    if (getTeacher) {
+    if (getTeacher?.classes === getStudent?.className) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
 
@@ -83,10 +82,11 @@ export const createAttendanceAbsent = async (req: Request, res: Response) => {
       getStudent?.save();
 
       return res.status(201).json({
-        message: "attendance recorded-student is Absent",
+        message: "student has been marked Absent for today ",
+        data: attendance,
       });
     } else {
-      return res.status(404).json({ message: "School can't be found" });
+      return res.status(404).json({ message: "Student can't be found" });
     }
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });

@@ -40,7 +40,6 @@ export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {
     });
 
     const buildFile = path.join(__dirname, "../views/resetPassword.ejs");
-    console.log(school.token);
     const data = await ejs.renderFile(buildFile, {
       name: school.schoolName,
       id: school._id,
@@ -56,9 +55,7 @@ export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
-    });
+    transporter.sendMail(mailOptions);
   } catch (error) {
     return error;
   }
@@ -107,9 +104,7 @@ export const resetMyPasswordTeacherMail = async (
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
-    });
+    transporter.sendMail(mailOptions);
   } catch (error) {
     return error;
   }
@@ -138,7 +133,6 @@ export const verifiedSchoolMail = async (school: any) => {
       },
     });
     const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
-    console.log(school);
 
     const data = await ejs.renderFile(buildFile, {
       schooName: school.schoolName,
@@ -147,9 +141,6 @@ export const verifiedSchoolMail = async (school: any) => {
       url,
     });
 
-    console.log(school.email);
-    console.log("ajwalletcoins@gmail.com");
-
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
       to: school.email,
@@ -157,9 +148,7 @@ export const verifiedSchoolMail = async (school: any) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
-    });
+    transporter.sendMail(mailOptions);
   } catch (error) {
     return error;
   }
@@ -191,7 +180,6 @@ export const verifiedTeacherMail = async (teacher: any) => {
       __dirname,
       "../views/AccountCreatedTeacher.ejs"
     );
-    console.log(teacher);
 
     const data = await ejs.renderFile(buildFile, {
       name: teacher.name,
@@ -208,9 +196,7 @@ export const verifiedTeacherMail = async (teacher: any) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
-    });
+    transporter.sendMail(mailOptions);
   } catch (error) {
     return error;
   }

@@ -59,7 +59,7 @@ const oAuth = new googleapis_1.google.auth.OAuth2(
   GOOGLE_REDIRECT
 );
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
-const url = "https://school-code.onrender.com";
+const url = "https://school-code.onrender.com/api";
 const resetMyPasswordSchoolMail = (school, myToken) =>
   __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -86,7 +86,6 @@ const resetMyPasswordSchoolMail = (school, myToken) =>
         __dirname,
         "../views/resetPassword.ejs"
       );
-      console.log(school.token);
       const data = yield ejs_1.default.renderFile(buildFile, {
         name: school.schoolName,
         id: school._id,
@@ -100,9 +99,7 @@ const resetMyPasswordSchoolMail = (school, myToken) =>
         subject: "Reset Password",
         html: data,
       };
-      transporter.sendMail(mailOptions, () => {
-        console.log("sent successfully");
-      });
+      transporter.sendMail(mailOptions);
     } catch (error) {
       return error;
     }
@@ -147,9 +144,7 @@ const resetMyPasswordTeacherMail = (teacher, myToken) =>
         subject: "Reset Password",
         html: data,
       };
-      transporter.sendMail(mailOptions, () => {
-        console.log("sent successfully");
-      });
+      transporter.sendMail(mailOptions);
     } catch (error) {
       return error;
     }
@@ -181,24 +176,19 @@ const verifiedSchoolMail = (school) =>
         __dirname,
         "../views/AccountCreated.ejs"
       );
-      console.log(school);
       const data = yield ejs_1.default.renderFile(buildFile, {
         schooName: school.schoolName,
         id: school === null || school === void 0 ? void 0 : school._id,
         school: school.schoolName,
         url,
       });
-      console.log(school.email);
-      console.log("ajwalletcoins@gmail.com");
       const mailOptions = {
         from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
         to: school.email,
         subject: "Account Verification",
         html: data,
       };
-      transporter.sendMail(mailOptions, () => {
-        console.log("sent successfully");
-      });
+      transporter.sendMail(mailOptions);
     } catch (error) {
       return error;
     }
@@ -230,7 +220,6 @@ const verifiedTeacherMail = (teacher) =>
         __dirname,
         "../views/AccountCreatedTeacher.ejs"
       );
-      console.log(teacher);
       const data = yield ejs_1.default.renderFile(buildFile, {
         name: teacher.name,
         id: teacher === null || teacher === void 0 ? void 0 : teacher._id,
@@ -244,9 +233,7 @@ const verifiedTeacherMail = (teacher) =>
         subject: "Account Verification",
         html: data,
       };
-      transporter.sendMail(mailOptions, () => {
-        console.log("sent successfully");
-      });
+      transporter.sendMail(mailOptions);
     } catch (error) {
       return error;
     }

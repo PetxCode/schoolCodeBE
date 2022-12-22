@@ -101,6 +101,32 @@ export const viewClassDetailFromSchool = async (
   }
 };
 
+export const viewClassStudents = async (req: Request, res: Response) => {
+  try {
+    const classStudents = await classModel.findById(req.params.id);
+
+    const code = crypto.randomBytes(2).toString("hex");
+
+    if (classStudents) {
+      const myClass = await classModel.findById(classStudents._id).populate({
+        path: "students",
+        options: {
+          sort: { createdAt: -1 },
+        },
+      });
+
+      return res.status(200).json({
+        message: `Viewing class detail...!`,
+        data: myClass,
+      });
+    } else {
+      return res.status(404).json({ message: `Please fixed the school Name` });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewClassDetailInfo = async (req: Request, res: Response) => {
   try {
     const myClass = await classModel.findById(req.params.id);

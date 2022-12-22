@@ -4,8 +4,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { config } from "dotenv";
-import { resetMyPasswordSchoolMail, verifiedSchoolMail } from "../utils/email";
 config();
+import { resetMyPasswordSchoolMail, verifiedSchoolMail } from "../utils/email";
+
 import cloudinary from "../utils/cloudinary";
 import streamifier from "streamifier";
 
@@ -144,13 +145,18 @@ export const loginSchool = async (
     if (school) {
       if (school.verified) {
         const passCheck = await bcrypt.compare(password, school.password);
-        req!.session!.sessionID = school._id;
+        const token = jwt.sign({ id: school._id }, proc.SECRET);
+        // req!.session!.sessionID = school._id;
         if (passCheck) {
           const { password, ...info } = school._doc;
 
           return res.status(200).json({
             message: "school found",
-            data: { ...info, session: req.session, id: req!.session!.id },
+            data: {
+              ...info,
+              token,
+              // session: req.session, id: req!.session!.id
+            },
           });
         } else {
           return res.status(404).json({ message: "password is not correct" });
