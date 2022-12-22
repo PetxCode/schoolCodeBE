@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
 interface iSession {
+  receiptToken?: string;
   studentName?: string;
   date?: string;
+  sessionPaymentCode?: string;
+  dateTime?: string;
   studentClass?: string;
   academicTerm?: string;
   amountPaid?: number;
   toBalance?: number;
-  academicSession?: {};
+  academicSession?: string;
   student?: {};
 }
 
@@ -17,17 +20,23 @@ interface iSessionData extends iSession, mongoose.Document {
 
 const schoolFeeModel = new mongoose.Schema(
   {
+    receiptToken: {
+      type: String,
+    },
+    sessionPaymentCode: {
+      type: String,
+    },
+    dateTime: {
+      type: String,
+    },
     date: {
       type: String,
-      require: true,
     },
     studentName: {
       type: String,
-      require: true,
     },
     studentClass: {
       type: String,
-      require: true,
     },
 
     amountPaid: {
@@ -40,7 +49,6 @@ const schoolFeeModel = new mongoose.Schema(
 
     academicTerm: {
       type: String,
-      require: true,
     },
 
     student: {
@@ -49,8 +57,7 @@ const schoolFeeModel = new mongoose.Schema(
     },
 
     academicSession: {
-      type: mongoose.Types.ObjectId,
-      ref: "academicSessions",
+      type: String,
     },
   },
   { timestamps: true }

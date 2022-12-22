@@ -13,6 +13,7 @@ interface iStudent {
   className: string;
   performance?: {}[];
   attendance?: {}[];
+  schoolFee?: {}[];
 }
 
 interface iStudentData extends iStudent, mongoose.Document {
@@ -61,6 +62,13 @@ const studentModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "attendances",
+      },
+    ],
+
+    schoolFee: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "schoolFees",
       },
     ],
 

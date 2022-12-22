@@ -7,7 +7,7 @@ import classModel from "../model/classModel";
 
 export const createClass = async (req: Request, res: Response) => {
   try {
-    const { className } = req.body;
+    const { className, termFee } = req.body;
 
     const getSchool = await schoolModel.findById(req.params.id);
 
@@ -16,6 +16,7 @@ export const createClass = async (req: Request, res: Response) => {
 
       const classes = await classModel.create({
         className,
+        termFee,
         classToken: code,
         schoolName: getSchool.schoolName,
       });
@@ -29,6 +30,35 @@ export const createClass = async (req: Request, res: Response) => {
       });
     } else {
       return res.status(404).json({ message: "School can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const updateClassFee = async (req: Request, res: Response) => {
+  try {
+    const { name, termFee } = req.body;
+
+    const school = await schoolModel.findById(req.params.id);
+    const classes = await classModel.findById(req.params.classID);
+
+    if (classes?.schoolName === school?.schoolName) {
+      await classModel.findByIdAndUpdate(
+        req.params.classID,
+        {
+          termFee,
+        },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        message: `class fee has been updated...!`,
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Please check if the Name is rightly spelt` });
     }
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });

@@ -5,8 +5,8 @@ import {
   viewClasses,
   viewClassDetailInfo,
   viewClassStudents,
+  updateClassFee,
 } from "../controller/classController";
-import upload from "../utils/multer";
 
 import { Router } from "express";
 
@@ -18,5 +18,6 @@ router.route("/:id/viewing-class-students").get(viewClassStudents);
 router.route("/:id/viewing-school-class").get(viewClassDetailFromSchool);
 router.route("/:id/create-class").post(createClass);
 router.route("/:id/:classID/assign-teacher").patch(assigClassTeacher);
+router.route("/:id/:classID/update-class-fee").patch(updateClassFee);
 
 export default router;

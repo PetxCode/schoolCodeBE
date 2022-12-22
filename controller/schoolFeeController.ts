@@ -1,0 +1,227 @@
+import schoolModel from "../model/schoolModel";
+import teacherModel from "../model/teacherModel";
+import mongoose from "mongoose";
+import { Request, Response } from "express";
+import crypto from "crypto";
+import classModel from "../model/classModel";
+import studentModel from "../model/studentModel";
+import performanceModel from "../model/performanceModel";
+import attendanceModel from "../model/attendanceModel";
+import moment from "moment";
+import academicSessionModel from "../model/academicSessionModel";
+import schoolFeeModel from "../model/schoolFeeModel";
+
+export const createPaySchoolFeeByAdmin = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { amountPaid, sessionPaymentCode } = req.body;
+
+    const getSchool = await schoolModel.findById(req.params.id);
+
+    const getStudent = await studentModel.findById(req.params.studentID);
+    const getSession = await academicSessionModel.findOne({
+      sessionPaymentCode,
+    });
+
+    console.log(getStudent);
+
+    const classFee = await classModel.findOne({
+      className: getStudent?.className,
+    });
+
+    if (getSchool) {
+      const dater = Date.now();
+      const paymentData = await schoolFeeModel.create({
+        dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
+        receiptToken: dater,
+        date: `${moment(dater).format("dddd")}`,
+        studentName: getStudent!.name,
+        studentClass: getStudent!.className,
+        academicTerm: getSession?.academicTerm,
+        amountPaid,
+        toBalance: classFee?.termFee! - amountPaid,
+        academicSession: getSession?.academicSession,
+      });
+
+      getSession!.schoolFees!.push(
+        new mongoose.Types.ObjectId(paymentData._id)
+      );
+      getSession?.save();
+
+      getStudent!.schoolFee!.push(new mongoose.Types.ObjectId(paymentData._id));
+      getStudent?.save();
+
+      return res.status(201).json({
+        message: "payment of school fee recorded",
+        data: paymentData,
+      });
+    } else {
+      return res.status(404).json({ message: "student can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const updatePaySchoolFeeByAdmin = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { amountPaid, sessionPaymentCode } = req.body;
+
+    const getSchool = await schoolModel.findById(req.params.id);
+
+    const getStudent = await studentModel.findById(req.params.studentID);
+    const getPayment = await schoolFeeModel.findById(req.params.paymentID);
+
+    const getSession = await academicSessionModel.findOne({
+      sessionPaymentCode,
+    });
+
+    const classFee = await classModel.findOne({
+      className: getStudent?.className,
+    });
+    console.log(getPayment);
+    if (getSchool) {
+      const dater = Date.now();
+
+      await schoolFeeModel.findByIdAndUpdate(getPayment!._id, {
+        amountPaid: getPayment!.amountPaid! + amountPaid,
+      });
+
+      const paymentData = await schoolFeeModel.findByIdAndUpdate(
+        getPayment!._id,
+        {
+          dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
+            "MMMM Do YYYY, h:mm:ss"
+          )}`,
+          receiptToken: dater,
+          date: `${moment(dater).format("dddd")}`,
+          toBalance: classFee?.termFee! - getPayment!.amountPaid!,
+        }
+      );
+
+      getSession!.schoolFees!.push(
+        new mongoose.Types.ObjectId(paymentData!._id)
+      );
+      getSession?.save();
+
+      getStudent!.schoolFee!.push(
+        new mongoose.Types.ObjectId(paymentData!._id)
+      );
+      getStudent?.save();
+
+      return res.status(201).json({
+        message: "payment of school fee recorded",
+        data: paymentData,
+      });
+    } else {
+      return res.status(404).json({ message: "student can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const createPaySchoolFeeByParant = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const getStudent = await studentModel.findById(req.params.id);
+    const getSchool = await schoolModel.findOne({
+      schoolName: getStudent?.schoolName,
+    });
+    const getSession = await academicSessionModel.findOne({
+      schoolName: getSchool?.schoolName,
+    });
+    const { academicTerm, amountPaid, toBalance, academicSession } = req.body;
+
+    if (getStudent) {
+      const dater = Date.now();
+
+      const paymentData = await academicSessionModel.create({
+        dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
+        date: `${moment(dater).format("dddd")}`,
+        studentName: getStudent!.name,
+        studentClass: getStudent!.className,
+        academicTerm,
+        amountPaid,
+        toBalance,
+        academicSession,
+      });
+
+      getSession!.schoolFees!.push(
+        new mongoose.Types.ObjectId(paymentData._id)
+      );
+      getSchool?.save();
+
+      return res.status(201).json({
+        message: "payment of school fee recorded",
+        data: paymentData,
+      });
+    } else {
+      return res.status(404).json({ message: "student can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const viewAcademicSessionPaySchoolFee = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const school = await schoolModel.findById(req.params.id);
+    if (school) {
+      const payment = await academicSessionModel
+        .findById(req.params.sessionID)
+        .populate({
+          path: "schoolFees",
+          options: {
+            sort: {
+              createdAt: -1,
+            },
+          },
+        });
+
+      return res.status(200).json({
+        message: `Viewing academic session payments...!`,
+        data: payment,
+      });
+    } else {
+      return res.status(200).json({
+        message: `You can access this info`,
+      });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+// export const viewPresentAcademicSession = async (
+//   req: Request,
+//   res: Response
+// ) => {
+//   try {
+//     const school = await schoolModel.findById(req.params.id).populate({
+//       path: "academicSession",
+//       options: { sort: { createdAt: -1 }, limit: 1 },
+//     });
+
+//     return res.status(200).json({
+//       message: `Viewing present academic session detail...!`,
+//       data: school,
+//     });
+//   } catch (error) {
+//     return res.status(404).json({ message: `Error: ${error}` });
+//   }
+// };

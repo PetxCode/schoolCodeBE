@@ -17,8 +17,10 @@ export const createAcademicSession = async (req: Request, res: Response) => {
 
     if (getSchool) {
       const dater = Date.now();
-
+      const code = crypto.randomBytes(3).toString("hex");
       const academicSessionData = await academicSessionModel.create({
+        schoolName: getSchool!.schoolName,
+        sessionPaymentCode: code,
         academicSession,
         academicTerm,
         dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(

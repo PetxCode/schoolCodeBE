@@ -6,6 +6,7 @@ interface iClass {
   classTeacher?: string;
   classToken?: string;
   teacherCode?: string;
+  termFee?: number;
   students?: {}[];
   test?: {}[];
 }
@@ -16,6 +17,10 @@ interface iClassData extends iClass, mongoose.Document {
 
 const classModel = new mongoose.Schema(
   {
+    termFee: {
+      type: Number,
+      require: true,
+    },
     className: {
       type: String,
       require: true,

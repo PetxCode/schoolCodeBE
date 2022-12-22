@@ -11,6 +11,7 @@ import performance from "./router/performanceRouter";
 import attendance from "./router/attendanceRouter";
 import student from "./router/studentRouter";
 import academic from "./router/academicSessionRouter";
+import schoolfee from "./router/schoolFeeRouter";
 
 config();
 const proc: any = config().parsed;
@@ -30,6 +31,7 @@ app.use("/api/performance", performance);
 app.use("/api/attendance", attendance);
 app.use("/api/student", student);
 app.use("/api/academic", academic);
+app.use("/api/schoolfee", schoolfee);
 
 // app.use("/", (req: Request, res: Response): Response => {
 //   return res.status(200).json({
