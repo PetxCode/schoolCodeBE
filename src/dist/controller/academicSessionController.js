@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewPresentAcademicSession = exports.viewAcademicSession = exports.createAcademicSession = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const crypto_1 = __importDefault(require("crypto"));
 const moment_1 = __importDefault(require("moment"));
 const academicSessionModel_1 = __importDefault(require("../model/academicSessionModel"));
 const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,7 +24,10 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { academicSession, academicTerm } = req.body;
         if (getSchool) {
             const dater = Date.now();
+            const code = crypto_1.default.randomBytes(3).toString("hex");
             const academicSessionData = yield academicSessionModel_1.default.create({
+                schoolName: getSchool.schoolName,
+                sessionPaymentCode: code,
                 academicSession,
                 academicTerm,
                 dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,

@@ -5,13 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const academicSessionModel = new mongoose_1.default.Schema({
+    sessionPaymentCode: {
+        type: String,
+    },
+    schoolName: {
+        type: String,
+    },
     academicSession: {
         type: String,
-        require: true,
     },
     academicTerm: {
         type: String,
-        require: true,
     },
     date: {
         type: String,

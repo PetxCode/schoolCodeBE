@@ -15,6 +15,7 @@ const performanceRouter_1 = __importDefault(require("./router/performanceRouter"
 const attendanceRouter_1 = __importDefault(require("./router/attendanceRouter"));
 const studentRouter_1 = __importDefault(require("./router/studentRouter"));
 const academicSessionRouter_1 = __importDefault(require("./router/academicSessionRouter"));
+const schoolFeeRouter_1 = __importDefault(require("./router/schoolFeeRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -30,6 +31,7 @@ app.use("/api/performance", performanceRouter_1.default);
 app.use("/api/attendance", attendanceRouter_1.default);
 app.use("/api/student", studentRouter_1.default);
 app.use("/api/academic", academicSessionRouter_1.default);
+app.use("/api/schoolfee", schoolFeeRouter_1.default);
 // app.use("/", (req: Request, res: Response): Response => {
 //   return res.status(200).json({
 //     message: "This is the Home Page!",

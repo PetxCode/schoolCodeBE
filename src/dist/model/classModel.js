@@ -5,6 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const classModel = new mongoose_1.default.Schema({
+    termFee: {
+        type: Number,
+        require: true,
+    },
     className: {
         type: String,
         require: true,
