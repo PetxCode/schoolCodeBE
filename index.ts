@@ -10,6 +10,7 @@ import viewTest from "./router/testRouter";
 import performance from "./router/performanceRouter";
 import attendance from "./router/attendanceRouter";
 import student from "./router/studentRouter";
+import academic from "./router/academicSessionRouter";
 
 config();
 const proc: any = config().parsed;
@@ -28,12 +29,13 @@ app.use("/api/test", viewTest);
 app.use("/api/performance", performance);
 app.use("/api/attendance", attendance);
 app.use("/api/student", student);
+app.use("/api/academic", academic);
 
-app.use("/", (req: Request, res: Response): Response => {
-  return res.status(200).json({
-    message: "This is the Home Page!",
-  });
-});
+// app.use("/", (req: Request, res: Response): Response => {
+//   return res.status(200).json({
+//     message: "This is the Home Page!",
+//   });
+// });
 
 app.listen(process.env.PORT || port, () => {
   console.log("server is ready");

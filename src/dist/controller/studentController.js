@@ -50,6 +50,7 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 password: hash,
                 token: "",
                 verified: true,
+                status: "Student",
             });
             getSchool.students.push(new mongoose_1.default.Types.ObjectId(student._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();

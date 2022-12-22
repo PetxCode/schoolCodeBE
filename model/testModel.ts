@@ -9,6 +9,8 @@ interface iClass {
   gradeScore?: number;
   classes?: {};
   testCode?: String;
+  student?: {}[];
+  students?: any[];
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -49,6 +51,15 @@ const testModel = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "tests",
     },
+
+    student: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "students",
+      },
+    ],
+
+    students: [{ type: String }],
 
     teacherName: {
       type: String,

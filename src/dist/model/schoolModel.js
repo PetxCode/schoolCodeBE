@@ -15,6 +15,9 @@ const schoolModel = new mongoose_1.default.Schema({
         require: true,
         unique: true,
     },
+    status: {
+        type: String,
+    },
     password: {
         type: String,
     },
@@ -34,6 +37,12 @@ const schoolModel = new mongoose_1.default.Schema({
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "teachers",
+        },
+    ],
+    academicSession: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "academicSessions",
         },
     ],
     students: [

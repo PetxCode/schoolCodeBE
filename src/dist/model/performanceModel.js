@@ -17,8 +17,20 @@ const performanceModel = new mongoose_1.default.Schema({
         type: Number,
         require: true,
     },
+    maxLength: {
+        type: Number,
+        require: true,
+    },
     gradeScore: {
         type: Number,
+        require: true,
+    },
+    precentage: {
+        type: String,
+        require: true,
+    },
+    grade: {
+        type: String,
         require: true,
     },
     student: {

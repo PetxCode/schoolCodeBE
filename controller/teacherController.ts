@@ -35,6 +35,7 @@ export const createTeacher = async (req: Request, res: Response) => {
         schoolName,
         password: hash,
         token,
+        status: "Teacher",
       });
 
       getSchool!.teachers!.push(new mongoose.Types.ObjectId(teacher._id));

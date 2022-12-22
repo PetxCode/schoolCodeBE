@@ -6,6 +6,7 @@ interface iTeacher {
   email?: string;
   password?: string;
   image?: string;
+  status?: string;
   token?: string;
   teacherCode?: string;
   verified?: boolean;
@@ -32,6 +33,9 @@ const teacherModel = new mongoose.Schema(
       type: String,
       require: true,
       unique: true,
+    },
+    status: {
+      type: String,
     },
     password: {
       type: String,

@@ -33,13 +33,10 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 testDetails,
                 teacherName: getTeacher.name,
             });
-            console.log("test");
             getClass.test.push(new mongoose_1.default.Types.ObjectId(test._id));
             getClass === null || getClass === void 0 ? void 0 : getClass.save();
-            console.log("test1");
             getTeacher.test.push(new mongoose_1.default.Types.ObjectId(test === null || test === void 0 ? void 0 : test._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
-            console.log("test2");
             return res.status(201).json({
                 message: "tested created",
                 data: test,

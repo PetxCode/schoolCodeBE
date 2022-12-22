@@ -10,7 +10,7 @@ import performanceModel from "../model/performanceModel";
 
 export const createPerformance = async (req: Request, res: Response) => {
   try {
-    const { totalScore, right, failed, testCode } = req.body;
+    const { totalScore, right, failed, testCode, grade, precentage } = req.body;
 
     const getStudent = await studentModel.findById(req.params.id);
     const getTest = await testModel.findOne({
@@ -18,29 +18,59 @@ export const createPerformance = async (req: Request, res: Response) => {
     });
 
     let gradeScore = getTest?.gradeScore;
+    let total = getTest!.testDetails!.length;
+    let score = (right / total) * 100;
+
+    let scoreGrade = (): string | undefined => {
+      if (score < 60) {
+        return "F";
+      } else if (score < 70) {
+        return "D";
+      } else if (score < 80) {
+        return "C";
+      } else if (score < 90) {
+        return "B";
+      } else if (score < 100) {
+        return "A";
+      }
+    };
 
     if (getStudent) {
       if (getTest) {
-        const performance = await performanceModel.create({
-          right,
-          failed,
-          gradeScore: getTest?.gradeScore,
-          totalScore: gradeScore! * right,
-          testName: getTest?.subjectTest,
-          teacherName: getTest?.teacherName,
-          studentName: getStudent?.name,
-          class: getStudent?.className,
-        });
+        if (getTest!.students?.includes(getStudent?.name)) {
+          return res
+            .status(404)
+            .json({ message: "You've already took the test before!" });
+        } else {
+          const performance = await performanceModel.create({
+            right,
+            failed,
+            gradeScore: getTest?.gradeScore,
+            totalScore: gradeScore! * right,
+            testName: getTest?.subjectTest,
+            teacherName: getTest?.teacherName,
+            studentName: getStudent?.name,
+            class: getStudent?.className,
+            grade: scoreGrade(),
+            precentage: `${score}%`,
+            maxLength: total,
+          });
+          getStudent!.performance!.push(
+            new mongoose.Types.ObjectId(performance._id)
+          );
+          getStudent?.save();
 
-        getStudent!.performance!.push(
-          new mongoose.Types.ObjectId(performance._id)
-        );
-        getStudent?.save();
+          getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
 
-        return res.status(201).json({
-          message: "performance created",
-          data: performance,
-        });
+          getTest?.save();
+          getTest!.students!.push(performance!.studentName);
+
+          return res.status(201).json({
+            message: "performance created",
+            data: performance,
+          });
+        }
+        // }
       } else {
         return res.status(404).json({ message: "Get a Test Code to continue" });
       }

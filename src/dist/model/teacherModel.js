@@ -18,6 +18,9 @@ const teacherModel = new mongoose_1.default.Schema({
         require: true,
         unique: true,
     },
+    status: {
+        type: String,
+    },
     password: {
         type: String,
     },

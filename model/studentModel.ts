@@ -5,6 +5,7 @@ interface iStudent {
   schoolName?: string;
   email?: string;
   password?: string;
+  status?: string;
   image?: string;
   token?: string;
   teacherName?: string;
@@ -28,6 +29,11 @@ const studentModel = new mongoose.Schema(
       type: String,
       require: true,
     },
+    status: {
+      type: String,
+      require: true,
+    },
+
     schoolName: {
       type: String,
       require: true,

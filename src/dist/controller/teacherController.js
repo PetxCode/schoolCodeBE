@@ -51,6 +51,7 @@ const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 schoolName,
                 password: hash,
                 token,
+                status: "Teacher",
             });
             getSchool.teachers.push(new mongoose_1.default.Types.ObjectId(teacher._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();

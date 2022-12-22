@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSchoolTeacher = exports.changePassword = exports.resetPassword = exports.verifiedSchool = exports.loginSchool = exports.createSchool = exports.updateSchool = exports.getSchool = exports.getSchools = void 0;
+exports.getSchoolStudents = exports.getSchoolTeacher = exports.changePassword = exports.resetPassword = exports.verifiedSchool = exports.loginSchool = exports.createSchool = exports.updateSchool = exports.getSchool = exports.getSchools = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -107,6 +107,7 @@ const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             email,
             password: hash,
             token,
+            status: "School",
         });
         (0, email_1.verifiedSchoolMail)(school)
             .then((result) => {
@@ -273,3 +274,20 @@ const getSchoolTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getSchoolTeacher = getSchoolTeacher;
+const getSchoolStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const students = yield schoolModel_1.default
+            .findById(req.params.id)
+            .populate({ path: "students", options: { sort: { createdAt: -1 } } });
+        return res.status(200).json({
+            message: "Here are your students",
+            data: students,
+        });
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.getSchoolStudents = getSchoolStudents;

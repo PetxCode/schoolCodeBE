@@ -10,6 +10,9 @@ interface iClass {
   class?: string;
   testName?: string;
   teacherName?: string;
+  grade?: string;
+  precentage?: string;
+  maxLength?: number;
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -33,8 +36,23 @@ const performanceModel = new mongoose.Schema(
       require: true,
     },
 
+    maxLength: {
+      type: Number,
+      require: true,
+    },
+
     gradeScore: {
       type: Number,
+      require: true,
+    },
+
+    precentage: {
+      type: String,
+      require: true,
+    },
+
+    grade: {
+      type: String,
       require: true,
     },
 

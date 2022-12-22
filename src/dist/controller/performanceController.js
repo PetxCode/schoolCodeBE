@@ -18,31 +18,65 @@ const studentModel_1 = __importDefault(require("../model/studentModel"));
 const testModel_1 = __importDefault(require("../model/testModel"));
 const performanceModel_1 = __importDefault(require("../model/performanceModel"));
 const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { totalScore, right, failed, testCode } = req.body;
+        const { totalScore, right, failed, testCode, grade, precentage } = req.body;
         const getStudent = yield studentModel_1.default.findById(req.params.id);
         const getTest = yield testModel_1.default.findOne({
             testCode,
         });
         let gradeScore = getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore;
+        let total = getTest.testDetails.length;
+        let score = (right / total) * 100;
+        let scoreGrade = () => {
+            if (score < 60) {
+                return "F";
+            }
+            else if (score < 70) {
+                return "D";
+            }
+            else if (score < 80) {
+                return "C";
+            }
+            else if (score < 90) {
+                return "B";
+            }
+            else if (score < 100) {
+                return "A";
+            }
+        };
         if (getStudent) {
             if (getTest) {
-                const performance = yield performanceModel_1.default.create({
-                    right,
-                    failed,
-                    gradeScore: getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore,
-                    totalScore: gradeScore * right,
-                    testName: getTest === null || getTest === void 0 ? void 0 : getTest.subjectTest,
-                    teacherName: getTest === null || getTest === void 0 ? void 0 : getTest.teacherName,
-                    studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
-                    class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
-                });
-                getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));
-                getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
-                return res.status(201).json({
-                    message: "performance created",
-                    data: performance,
-                });
+                if ((_a = getTest.students) === null || _a === void 0 ? void 0 : _a.includes(getStudent === null || getStudent === void 0 ? void 0 : getStudent.name)) {
+                    return res
+                        .status(404)
+                        .json({ message: "You've already took the test before!" });
+                }
+                else {
+                    const performance = yield performanceModel_1.default.create({
+                        right,
+                        failed,
+                        gradeScore: getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore,
+                        totalScore: gradeScore * right,
+                        testName: getTest === null || getTest === void 0 ? void 0 : getTest.subjectTest,
+                        teacherName: getTest === null || getTest === void 0 ? void 0 : getTest.teacherName,
+                        studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
+                        class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
+                        grade: scoreGrade(),
+                        precentage: `${score}%`,
+                        maxLength: total,
+                    });
+                    getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));
+                    getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
+                    getTest.student.push(new mongoose_1.default.Types.ObjectId(performance._id));
+                    getTest === null || getTest === void 0 ? void 0 : getTest.save();
+                    getTest.students.push(performance.studentName);
+                    return res.status(201).json({
+                        message: "performance created",
+                        data: performance,
+                    });
+                }
+                // }
             }
             else {
                 return res.status(404).json({ message: "Get a Test Code to continue" });

@@ -16,4 +16,5 @@ router.route("/login").post(schoolController_1.loginSchool);
 router.route("/reset/password").patch(schoolController_1.resetPassword);
 router.route("/:id/:token/reset").post(schoolController_1.changePassword);
 router.route("/:id/teachers").get(schoolController_1.getSchoolTeacher);
+router.route("/:id/students").get(schoolController_1.getSchoolStudents);
 exports.default = router;

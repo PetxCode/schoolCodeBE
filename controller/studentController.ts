@@ -39,6 +39,7 @@ export const createStudent = async (req: Request, res: Response) => {
         password: hash,
         token: "",
         verified: true,
+        status: "Student",
       });
 
       getSchool!.students!.push(new mongoose.Types.ObjectId(student._id));

@@ -114,6 +114,7 @@ export const createSchool = async (
       email,
       password: hash,
       token,
+      status: "School",
     });
 
     verifiedSchoolMail(school)
@@ -301,6 +302,26 @@ export const getSchoolTeacher = async (
     return res.status(200).json({
       message: "Here are your Teachers",
       data: teachers,
+    });
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};
+
+export const getSchoolStudents = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const students = await schoolModel
+      .findById(req.params.id)
+      .populate({ path: "students", options: { sort: { createdAt: -1 } } });
+
+    return res.status(200).json({
+      message: "Here are your students",
+      data: students,
     });
   } catch (err) {
     return res.status(404).json({

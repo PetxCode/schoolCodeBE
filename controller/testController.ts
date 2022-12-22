@@ -24,15 +24,11 @@ export const createTest = async (req: Request, res: Response) => {
         teacherName: getTeacher!.name,
       });
 
-      console.log("test");
       getClass!.test!.push(new mongoose.Types.ObjectId(test._id));
       getClass?.save();
 
-      console.log("test1");
       getTeacher!.test!.push(new mongoose.Types.ObjectId(test?._id));
       getTeacher?.save();
-
-      console.log("test2");
 
       return res.status(201).json({
         message: "tested created",

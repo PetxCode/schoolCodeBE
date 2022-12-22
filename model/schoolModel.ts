@@ -7,10 +7,12 @@ interface iSchool {
   logo?: string;
   token?: string;
   schoolCode?: string;
+  status?: string;
   verified?: boolean;
   teachers?: {}[];
   classes?: {}[];
   students?: {}[];
+  academicSession?: {}[];
 }
 
 interface iSchoolData extends iSchool, mongoose.Document {
@@ -29,6 +31,9 @@ const schoolModel = new mongoose.Schema(
       type: String,
       require: true,
       unique: true,
+    },
+    status: {
+      type: String,
     },
     password: {
       type: String,
@@ -49,6 +54,12 @@ const schoolModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "teachers",
+      },
+    ],
+    academicSession: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "academicSessions",
       },
     ],
     students: [

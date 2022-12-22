@@ -13,6 +13,10 @@ const studentModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    status: {
+        type: String,
+        require: true,
+    },
     schoolName: {
         type: String,
         require: true,
