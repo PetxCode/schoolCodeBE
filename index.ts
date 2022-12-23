@@ -37,11 +37,11 @@ app.use("/api/schoolfee", schoolfee);
 app.use("/api/announcement", announcement);
 app.use("/api/event", event);
 
-// app.use("/", (req: Request, res: Response): Response => {
-//   return res.status(200).json({
-//     message: "This is the Home Page!",
-//   });
-// });
+app.use("/", (req: Request, res: Response): Response => {
+  return res.status(200).json({
+    message: "This is the Home Page!",
+  });
+});
 
 app.listen(process.env.PORT || port, () => {
   console.log("server is ready");

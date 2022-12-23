@@ -36,11 +36,11 @@ app.use("/api/academic", academicSessionRouter_1.default);
 app.use("/api/schoolfee", schoolFeeRouter_1.default);
 app.use("/api/announcement", notificationRouter_1.default);
 app.use("/api/event", eventRouter_1.default);
-// app.use("/", (req: Request, res: Response): Response => {
-//   return res.status(200).json({
-//     message: "This is the Home Page!",
-//   });
-// });
+app.use("/", (req, res) => {
+    return res.status(200).json({
+        message: "This is the Home Page!",
+    });
+});
 app.listen(process.env.PORT || port, () => {
     console.log("server is ready");
 });
