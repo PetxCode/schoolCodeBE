@@ -39,6 +39,18 @@ const schoolModel = new mongoose_1.default.Schema({
             ref: "teachers",
         },
     ],
+    notification: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "notifications",
+        },
+    ],
+    event: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "events",
+        },
+    ],
     academicSession: [
         {
             type: mongoose_1.default.Types.ObjectId,

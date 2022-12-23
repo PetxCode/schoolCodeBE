@@ -13,6 +13,8 @@ interface iSchool {
   classes?: {}[];
   students?: {}[];
   academicSession?: {}[];
+  notification?: {}[];
+  event?: {}[];
 }
 
 interface iSchoolData extends iSchool, mongoose.Document {
@@ -54,6 +56,18 @@ const schoolModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "teachers",
+      },
+    ],
+    notification: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "notifications",
+      },
+    ],
+    event: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "events",
       },
     ],
     academicSession: [

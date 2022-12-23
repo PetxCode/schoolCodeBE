@@ -24,6 +24,7 @@ const GOOGLE_REDIRECT = "https://developers.google.com/oauthplayground";
 const oAuth = new googleapis_1.google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 // const url: string = "http:localhost:2244";
+// const url: string = "https://school-code.onrender.com/";
 const url = "https://school-code.onrender.com/";
 const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {

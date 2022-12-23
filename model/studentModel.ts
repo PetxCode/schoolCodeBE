@@ -14,6 +14,8 @@ interface iStudent {
   performance?: {}[];
   attendance?: {}[];
   schoolFee?: {}[];
+  notification?: {}[];
+  event?: {}[];
 }
 
 interface iStudentData extends iStudent, mongoose.Document {
@@ -62,6 +64,19 @@ const studentModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "attendances",
+      },
+    ],
+
+    notification: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "notifications",
+      },
+    ],
+    event: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "events",
       },
     ],
 

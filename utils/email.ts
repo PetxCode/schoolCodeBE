@@ -15,6 +15,7 @@ const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 
 // const url: string = "http:localhost:2244";
+// const url: string = "https://school-code.onrender.com/";
 const url: string = "https://school-code.onrender.com/";
 
 export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {

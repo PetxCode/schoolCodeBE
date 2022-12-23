@@ -44,6 +44,18 @@ const studentModel = new mongoose_1.default.Schema({
             ref: "attendances",
         },
     ],
+    notification: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "notifications",
+        },
+    ],
+    event: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "events",
+        },
+    ],
     schoolFee: [
         {
             type: mongoose_1.default.Types.ObjectId,
