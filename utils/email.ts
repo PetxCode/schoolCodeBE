@@ -16,7 +16,7 @@ oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 
 // const url: string = "http:localhost:2244";
 // const url: string = "https://school-code.onrender.com/";
-const url: string = "https://school-code.onrender.com/";
+const url: string = "https://schoolcode-project.web.app";
 
 export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {
   try {
