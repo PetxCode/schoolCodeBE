@@ -10,18 +10,16 @@ import attendanceModel from "../model/attendanceModel";
 import moment from "moment";
 import notificationModel from "../model/notificationModel";
 import eventModel from "../model/eventModel";
+import academicSessionModel from "../model/academicSessionModel";
 
 export const createEvent = async (req: Request, res: Response) => {
   try {
-    const { title, desc, month, time, year, fixedDate } = req.body;
+    const { title, desc, month, time, year, fixedDate, code } = req.body;
 
     const getSchool = await schoolModel.findById(req.params.id);
 
-    const getTeacher = await teacherModel.findOne({
-      schoolName: getSchool?.schoolName,
-    });
-    const getStudent = await studentModel.findOne({
-      schoolName: getSchool?.schoolName,
+    const getSession = await academicSessionModel.findOne({
+      sessionPaymentCode: code,
     });
 
     if (getSchool) {
@@ -42,14 +40,8 @@ export const createEvent = async (req: Request, res: Response) => {
         date: `${moment(dater).format("dddd")}`,
       });
 
-      getSchool!.event!.push(new mongoose.Types.ObjectId(event._id));
-      getSchool?.save();
-
-      getTeacher!.event!.push(new mongoose.Types.ObjectId(event._id));
-      getTeacher?.save();
-
-      getStudent!.event!.push(new mongoose.Types.ObjectId(event._id));
-      getStudent?.save();
+      getSession!.event!.push(new mongoose.Types.ObjectId(event._id));
+      getSession?.save();
 
       return res.status(201).json({
         message: "event created",
@@ -65,16 +57,7 @@ export const createEvent = async (req: Request, res: Response) => {
 
 export const updateEvent = async (req: Request, res: Response) => {
   try {
-    const { title, desc, month, time, year, fixedDate } = req.body;
-
     const getSchool = await schoolModel.findById(req.params.id);
-
-    const getTeacher = await teacherModel.findOne({
-      schoolName: getSchool?.schoolName,
-    });
-    const getStudent = await studentModel.findOne({
-      schoolName: getSchool?.schoolName,
-    });
 
     if (getSchool) {
       const code = crypto.randomBytes(2).toString("hex");
@@ -87,15 +70,6 @@ export const updateEvent = async (req: Request, res: Response) => {
         },
         { new: true }
       );
-
-      //   getSchool!.notification!.push(new mongoose.Types.ObjectId(event._id));
-      //   getSchool?.save();
-
-      //   getTeacher!.notification!.push(new mongoose.Types.ObjectId(event._id));
-      //   getTeacher?.save();
-
-      //   getStudent!.notification!.push(new mongoose.Types.ObjectId(event._id));
-      //   getStudent?.save();
 
       return res.status(201).json({
         message: "event updated",
@@ -111,7 +85,7 @@ export const updateEvent = async (req: Request, res: Response) => {
 
 export const viewSchoolEvent = async (req: Request, res: Response) => {
   try {
-    const event = await schoolModel.findById(req.params.id).populate({
+    const event = await academicSessionModel.findById(req.params.id).populate({
       path: "event",
       options: { sort: { createdAt: -1 } },
     });

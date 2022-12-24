@@ -25,8 +25,6 @@ export const createPaySchoolFeeByAdmin = async (
       sessionPaymentCode,
     });
 
-    console.log(getStudent);
-
     const classFee = await classModel.findOne({
       className: getStudent?.className,
     });
@@ -54,6 +52,9 @@ export const createPaySchoolFeeByAdmin = async (
 
       getStudent!.schoolFee!.push(new mongoose.Types.ObjectId(paymentData._id));
       getStudent?.save();
+
+      classFee!.schoolFee!.push(new mongoose.Types.ObjectId(paymentData._id));
+      classFee?.save();
 
       return res.status(201).json({
         message: "payment of school fee recorded",

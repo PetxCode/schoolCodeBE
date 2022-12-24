@@ -11,8 +11,10 @@ const router = Router();
 
 router.route("/:id/create-academic-session").post(createAcademicSession);
 
-router.route("/:id/view-academic-sessions").get(viewPresentAcademicSession);
+router.route("/:id/view-academic-sessions").get(viewAcademicSession);
 
-router.route("/:id/viewing-present-academic-session").get(viewAcademicSession);
+router
+  .route("/:id/viewing-present-academic-session")
+  .get(viewPresentAcademicSession);
 
 export default router;

@@ -3,6 +3,7 @@ import {
   viewSchoolNotification,
   viewTeacherNotification,
   viewStudentNotification,
+  viewSchoolNotificationOne,
 } from "../controller/notificationController";
 import upload from "../utils/multer";
 
@@ -13,6 +14,9 @@ const router = Router();
 router.route("/:id/create-announcement").post(createNotification);
 
 router.route("/:id/viewing-announcement-school").get(viewSchoolNotification);
+router
+  .route("/:id/viewing-announcement-school-one")
+  .get(viewSchoolNotificationOne);
 
 router.route("/:id/viewing-announcement-teacher").get(viewTeacherNotification);
 

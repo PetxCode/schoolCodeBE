@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
 interface iSession {
-  sessionPaymentCode: string;
+  sessionCode: string;
   schoolName: string;
   academicSession?: string;
   academicTerm?: string;
   dateTime?: string;
   schoolFees?: {}[];
+  notification?: {}[];
+  event?: {}[];
   date?: string;
 }
 
@@ -17,7 +19,7 @@ interface iSessionData extends iSession, mongoose.Document {
 
 const academicSessionModel = new mongoose.Schema(
   {
-    sessionPaymentCode: {
+    sessionCode: {
       type: String,
     },
     schoolName: {
@@ -39,6 +41,18 @@ const academicSessionModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "schoolFees",
+      },
+    ],
+    notification: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "notifications",
+      },
+    ],
+    event: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "events",
       },
     ],
   },

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewClasses = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
+exports.viewClasses = exports.viewClassSchoolFeeInfo = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -162,6 +162,25 @@ const viewClassDetailInfo = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.viewClassDetailInfo = viewClassDetailInfo;
+const viewClassSchoolFeeInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const myClass = yield classModel_1.default.findById(req.params.id).populate({
+            path: "schoolFee",
+            options: {
+                sort: { createdAt: -1 },
+            },
+        });
+        const code = crypto_1.default.randomBytes(2).toString("hex");
+        return res.status(200).json({
+            message: `Viewing class school fee detail...!`,
+            data: myClass,
+        });
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewClassSchoolFeeInfo = viewClassSchoolFeeInfo;
 const viewClasses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const myClass = yield classModel_1.default.find();

@@ -27,7 +27,7 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
             const code = crypto_1.default.randomBytes(3).toString("hex");
             const academicSessionData = yield academicSessionModel_1.default.create({
                 schoolName: getSchool.schoolName,
-                sessionPaymentCode: code,
+                sessionCode: code,
                 academicSession,
                 academicTerm,
                 dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
@@ -36,7 +36,7 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
             getSchool.academicSession.push(new mongoose_1.default.Types.ObjectId(academicSessionData._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
             return res.status(201).json({
-                message: "student has been marked Present for today",
+                message: "Academic session is now created",
                 data: academicSessionData,
             });
         }
@@ -51,6 +51,8 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.createAcademicSession = createAcademicSession;
 const viewAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const view = yield schoolModel_1.default.findById(req.params.id);
+        console.log(view);
         const school = yield schoolModel_1.default.findById(req.params.id).populate({
             path: "academicSession",
             options: { sort: { createdAt: -1 } },

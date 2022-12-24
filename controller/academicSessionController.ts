@@ -20,7 +20,7 @@ export const createAcademicSession = async (req: Request, res: Response) => {
       const code = crypto.randomBytes(3).toString("hex");
       const academicSessionData = await academicSessionModel.create({
         schoolName: getSchool!.schoolName,
-        sessionPaymentCode: code,
+        sessionCode: code,
         academicSession,
         academicTerm,
         dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
@@ -36,7 +36,7 @@ export const createAcademicSession = async (req: Request, res: Response) => {
       getSchool?.save();
 
       return res.status(201).json({
-        message: "student has been marked Present for today",
+        message: "Academic session is now created",
         data: academicSessionData,
       });
     } else {
@@ -49,6 +49,8 @@ export const createAcademicSession = async (req: Request, res: Response) => {
 
 export const viewAcademicSession = async (req: Request, res: Response) => {
   try {
+    const view = await schoolModel.findById(req.params.id);
+    console.log(view);
     const school = await schoolModel.findById(req.params.id).populate({
       path: "academicSession",
       options: { sort: { createdAt: -1 } },

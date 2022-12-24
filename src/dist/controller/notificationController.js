@@ -12,44 +12,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudentNotification = exports.viewTeacherNotification = exports.viewSchoolNotification = exports.createNotification = void 0;
+exports.viewStudentNotification = exports.viewTeacherNotification = exports.viewSchoolNotificationOne = exports.viewSchoolNotification = exports.createNotification = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const crypto_1 = __importDefault(require("crypto"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const moment_1 = __importDefault(require("moment"));
 const notificationModel_1 = __importDefault(require("../model/notificationModel"));
+const academicSessionModel_1 = __importDefault(require("../model/academicSessionModel"));
 const createNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, detail } = req.body;
+        const { title, detail, code } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
-        const getTeacher = yield teacherModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
-        });
-        const getStudent = yield studentModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionCode: code,
         });
         if (getSchool) {
-            const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
-            const notice = yield notificationModel_1.default.create({
-                title,
-                detail,
-                schoolName: getSchool.schoolName,
-                dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
-                date: `${(0, moment_1.default)(dater).format("dddd")}`,
-            });
-            getSchool.notification.push(new mongoose_1.default.Types.ObjectId(notice._id));
-            getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
-            getTeacher.notification.push(new mongoose_1.default.Types.ObjectId(notice._id));
-            getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
-            getStudent.notification.push(new mongoose_1.default.Types.ObjectId(notice._id));
-            getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
-            return res.status(201).json({
-                message: "Announcement created",
-                data: notice,
-            });
+            console.log(getSession.sessionCode);
+            if (code === (getSession === null || getSession === void 0 ? void 0 : getSession.sessionCode)) {
+                const notice = yield notificationModel_1.default.create({
+                    title,
+                    detail,
+                    schoolName: getSchool.schoolName,
+                    dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
+                    date: `${(0, moment_1.default)(dater).format("dddd")}`,
+                });
+                getSession.notification.push(new mongoose_1.default.Types.ObjectId(notice._id));
+                getSession === null || getSession === void 0 ? void 0 : getSession.save();
+                return res.status(201).json({
+                    message: "Announcement created",
+                    data: notice,
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: "notify which session are you with the session code",
+                });
+            }
         }
         else {
             return res.status(404).json({ message: "school can't be found" });
@@ -62,30 +62,125 @@ const createNotification = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.createNotification = createNotification;
 const viewSchoolNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notification = yield schoolModel_1.default.findById(req.params.id).populate({
-            path: "notification",
-            options: { sort: { createdAt: -1 } },
+        const { code } = req.body;
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionCode: code,
         });
-        return res.status(200).json({
-            message: `Viewing notifications...!`,
-            data: notification,
-        });
+        const school = yield schoolModel_1.default.findById(req.params.id);
+        if (school) {
+            if (getSession) {
+                const notify = yield academicSessionModel_1.default
+                    .findById({
+                    _id: getSession._id,
+                })
+                    .populate({
+                    path: "notification",
+                    options: {
+                        createdAt: -1,
+                    },
+                });
+                return res.status(200).json({
+                    message: "Here are data for this session...!",
+                    data: notify,
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: "Please enter a session you'd like to work with...!",
+                });
+            }
+        }
+        else {
+            return res.status(404).json({
+                message: "no school has been registered",
+            });
+        }
     }
     catch (error) {
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
 exports.viewSchoolNotification = viewSchoolNotification;
+const viewSchoolNotificationOne = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { code } = req.body;
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionCode: code,
+        });
+        const school = yield schoolModel_1.default.findById(req.params.id);
+        if (school) {
+            if (getSession) {
+                const notify = yield academicSessionModel_1.default
+                    .findById({
+                    _id: getSession._id,
+                })
+                    .populate({
+                    path: "notification",
+                    options: {
+                        createdAt: -1,
+                        limit: 1,
+                    },
+                });
+                return res.status(200).json({
+                    message: "Here are data for this session...!",
+                    data: notify,
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: "Please enter a session you'd like to work with...!",
+                });
+            }
+        }
+        else {
+            return res.status(404).json({
+                message: "no school has been registered",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewSchoolNotificationOne = viewSchoolNotificationOne;
 const viewTeacherNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notification = yield teacherModel_1.default.findById(req.params.id).populate({
-            path: "notification",
-            options: { sort: { createdAt: -1 } },
+        const { code } = req.body;
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionCode: code,
         });
-        return res.status(200).json({
-            message: `Viewing notifications...!`,
-            data: notification,
+        const teacher = yield teacherModel_1.default.findById(req.params.id);
+        const school = yield schoolModel_1.default.findOne({
+            schoolName: teacher.schoolName,
         });
+        if (school) {
+            if (getSession) {
+                const notify = yield academicSessionModel_1.default
+                    .findById({
+                    _id: getSession._id,
+                })
+                    .populate({
+                    path: "notification",
+                    options: {
+                        createdAt: -1,
+                    },
+                });
+                return res.status(200).json({
+                    message: "Here are data for this session...!",
+                    data: notify,
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: "Please enter a session you'd like to work with...!",
+                });
+            }
+        }
+        else {
+            return res.status(404).json({
+                message: "no school has been registered",
+            });
+        }
     }
     catch (error) {
         return res.status(404).json({ message: `Error: ${error}` });
@@ -94,14 +189,42 @@ const viewTeacherNotification = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.viewTeacherNotification = viewTeacherNotification;
 const viewStudentNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notification = yield studentModel_1.default.findById(req.params.id).populate({
-            path: "notification",
-            options: { sort: { createdAt: -1 } },
+        const { code } = req.body;
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionCode: code,
         });
-        return res.status(200).json({
-            message: `Viewing notifications...!`,
-            data: notification,
+        const student = yield studentModel_1.default.findById(req.params.id);
+        const school = yield schoolModel_1.default.findOne({
+            schoolName: student.schoolName,
         });
+        if (school) {
+            if (getSession) {
+                const notify = yield academicSessionModel_1.default
+                    .findById({
+                    _id: getSession._id,
+                })
+                    .populate({
+                    path: "notification",
+                    options: {
+                        createdAt: -1,
+                    },
+                });
+                return res.status(200).json({
+                    message: "Here are data for this session...!",
+                    data: notify,
+                });
+            }
+            else {
+                return res.status(404).json({
+                    message: "Please enter a session you'd like to work with...!",
+                });
+            }
+        }
+        else {
+            return res.status(404).json({
+                message: "no school has been registered",
+            });
+        }
     }
     catch (error) {
         return res.status(404).json({ message: `Error: ${error}` });

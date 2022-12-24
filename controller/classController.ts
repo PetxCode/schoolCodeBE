@@ -171,6 +171,25 @@ export const viewClassDetailInfo = async (req: Request, res: Response) => {
   }
 };
 
+export const viewClassSchoolFeeInfo = async (req: Request, res: Response) => {
+  try {
+    const myClass = await classModel.findById(req.params.id).populate({
+      path: "schoolFee",
+      options: {
+        sort: { createdAt: -1 },
+      },
+    });
+
+    const code = crypto.randomBytes(2).toString("hex");
+    return res.status(200).json({
+      message: `Viewing class school fee detail...!`,
+      data: myClass,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewClasses = async (req: Request, res: Response) => {
   try {
     const myClass = await classModel.find();

@@ -20,15 +20,13 @@ const crypto_1 = __importDefault(require("crypto"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const moment_1 = __importDefault(require("moment"));
 const eventModel_1 = __importDefault(require("../model/eventModel"));
+const academicSessionModel_1 = __importDefault(require("../model/academicSessionModel"));
 const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, desc, month, time, year, fixedDate } = req.body;
+        const { title, desc, month, time, year, fixedDate, code } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
-        const getTeacher = yield teacherModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
-        });
-        const getStudent = yield studentModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
+        const getSession = yield academicSessionModel_1.default.findOne({
+            sessionPaymentCode: code,
         });
         if (getSchool) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
@@ -44,12 +42,8 @@ const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
                 date: `${(0, moment_1.default)(dater).format("dddd")}`,
             });
-            getSchool.event.push(new mongoose_1.default.Types.ObjectId(event._id));
-            getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
-            getTeacher.event.push(new mongoose_1.default.Types.ObjectId(event._id));
-            getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
-            getStudent.event.push(new mongoose_1.default.Types.ObjectId(event._id));
-            getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
+            getSession.event.push(new mongoose_1.default.Types.ObjectId(event._id));
+            getSession === null || getSession === void 0 ? void 0 : getSession.save();
             return res.status(201).json({
                 message: "event created",
                 data: event,
@@ -66,26 +60,13 @@ const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.createEvent = createEvent;
 const updateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, desc, month, time, year, fixedDate } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
-        const getTeacher = yield teacherModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
-        });
-        const getStudent = yield studentModel_1.default.findOne({
-            schoolName: getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName,
-        });
         if (getSchool) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
             const event = yield eventModel_1.default.findByIdAndUpdate(req.params.eventID, {
                 done: true,
             }, { new: true });
-            //   getSchool!.notification!.push(new mongoose.Types.ObjectId(event._id));
-            //   getSchool?.save();
-            //   getTeacher!.notification!.push(new mongoose.Types.ObjectId(event._id));
-            //   getTeacher?.save();
-            //   getStudent!.notification!.push(new mongoose.Types.ObjectId(event._id));
-            //   getStudent?.save();
             return res.status(201).json({
                 message: "event updated",
                 data: event,
@@ -102,7 +83,7 @@ const updateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateEvent = updateEvent;
 const viewSchoolEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const event = yield schoolModel_1.default.findById(req.params.id).populate({
+        const event = yield academicSessionModel_1.default.findById(req.params.id).populate({
             path: "event",
             options: { sort: { createdAt: -1 } },
         });

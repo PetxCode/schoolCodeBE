@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const academicSessionModel = new mongoose_1.default.Schema({
-    sessionPaymentCode: {
+    sessionCode: {
         type: String,
     },
     schoolName: {
@@ -27,6 +27,18 @@ const academicSessionModel = new mongoose_1.default.Schema({
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "schoolFees",
+        },
+    ],
+    notification: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "notifications",
+        },
+    ],
+    event: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "events",
         },
     ],
 }, { timestamps: true });

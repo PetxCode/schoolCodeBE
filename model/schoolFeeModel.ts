@@ -56,6 +56,11 @@ const schoolFeeModel = new mongoose.Schema(
       ref: "students",
     },
 
+    classes: {
+      type: mongoose.Types.ObjectId,
+      ref: "classes",
+    },
+
     academicSession: {
       type: String,
     },

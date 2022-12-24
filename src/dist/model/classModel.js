@@ -26,6 +26,12 @@ const classModel = new mongoose_1.default.Schema({
     schoolName: {
         type: String,
     },
+    schoolFee: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "schoolFees",
+        },
+    ],
     students: [
         {
             type: mongoose_1.default.Types.ObjectId,

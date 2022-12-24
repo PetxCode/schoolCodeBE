@@ -28,7 +28,6 @@ const createPaySchoolFeeByAdmin = (req, res) => __awaiter(void 0, void 0, void 0
         const getSession = yield academicSessionModel_1.default.findOne({
             sessionPaymentCode,
         });
-        console.log(getStudent);
         const classFee = yield classModel_1.default.findOne({
             className: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
         });
@@ -49,6 +48,8 @@ const createPaySchoolFeeByAdmin = (req, res) => __awaiter(void 0, void 0, void 0
             getSession === null || getSession === void 0 ? void 0 : getSession.save();
             getStudent.schoolFee.push(new mongoose_1.default.Types.ObjectId(paymentData._id));
             getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
+            classFee.schoolFee.push(new mongoose_1.default.Types.ObjectId(paymentData._id));
+            classFee === null || classFee === void 0 ? void 0 : classFee.save();
             return res.status(201).json({
                 message: "payment of school fee recorded",
                 data: paymentData,
