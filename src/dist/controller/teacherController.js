@@ -35,6 +35,7 @@ const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
 const dotenv_1 = require("dotenv");
+const moment_1 = __importDefault(require("moment"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -45,9 +46,11 @@ const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(password, salt);
             const token = jsonwebtoken_1.default.sign({ hash }, "ThisisStart");
+            const dater = Date.now();
             const teacher = yield teacherModel_1.default.create({
                 email,
                 name,
+                resumedDate: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
                 schoolName,
                 password: hash,
                 token,

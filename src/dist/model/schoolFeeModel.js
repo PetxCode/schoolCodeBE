@@ -8,7 +8,7 @@ const schoolFeeModel = new mongoose_1.default.Schema({
     receiptToken: {
         type: String,
     },
-    sessionPaymentCode: {
+    sessionCode: {
         type: String,
     },
     dateTime: {

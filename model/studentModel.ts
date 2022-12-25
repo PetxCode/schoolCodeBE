@@ -11,6 +11,7 @@ interface iStudent {
   teacherName?: string;
   verified?: boolean;
   className: string;
+  registerDate: string;
   performance?: {}[];
   attendance?: {}[];
   schoolFee?: {}[];
@@ -25,6 +26,10 @@ interface iStudentData extends iStudent, mongoose.Document {
 const studentModel = new mongoose.Schema(
   {
     className: {
+      type: String,
+      require: true,
+    },
+    registerDate: {
       type: String,
       require: true,
     },

@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lectureController_1 = require("../controller/lectureController");
+const express_1 = require("express");
+const router = (0, express_1.Router)();
+router.route("/:id/:subjectID/creating-lecture").post(lectureController_1.createLecture);
+router.route("/:id/view-class-lecture").get(lectureController_1.viewLecture);
+router.route("/:id/view-recent-lecture").get(lectureController_1.viewTopLecture);
+router.route("/:id/view-all-teacher-lecture").get(lectureController_1.viewTeacherAllLecture);
+router.route("/:id/view-teacher-recent-lecture").get(lectureController_1.viewTeacherLecture);
+exports.default = router;

@@ -14,6 +14,9 @@ import academic from "./router/academicSessionRouter";
 import schoolfee from "./router/schoolFeeRouter";
 import announcement from "./router/notificationRouter";
 import event from "./router/eventRouter";
+import subject from "./router/subjectRouter";
+import lecture from "./router/lectureRouter";
+import lectureRating from "./router/ratingLectureRouter";
 
 config();
 const proc: any = config().parsed;
@@ -36,12 +39,15 @@ app.use("/api/academic", academic);
 app.use("/api/schoolfee", schoolfee);
 app.use("/api/announcement", announcement);
 app.use("/api/event", event);
+app.use("/api/subject", subject);
+app.use("/api/lecture", lecture);
+app.use("/api/lecture-rating", lectureRating);
 
-app.use("/", (req: Request, res: Response): Response => {
-  return res.status(200).json({
-    message: "This is the Home Page!",
-  });
-});
+// app.use("/", (req: Request, res: Response): Response => {
+//   return res.status(200).json({
+//     message: "This is the Home Page!",
+//   });
+// });
 
 app.listen(process.env.PORT || port, () => {
   console.log("server is ready");

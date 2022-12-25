@@ -15,6 +15,7 @@ import cloudinary from "../utils/cloudinary";
 import streamifier from "streamifier";
 
 import { config } from "dotenv";
+import moment from "moment";
 config();
 const proc: any = config().parsed;
 
@@ -29,12 +30,15 @@ export const createStudent = async (req: Request, res: Response) => {
       const hash = await bcrypt.hash(pass, salt);
 
       const token = jwt.sign({ hash }, "ThisisStart");
-
+      const date = Date.now();
       const student = await studentModel.create({
         email: `${name.split(" ")[0] + name.split(" ")[1]}@${
           schoolName.split(" ")[0]
         }.com`.toLowerCase(),
         name,
+        registerDate: `${moment(date).format("dddd")}, ${moment(date).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
         schoolName: getSchool.schoolName,
         password: hash,
         token: "",

@@ -22,11 +22,11 @@ const academicSessionModel_1 = __importDefault(require("../model/academicSession
 const schoolFeeModel_1 = __importDefault(require("../model/schoolFeeModel"));
 const createPaySchoolFeeByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { amountPaid, sessionPaymentCode } = req.body;
+        const { amountPaid, sessionCode } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
         const getStudent = yield studentModel_1.default.findById(req.params.studentID);
         const getSession = yield academicSessionModel_1.default.findOne({
-            sessionPaymentCode,
+            sessionCode,
         });
         const classFee = yield classModel_1.default.findOne({
             className: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,

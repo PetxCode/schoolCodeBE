@@ -10,7 +10,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.route("/:id/:classID/creating-test").post(createTest);
+router.route("/:id/:subjectID/creating-test").post(createTest);
 router.route("/:id/view-class-test").get(viewTest);
 router.route("/:id/view-recent-test").get(viewTopTest);
 

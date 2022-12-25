@@ -4,28 +4,29 @@ import mongoose from "mongoose";
 import { Request, Response } from "express";
 import testModel from "../model/testModel";
 import crypto from "crypto";
+import subjectModel from "../model/subjectModel";
 
 export const createTest = async (req: Request, res: Response) => {
   try {
     const code = crypto.randomBytes(3).toString("hex");
     const { subjectTest, time, testDetails, gradeScore } = req.body;
 
-    const getClass = await classModel.findById(req.params.classID);
+    const getSubject = await subjectModel.findById(req.params.subjectID);
 
     const getTeacher = await teacherModel.findById(req.params.id);
 
-    if (getTeacher?.classes === getClass?.className || getTeacher) {
+    if (getTeacher!.name === getSubject?.subjectTeacher || getTeacher) {
       const test = await testModel.create({
         testCode: code,
         gradeScore,
-        subjectTest,
         time,
         testDetails,
         teacherName: getTeacher!.name,
+        subjectTest: getSubject!.subjectName,
       });
 
-      getClass!.test!.push(new mongoose.Types.ObjectId(test._id));
-      getClass?.save();
+      getSubject!.test!.push(new mongoose.Types.ObjectId(test._id));
+      getSubject?.save();
 
       getTeacher!.test!.push(new mongoose.Types.ObjectId(test?._id));
       getTeacher?.save();
@@ -44,7 +45,7 @@ export const createTest = async (req: Request, res: Response) => {
 
 export const viewTest = async (req: Request, res: Response) => {
   try {
-    const test = await classModel.findById(req.params.id).populate({
+    const test = await subjectModel.findById(req.params.id).populate({
       path: "test",
       options: {
         sort: { createdAt: -1 },
@@ -62,7 +63,7 @@ export const viewTest = async (req: Request, res: Response) => {
 
 export const viewTopTest = async (req: Request, res: Response) => {
   try {
-    const test = await classModel.findById(req.params.id).populate({
+    const test = await subjectModel.findById(req.params.id).populate({
       path: "test",
       options: {
         sort: { createdAt: -1 },

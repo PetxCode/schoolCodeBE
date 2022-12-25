@@ -1,12 +1,9 @@
 import schoolModel from "../model/schoolModel";
-import teacherModel from "../model/teacherModel";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import classModel from "../model/classModel";
 import studentModel from "../model/studentModel";
-import performanceModel from "../model/performanceModel";
-import attendanceModel from "../model/attendanceModel";
 import moment from "moment";
 import academicSessionModel from "../model/academicSessionModel";
 import schoolFeeModel from "../model/schoolFeeModel";
@@ -16,13 +13,13 @@ export const createPaySchoolFeeByAdmin = async (
   res: Response
 ) => {
   try {
-    const { amountPaid, sessionPaymentCode } = req.body;
+    const { amountPaid, sessionCode } = req.body;
 
     const getSchool = await schoolModel.findById(req.params.id);
 
     const getStudent = await studentModel.findById(req.params.studentID);
     const getSession = await academicSessionModel.findOne({
-      sessionPaymentCode,
+      sessionCode,
     });
 
     const classFee = await classModel.findOne({

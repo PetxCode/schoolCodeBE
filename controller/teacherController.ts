@@ -15,6 +15,7 @@ import studentModel from "../model/studentModel";
 import classModel from "../model/classModel";
 
 import { config } from "dotenv";
+import moment from "moment";
 config();
 const proc: any = config().parsed;
 
@@ -28,10 +29,13 @@ export const createTeacher = async (req: Request, res: Response) => {
       const hash = await bcrypt.hash(password, salt);
 
       const token = jwt.sign({ hash }, "ThisisStart");
-
+      const dater = Date.now();
       const teacher = await teacherModel.create({
         email,
         name,
+        resumedDate: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss"
+        )}`,
         schoolName,
         password: hash,
         token,

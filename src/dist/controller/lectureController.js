@@ -12,34 +12,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewTeacherAllTest = exports.viewTeacherTest = exports.viewTopTest = exports.viewTest = exports.createTest = void 0;
+exports.viewTeacherAllLecture = exports.viewTeacherLecture = exports.viewTopLecture = exports.viewLecture = exports.createLecture = void 0;
+const classModel_1 = __importDefault(require("../model/classModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const testModel_1 = __importDefault(require("../model/testModel"));
+const lectureModel_1 = __importDefault(require("../model/lectureModel"));
 const crypto_1 = __importDefault(require("crypto"));
+const moment_1 = __importDefault(require("moment"));
 const subjectModel_1 = __importDefault(require("../model/subjectModel"));
-const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const code = crypto_1.default.randomBytes(3).toString("hex");
-        const { subjectTest, time, testDetails, gradeScore } = req.body;
-        const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
+        const { subjectTopic, subjectDetails } = req.body;
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
-        if (getTeacher.name === (getSubject === null || getSubject === void 0 ? void 0 : getSubject.subjectTeacher) || getTeacher) {
-            const test = yield testModel_1.default.create({
-                testCode: code,
-                gradeScore,
-                time,
-                testDetails,
-                teacherName: getTeacher.name,
-                subjectTest: getSubject.subjectName,
+        const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
+        const getClass = yield classModel_1.default.findOne({
+            className: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes,
+        });
+        const dater = Date.now();
+        if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getTeacher) {
+            const lectureData = yield lectureModel_1.default.create({
+                lectureCode: code,
+                subjectDetails,
+                subjectTopic,
+                time: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
+                teacherName: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.name,
+                className: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes,
+                subjectName: getSubject === null || getSubject === void 0 ? void 0 : getSubject.subjectName,
+                classes: getClass,
+                lecturePerformance: 0,
             });
-            getSubject.test.push(new mongoose_1.default.Types.ObjectId(test._id));
+            getSubject.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData._id));
             getSubject === null || getSubject === void 0 ? void 0 : getSubject.save();
-            getTeacher.test.push(new mongoose_1.default.Types.ObjectId(test === null || test === void 0 ? void 0 : test._id));
+            getTeacher.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData === null || lectureData === void 0 ? void 0 : lectureData._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
             return res.status(201).json({
-                message: "tested created",
-                data: test,
+                message: "lecture created",
+                data: lectureData,
             });
         }
         else {
@@ -50,17 +59,18 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.createTest = createTest;
-const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createLecture = createLecture;
+const viewLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const test = yield subjectModel_1.default.findById(req.params.id).populate({
-            path: "test",
+            path: "lecture",
             options: {
                 sort: { createdAt: -1 },
             },
         });
+        console.log(test);
         return res.status(200).json({
-            message: "viewing test",
+            message: "viewing lecture",
             data: test,
         });
     }
@@ -68,11 +78,11 @@ const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.viewTest = viewTest;
-const viewTopTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.viewLecture = viewLecture;
+const viewTopLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const test = yield subjectModel_1.default.findById(req.params.id).populate({
-            path: "test",
+            path: "lecture",
             options: {
                 sort: { createdAt: -1 },
                 limit: 1,
@@ -87,41 +97,41 @@ const viewTopTest = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.viewTopTest = viewTopTest;
-const viewTeacherTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.viewTopLecture = viewTopLecture;
+const viewTeacherLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const test = yield teacherModel_1.default.findById(req.params.id).populate({
-            path: "test",
+        const lecture = yield teacherModel_1.default.findById(req.params.id).populate({
+            path: "lecture",
             options: {
                 sort: { createdAt: -1 },
                 limit: 1,
             },
         });
         return res.status(200).json({
-            message: "viewing test",
-            data: test,
+            message: "viewing lecture",
+            data: lecture,
         });
     }
     catch (error) {
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.viewTeacherTest = viewTeacherTest;
-const viewTeacherAllTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.viewTeacherLecture = viewTeacherLecture;
+const viewTeacherAllLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const test = yield teacherModel_1.default.findById(req.params.id).populate({
-            path: "test",
+        const lecture = yield teacherModel_1.default.findById(req.params.id).populate({
+            path: "lecture",
             options: {
                 sort: { createdAt: -1 },
             },
         });
         return res.status(200).json({
-            message: "viewing test",
-            data: test,
+            message: "viewing lecture",
+            data: lecture,
         });
     }
     catch (error) {
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.viewTeacherAllTest = viewTeacherAllTest;
+exports.viewTeacherAllLecture = viewTeacherAllLecture;

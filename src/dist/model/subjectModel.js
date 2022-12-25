@@ -4,44 +4,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const classModel = new mongoose_1.default.Schema({
-    termFee: {
-        type: Number,
-        require: true,
-    },
+const subjectModel = new mongoose_1.default.Schema({
     className: {
         type: String,
         require: true,
     },
-    classTeacher: {
+    subjectName: {
         type: String,
         require: true,
     },
-    classToken: {
+    subjectTeacher: {
+        type: String,
+        require: true,
+    },
+    subjectCode: {
         type: String,
     },
-    teacherCode: {
-        type: String,
-    },
-    schoolName: {
-        type: String,
-    },
-    schoolFee: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "schoolFees",
-        },
-    ],
     students: [
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "students",
-        },
-    ],
-    subject: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "subjects",
         },
     ],
     test: [
@@ -50,5 +32,15 @@ const classModel = new mongoose_1.default.Schema({
             ref: "tests",
         },
     ],
+    lecture: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "lectures",
+        },
+    ],
+    classes: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "classes",
+    },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("classes", classModel);
+exports.default = mongoose_1.default.model("subjects", subjectModel);

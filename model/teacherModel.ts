@@ -11,10 +11,13 @@ interface iTeacher {
   teacherCode?: string;
   verified?: boolean;
   classes?: string;
+  resumedDate?: string;
   test?: {}[];
+  lecture?: {}[];
   attendance?: {}[];
   notification?: {}[];
   event?: {}[];
+  subjectTaken?: string[];
 }
 
 interface iTeacherData extends iTeacher, mongoose.Document {
@@ -23,6 +26,14 @@ interface iTeacherData extends iTeacher, mongoose.Document {
 
 const teacherModel = new mongoose.Schema(
   {
+    subjectTaken: {
+      type: Array,
+    },
+
+    resumedDate: {
+      type: String,
+      require: true,
+    },
     name: {
       type: String,
       require: true,
@@ -58,6 +69,12 @@ const teacherModel = new mongoose.Schema(
       type: String,
     },
     test: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "tests",
+      },
+    ],
+    lecture: [
       {
         type: mongoose.Types.ObjectId,
         ref: "tests",

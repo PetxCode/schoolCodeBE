@@ -4,7 +4,7 @@ interface iSession {
   receiptToken?: string;
   studentName?: string;
   date?: string;
-  sessionPaymentCode?: string;
+  sessionCode?: string;
   dateTime?: string;
   studentClass?: string;
   academicTerm?: string;
@@ -23,7 +23,7 @@ const schoolFeeModel = new mongoose.Schema(
     receiptToken: {
       type: String,
     },
-    sessionPaymentCode: {
+    sessionCode: {
       type: String,
     },
     dateTime: {

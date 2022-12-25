@@ -32,6 +32,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = require("dotenv");
+const moment_1 = __importDefault(require("moment"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,9 +44,11 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(pass, salt);
             const token = jsonwebtoken_1.default.sign({ hash }, "ThisisStart");
+            const date = Date.now();
             const student = yield studentModel_1.default.create({
                 email: `${name.split(" ")[0] + name.split(" ")[1]}@${schoolName.split(" ")[0]}.com`.toLowerCase(),
                 name,
+                registerDate: `${(0, moment_1.default)(date).format("dddd")}, ${(0, moment_1.default)(date).format("MMMM Do YYYY, h:mm:ss")}`,
                 schoolName: getSchool.schoolName,
                 password: hash,
                 token: "",

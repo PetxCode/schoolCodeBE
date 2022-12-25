@@ -18,6 +18,9 @@ const academicSessionRouter_1 = __importDefault(require("./router/academicSessio
 const schoolFeeRouter_1 = __importDefault(require("./router/schoolFeeRouter"));
 const notificationRouter_1 = __importDefault(require("./router/notificationRouter"));
 const eventRouter_1 = __importDefault(require("./router/eventRouter"));
+const subjectRouter_1 = __importDefault(require("./router/subjectRouter"));
+const lectureRouter_1 = __importDefault(require("./router/lectureRouter"));
+const ratingLectureRouter_1 = __importDefault(require("./router/ratingLectureRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -36,11 +39,14 @@ app.use("/api/academic", academicSessionRouter_1.default);
 app.use("/api/schoolfee", schoolFeeRouter_1.default);
 app.use("/api/announcement", notificationRouter_1.default);
 app.use("/api/event", eventRouter_1.default);
-app.use("/", (req, res) => {
-    return res.status(200).json({
-        message: "This is the Home Page!",
-    });
-});
+app.use("/api/subject", subjectRouter_1.default);
+app.use("/api/lecture", lectureRouter_1.default);
+app.use("/api/lecture-rating", ratingLectureRouter_1.default);
+// app.use("/", (req: Request, res: Response): Response => {
+//   return res.status(200).json({
+//     message: "This is the Home Page!",
+//   });
+// });
 app.listen(process.env.PORT || port, () => {
     console.log("server is ready");
 });
