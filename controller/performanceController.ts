@@ -52,7 +52,7 @@ export const createPerformance = async (req: Request, res: Response) => {
             studentName: getStudent?.name,
             class: getStudent?.className,
             grade: scoreGrade(),
-            precentage: `${score}%`,
+            precentage: `${score.toFixed(2)}%`,
             maxLength: total,
           });
           getStudent!.performance!.push(

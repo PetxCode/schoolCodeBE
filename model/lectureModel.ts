@@ -11,7 +11,7 @@ interface iLecture {
   classes?: {};
   teacher?: {};
   lectureCode?: String;
-  rating?: {}[];
+  rated?: {}[];
 }
 
 interface iLectureData extends iLecture, mongoose.Document {
@@ -24,6 +24,7 @@ const lectureModel = new mongoose.Schema(
       type: Number,
       require: true,
     },
+
     subjectName: {
       type: String,
       require: true,
@@ -61,10 +62,10 @@ const lectureModel = new mongoose.Schema(
       ref: "tests",
     },
 
-    rating: [
+    rated: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "ratings",
+        ref: "ratingLectures",
       },
     ],
 

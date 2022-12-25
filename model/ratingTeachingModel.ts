@@ -69,4 +69,7 @@ const rateTeachingModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<iRateLearningData>("ratings", rateTeachingModel);
+export default mongoose.model<iRateLearningData>(
+  "ratingLectures",
+  rateTeachingModel
+);

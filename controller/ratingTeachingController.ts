@@ -9,6 +9,10 @@ import subjectModel from "../model/subjectModel";
 import studentModel from "../model/studentModel";
 import ratingTeachingModel from "../model/ratingTeachingModel";
 
+interface iRate {
+  ratingLecture: number;
+}
+
 export const createLecture = async (req: Request, res: Response) => {
   try {
     const code = crypto.randomBytes(3).toString("hex");
@@ -24,10 +28,6 @@ export const createLecture = async (req: Request, res: Response) => {
     const getClass = await classModel.findOne({
       className: getLecture?.className,
     });
-
-    // console.log(getTeacher);
-    // console.log(getLecture);
-    // console.log(getStudent);
 
     const dater = Date.now();
     if (getStudent?.className === getClass?.className || getLecture) {
@@ -45,21 +45,38 @@ export const createLecture = async (req: Request, res: Response) => {
         subjectTeacher: getLecture?.teacherName,
       });
 
-      //   var resData = getLecture!.ratingLecture
-      //   .map((bill) => bill.pendingAmount)
-      //   .reduce((acc, bill) => bill + acc);
+      getLecture!.rated!.push(new mongoose.Types.ObjectId(ratingData._id));
+      getLecture?.save();
+
+      getTeacher!.rated!.push(new mongoose.Types.ObjectId(ratingData?._id));
+      getTeacher?.save();
+
+      const lectureData = await lectureModel
+        .findById(req.params.lectureID)
+        .populate({
+          path: "rated",
+          options: {
+            sort: { createdAt: -1 },
+          },
+        });
+
+      const sumData = lectureData!.rated!.map((rate: any) => {
+        return rate!.ratingLecture;
+      });
+
+      const totalRated = sumData.reduce((a: number, b: number) => {
+        return a + b;
+      });
 
       await lectureModel.findByIdAndUpdate(
         req.params.lectureID,
-        {},
+        {
+          lecturePerformance: (totalRated / lectureData!.rated!.length).toFixed(
+            2
+          ),
+        },
         { new: true }
       );
-
-      //   getLecture!.rating!.push(new mongoose.Types.ObjectId(ratingData._id));
-      //   getLecture?.save();
-
-      //   getTeacher!.rating!.push(new mongoose.Types.ObjectId(ratingData?._id));
-      //   getTeacher?.save();
 
       return res.status(201).json({
         message: "lecture rated",
@@ -68,15 +85,15 @@ export const createLecture = async (req: Request, res: Response) => {
     } else {
       return res.status(404).json({ message: "School can't be found" });
     }
-  } catch (error) {
-    return res.status(404).json({ message: `Error: ${error}` });
+  } catch (error: any) {
+    return res.status(404).json({ message: `Error: ${error.message}` });
   }
 };
 
 export const viewLectureRating = async (req: Request, res: Response) => {
   try {
     const rating = await lectureModel.findById(req.params.id).populate({
-      path: "rating",
+      path: "rated",
       options: {
         sort: { createdAt: -1 },
       },
