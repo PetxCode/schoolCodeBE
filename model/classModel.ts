@@ -11,6 +11,7 @@ interface iClass {
   test?: {}[];
   schoolFee?: {}[];
   subject?: {}[];
+  attendance?: {}[];
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -58,6 +59,12 @@ const classModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "subjects",
+      },
+    ],
+    attendance: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "attendancess",
       },
     ],
     test: [

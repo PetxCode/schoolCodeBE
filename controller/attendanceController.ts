@@ -14,6 +14,10 @@ export const createAttendancePresent = async (req: Request, res: Response) => {
     const getTeacher = await teacherModel.findById(req.params.id);
     const getStudent = await studentModel.findById(req.params.studentID);
 
+    const getClass = await classModel.findOne({
+      className: getStudent!.className,
+    });
+
     if (getTeacher?.classes === getStudent?.className) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
@@ -34,6 +38,9 @@ export const createAttendancePresent = async (req: Request, res: Response) => {
 
       getTeacher!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
       getTeacher?.save();
+
+      getClass!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getClass?.save();
 
       getStudent!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
       getStudent?.save();
@@ -56,6 +63,10 @@ export const createAttendanceAbsent = async (req: Request, res: Response) => {
 
     const getTeacher = await teacherModel.findById(req.params.id);
     const getStudent = await studentModel.findById(req.params.studentID);
+
+    const getClass = await classModel.findOne({
+      className: getStudent!.className,
+    });
 
     if (getTeacher?.classes === getStudent?.className) {
       const code = crypto.randomBytes(2).toString("hex");
@@ -80,6 +91,9 @@ export const createAttendanceAbsent = async (req: Request, res: Response) => {
 
       getStudent!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
       getStudent?.save();
+
+      getClass!.attendance!.push(new mongoose.Types.ObjectId(attendance._id));
+      getClass?.save();
 
       return res.status(201).json({
         message: "student has been marked Absent for today ",
