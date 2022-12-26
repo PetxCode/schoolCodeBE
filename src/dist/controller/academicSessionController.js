@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewPresentAcademicSession = exports.viewAcademicSession = exports.findAcademicSession = exports.createAcademicSession = void 0;
+exports.viewPresentAcademicSession = exports.viewAcademicSession = exports.findAcademicSession = exports.AcademicSessionForTeacher = exports.createAcademicSession = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
+const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const crypto_1 = __importDefault(require("crypto"));
 const moment_1 = __importDefault(require("moment"));
@@ -49,6 +50,31 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.createAcademicSession = createAcademicSession;
+const AcademicSessionForTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const view = yield teacherModel_1.default.findById(req.params.id);
+        const session = yield schoolModel_1.default.findOne({ schoolName: view === null || view === void 0 ? void 0 : view.schoolName });
+        console.log(view);
+        console.log(session);
+        if ((view === null || view === void 0 ? void 0 : view.schoolName) === session.schoolName) {
+            const school = yield schoolModel_1.default.findById(session === null || session === void 0 ? void 0 : session._id).populate({
+                path: "academicSession",
+                options: { sort: { createdAt: -1 }, limit: 1 },
+            });
+            return res.status(200).json({
+                message: `Viewing academic session detail...!`,
+                data: school,
+            });
+        }
+        else {
+            return res.status(404).json({ message: "Check your session code again" });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.AcademicSessionForTeacher = AcademicSessionForTeacher;
 const findAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { sessionCode } = req.body;

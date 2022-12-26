@@ -47,6 +47,35 @@ export const createAcademicSession = async (req: Request, res: Response) => {
   }
 };
 
+export const AcademicSessionForTeacher = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const view = await teacherModel.findById(req.params.id);
+
+    const session = await schoolModel.findOne({ schoolName: view?.schoolName });
+
+    console.log(view);
+    console.log(session);
+
+    if (view?.schoolName === session!.schoolName) {
+      const school = await schoolModel.findById(session?._id).populate({
+        path: "academicSession",
+        options: { sort: { createdAt: -1 }, limit: 1 },
+      });
+      return res.status(200).json({
+        message: `Viewing academic session detail...!`,
+        data: school,
+      });
+    } else {
+      return res.status(404).json({ message: "Check your session code again" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const findAcademicSession = async (req: Request, res: Response) => {
   try {
     const { sessionCode } = req.body;
