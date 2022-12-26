@@ -54,8 +54,6 @@ const AcademicSessionForTeacher = (req, res) => __awaiter(void 0, void 0, void 0
     try {
         const view = yield teacherModel_1.default.findById(req.params.id);
         const session = yield schoolModel_1.default.findOne({ schoolName: view === null || view === void 0 ? void 0 : view.schoolName });
-        console.log(view);
-        console.log(session);
         if ((view === null || view === void 0 ? void 0 : view.schoolName) === session.schoolName) {
             const school = yield schoolModel_1.default.findById(session === null || session === void 0 ? void 0 : session._id).populate({
                 path: "academicSession",
@@ -63,7 +61,7 @@ const AcademicSessionForTeacher = (req, res) => __awaiter(void 0, void 0, void 0
             });
             return res.status(200).json({
                 message: `Viewing academic session detail...!`,
-                data: school,
+                data: school.academicSession[0],
             });
         }
         else {
@@ -80,6 +78,8 @@ const findAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, func
         const { sessionCode } = req.body;
         const view = yield schoolModel_1.default.findById(req.params.id);
         const session = yield academicSessionModel_1.default.findOne({ sessionCode });
+        console.log(session);
+        console.log(view);
         if ((view === null || view === void 0 ? void 0 : view.schoolName) === session.schoolName) {
             const school = yield schoolModel_1.default.findById(req.params.id).populate({
                 path: "academicSession",
@@ -87,7 +87,7 @@ const findAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, func
             });
             return res.status(200).json({
                 message: `Viewing academic session detail...!`,
-                data: view,
+                data: school.academicSession[0],
             });
         }
         else {
@@ -125,7 +125,7 @@ const viewPresentAcademicSession = (req, res) => __awaiter(void 0, void 0, void 
         });
         return res.status(200).json({
             message: `Viewing present academic session detail...!`,
-            data: school,
+            data: school.academicSession[0],
         });
     }
     catch (error) {

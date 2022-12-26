@@ -56,9 +56,6 @@ export const AcademicSessionForTeacher = async (
 
     const session = await schoolModel.findOne({ schoolName: view?.schoolName });
 
-    console.log(view);
-    console.log(session);
-
     if (view?.schoolName === session!.schoolName) {
       const school = await schoolModel.findById(session?._id).populate({
         path: "academicSession",
@@ -66,7 +63,7 @@ export const AcademicSessionForTeacher = async (
       });
       return res.status(200).json({
         message: `Viewing academic session detail...!`,
-        data: school,
+        data: school!.academicSession![0],
       });
     } else {
       return res.status(404).json({ message: "Check your session code again" });
@@ -83,6 +80,9 @@ export const findAcademicSession = async (req: Request, res: Response) => {
 
     const session = await academicSessionModel.findOne({ sessionCode });
 
+    console.log(session);
+    console.log(view);
+
     if (view?.schoolName === session!.schoolName) {
       const school = await schoolModel.findById(req.params.id).populate({
         path: "academicSession",
@@ -90,7 +90,7 @@ export const findAcademicSession = async (req: Request, res: Response) => {
       });
       return res.status(200).json({
         message: `Viewing academic session detail...!`,
-        data: view,
+        data: school!.academicSession![0],
       });
     } else {
       return res.status(404).json({ message: "Check your session code again" });
@@ -130,7 +130,7 @@ export const viewPresentAcademicSession = async (
 
     return res.status(200).json({
       message: `Viewing present academic session detail...!`,
-      data: school,
+      data: school!.academicSession![0],
     });
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });
