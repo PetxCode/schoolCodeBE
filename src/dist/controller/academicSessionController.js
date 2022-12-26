@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewPresentAcademicSession = exports.viewAcademicSession = exports.createAcademicSession = void 0;
+exports.viewPresentAcademicSession = exports.viewAcademicSession = exports.findAcademicSession = exports.createAcademicSession = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -49,6 +49,30 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.createAcademicSession = createAcademicSession;
+const findAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { sessionCode } = req.body;
+        const view = yield schoolModel_1.default.findById(req.params.id);
+        const session = yield academicSessionModel_1.default.findOne({ sessionCode });
+        if ((view === null || view === void 0 ? void 0 : view.schoolName) === session.schoolName) {
+            const school = yield schoolModel_1.default.findById(req.params.id).populate({
+                path: "academicSession",
+                options: { sort: { createdAt: -1 }, limit: 1 },
+            });
+            return res.status(200).json({
+                message: `Viewing academic session detail...!`,
+                data: view,
+            });
+        }
+        else {
+            return res.status(404).json({ message: "Check your session code again" });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.findAcademicSession = findAcademicSession;
 const viewAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const view = yield schoolModel_1.default.findById(req.params.id);

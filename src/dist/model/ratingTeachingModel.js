@@ -41,4 +41,4 @@ const rateTeachingModel = new mongoose_1.default.Schema({
         ref: "lectures",
     },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("ratings", rateTeachingModel);
+exports.default = mongoose_1.default.model("ratingLectures", rateTeachingModel);

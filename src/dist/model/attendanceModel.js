@@ -37,5 +37,9 @@ const attendanceModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "students",
     },
+    classes: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "classes",
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("attendances", attendanceModel);

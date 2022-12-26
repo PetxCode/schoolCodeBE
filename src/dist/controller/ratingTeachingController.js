@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewLectureRating = exports.createLecture = void 0;
 const classModel_1 = __importDefault(require("../model/classModel"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const lectureModel_1 = __importDefault(require("../model/lectureModel"));
 const crypto_1 = __importDefault(require("crypto"));
 const moment_1 = __importDefault(require("moment"));
@@ -31,9 +32,6 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const getClass = yield classModel_1.default.findOne({
             className: getLecture === null || getLecture === void 0 ? void 0 : getLecture.className,
         });
-        // console.log(getTeacher);
-        // console.log(getLecture);
-        // console.log(getStudent);
         const dater = Date.now();
         if ((getStudent === null || getStudent === void 0 ? void 0 : getStudent.className) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getLecture) {
             console.log("start");
@@ -46,14 +44,27 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 subjectName: getLecture.subjectName,
                 subjectTeacher: getLecture === null || getLecture === void 0 ? void 0 : getLecture.teacherName,
             });
-            //   var resData = getLecture!.ratingLecture
-            //   .map((bill) => bill.pendingAmount)
-            //   .reduce((acc, bill) => bill + acc);
-            yield lectureModel_1.default.findByIdAndUpdate(req.params.lectureID, {}, { new: true });
-            //   getLecture!.rating!.push(new mongoose.Types.ObjectId(ratingData._id));
-            //   getLecture?.save();
-            //   getTeacher!.rating!.push(new mongoose.Types.ObjectId(ratingData?._id));
-            //   getTeacher?.save();
+            getLecture.rated.push(new mongoose_1.default.Types.ObjectId(ratingData._id));
+            getLecture === null || getLecture === void 0 ? void 0 : getLecture.save();
+            getTeacher.rated.push(new mongoose_1.default.Types.ObjectId(ratingData === null || ratingData === void 0 ? void 0 : ratingData._id));
+            getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
+            const lectureData = yield lectureModel_1.default
+                .findById(req.params.lectureID)
+                .populate({
+                path: "rated",
+                options: {
+                    sort: { createdAt: -1 },
+                },
+            });
+            const sumData = lectureData.rated.map((rate) => {
+                return rate.ratingLecture;
+            });
+            const totalRated = sumData.reduce((a, b) => {
+                return a + b;
+            });
+            yield lectureModel_1.default.findByIdAndUpdate(req.params.lectureID, {
+                lecturePerformance: (totalRated / lectureData.rated.length).toFixed(2),
+            }, { new: true });
             return res.status(201).json({
                 message: "lecture rated",
                 data: ratingData,
@@ -64,14 +75,14 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
     catch (error) {
-        return res.status(404).json({ message: `Error: ${error}` });
+        return res.status(404).json({ message: `Error: ${error.message}` });
     }
 });
 exports.createLecture = createLecture;
 const viewLectureRating = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const rating = yield lectureModel_1.default.findById(req.params.id).populate({
-            path: "rating",
+            path: "rated",
             options: {
                 sort: { createdAt: -1 },
             },

@@ -63,7 +63,7 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                         studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
                         class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
                         grade: scoreGrade(),
-                        precentage: `${score}%`,
+                        precentage: `${score.toFixed(2)}%`,
                         maxLength: total,
                     });
                     getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));

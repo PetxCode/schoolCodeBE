@@ -41,10 +41,10 @@ const lectureModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "tests",
     },
-    rating: [
+    rated: [
         {
             type: mongoose_1.default.Types.ObjectId,
-            ref: "ratings",
+            ref: "ratingLectures",
         },
     ],
     students: [{ type: String }],

@@ -16,6 +16,7 @@ exports.viewStudentAttendance = exports.viewStudentAttendanceByTeacher = exports
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const crypto_1 = __importDefault(require("crypto"));
+const classModel_1 = __importDefault(require("../model/classModel"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const attendanceModel_1 = __importDefault(require("../model/attendanceModel"));
 const moment_1 = __importDefault(require("moment"));
@@ -23,6 +24,9 @@ const createAttendancePresent = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
         const getStudent = yield studentModel_1.default.findById(req.params.studentID);
+        const getClass = yield classModel_1.default.findOne({
+            className: getStudent.className,
+        });
         if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getStudent === null || getStudent === void 0 ? void 0 : getStudent.className)) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
@@ -38,6 +42,8 @@ const createAttendancePresent = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
             getTeacher.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
+            getClass.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
+            getClass === null || getClass === void 0 ? void 0 : getClass.save();
             getStudent.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
             getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
             return res.status(201).json({
@@ -59,6 +65,9 @@ const createAttendanceAbsent = (req, res) => __awaiter(void 0, void 0, void 0, f
         const { className, present, absent, studentName, classTeacher } = req.body;
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
         const getStudent = yield studentModel_1.default.findById(req.params.studentID);
+        const getClass = yield classModel_1.default.findOne({
+            className: getStudent.className,
+        });
         if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getStudent === null || getStudent === void 0 ? void 0 : getStudent.className)) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
@@ -76,6 +85,8 @@ const createAttendanceAbsent = (req, res) => __awaiter(void 0, void 0, void 0, f
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
             getStudent.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
             getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
+            getClass.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
+            getClass === null || getClass === void 0 ? void 0 : getClass.save();
             return res.status(201).json({
                 message: "student has been marked Absent for today ",
                 data: attendance,
