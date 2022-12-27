@@ -247,10 +247,7 @@ export const getSchoolTeacherInfo = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const teachers = await schoolModel.findById(req.params.id).populate({
-      path: "teachers",
-      options: { sort: { createdAt: -1 } },
-    });
+    const teachers = await teacherModel.findById(req.params.id);
 
     return res.status(200).json({
       message: "Here are your Teachers",

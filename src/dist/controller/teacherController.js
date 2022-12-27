@@ -225,10 +225,7 @@ const updateTeacherImage = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.updateTeacherImage = updateTeacherImage;
 const getSchoolTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const teachers = yield schoolModel_1.default.findById(req.params.id).populate({
-            path: "teachers",
-            options: { sort: { createdAt: -1 } },
-        });
+        const teachers = yield teacherModel_1.default.findById(req.params.id);
         return res.status(200).json({
             message: "Here are your Teachers",
             data: teachers,
