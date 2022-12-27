@@ -47,6 +47,7 @@ const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             const hash = yield bcrypt_1.default.hash(password, salt);
             const token = jsonwebtoken_1.default.sign({ hash }, "ThisisStart");
             const dater = Date.now();
+            const code = crypto_1.default.randomBytes(3).toString("hex");
             const teacher = yield teacherModel_1.default.create({
                 email,
                 name,
@@ -55,6 +56,7 @@ const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 password: hash,
                 token,
                 status: "Teacher",
+                teacherCode: code,
             });
             getSchool.teachers.push(new mongoose_1.default.Types.ObjectId(teacher._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();

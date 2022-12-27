@@ -30,6 +30,7 @@ export const createTeacher = async (req: Request, res: Response) => {
 
       const token = jwt.sign({ hash }, "ThisisStart");
       const dater = Date.now();
+      const code = crypto.randomBytes(3).toString("hex");
       const teacher = await teacherModel.create({
         email,
         name,
@@ -40,6 +41,7 @@ export const createTeacher = async (req: Request, res: Response) => {
         password: hash,
         token,
         status: "Teacher",
+        teacherCode: code,
       });
 
       getSchool!.teachers!.push(new mongoose.Types.ObjectId(teacher._id));
