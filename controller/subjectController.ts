@@ -8,26 +8,28 @@ import subjectModel from "../model/subjectModel";
 
 export const createSubject = async (req: Request, res: Response) => {
   try {
-    const { subjectName, subjectTeacher, classCode } = req.body;
+    const { subjectName, subjectTeacher, classToken } = req.body;
 
     const getSchool = await schoolModel.findById(req.params.id);
 
-    const getTeacher = await teacherModel.findOne({
-      subjectTeacher,
-    });
-    const getClass = await classModel.findOne({ classCode });
+    console.log(subjectTeacher);
 
-    const teacherName = await teacherModel.findOne({ subjectTeacher });
+    const getTeacher = await teacherModel.findOne({
+      name: subjectTeacher,
+    });
+    const getClass = await classModel.findOne({ classToken });
+
+    // const teacherName = await teacherModel.findOne({ subjectTeacher });
 
     if (getSchool && getClass) {
-      if (getTeacher?.schoolName === teacherName?.schoolName) {
+      if (getTeacher?.schoolName === getSchool?.schoolName) {
         const code = crypto.randomBytes(2).toString("hex");
 
         const subject = await subjectModel.create({
           className: getClass.className,
           subjectName,
           subjectToken: code,
-          subjectTeacher: getSchool.schoolName,
+          subjectTeacher: getTeacher!.name,
         });
 
         getClass!.subject!.push(new mongoose.Types.ObjectId(subject._id));

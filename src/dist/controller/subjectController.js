@@ -21,21 +21,22 @@ const classModel_1 = __importDefault(require("../model/classModel"));
 const subjectModel_1 = __importDefault(require("../model/subjectModel"));
 const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { subjectName, subjectTeacher, classCode } = req.body;
+        const { subjectName, subjectTeacher, classToken } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
+        console.log(subjectTeacher);
         const getTeacher = yield teacherModel_1.default.findOne({
-            subjectTeacher,
+            name: subjectTeacher,
         });
-        const getClass = yield classModel_1.default.findOne({ classCode });
-        const teacherName = yield teacherModel_1.default.findOne({ subjectTeacher });
+        const getClass = yield classModel_1.default.findOne({ classToken });
+        // const teacherName = await teacherModel.findOne({ subjectTeacher });
         if (getSchool && getClass) {
-            if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.schoolName) === (teacherName === null || teacherName === void 0 ? void 0 : teacherName.schoolName)) {
+            if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.schoolName) === (getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName)) {
                 const code = crypto_1.default.randomBytes(2).toString("hex");
                 const subject = yield subjectModel_1.default.create({
                     className: getClass.className,
                     subjectName,
                     subjectToken: code,
-                    subjectTeacher: getSchool.schoolName,
+                    subjectTeacher: getTeacher.name,
                 });
                 getClass.subject.push(new mongoose_1.default.Types.ObjectId(subject._id));
                 getClass === null || getClass === void 0 ? void 0 : getClass.save();
