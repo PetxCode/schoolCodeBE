@@ -41,7 +41,7 @@ const proc = (0, dotenv_1.config)().parsed;
 const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, name, schoolName, password } = req.body;
-        const getSchool = yield schoolModel_1.default.findOne({ name: schoolName });
+        const getSchool = yield schoolModel_1.default.findOne({ schoolName });
         if (getSchool === null || getSchool === void 0 ? void 0 : getSchool.verified) {
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(password, salt);

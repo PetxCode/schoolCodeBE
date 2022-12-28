@@ -22,7 +22,8 @@ const proc: any = config().parsed;
 export const createTeacher = async (req: Request, res: Response) => {
   try {
     const { email, name, schoolName, password } = req.body;
-    const getSchool = await schoolModel.findOne({ name: schoolName });
+
+    const getSchool = await schoolModel.findOne({ schoolName });
 
     if (getSchool?.verified) {
       const salt = await bcrypt.genSalt(10);
