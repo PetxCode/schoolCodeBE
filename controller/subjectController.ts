@@ -93,6 +93,48 @@ export const reAssignSubjectTeacher = async (req: Request, res: Response) => {
   }
 };
 
+export const assignSubjectToTeacher = async (req: Request, res: Response) => {
+  try {
+    const { subjectName, subjectTeacher } = req.body;
+    console.log(subjectName);
+    // const classes = await classModel.findById(req.params.subjectID);
+
+    const school = await schoolModel.findById(req.params.id);
+    const teacher = await teacherModel.findById(req.params.teacherID);
+    const findSubject = await subjectModel.findOne({ subjectName });
+
+    if (teacher?.schoolName === school?.schoolName) {
+      const subject = await subjectModel.findByIdAndUpdate(
+        findSubject?._id,
+        {
+          subjectTeacher: teacher?.name,
+        },
+        { new: true }
+      );
+      await teacherModel.findByIdAndUpdate(
+        teacher!._id,
+        {
+          subjectTaken: subject!.subjectName,
+        },
+        { new: true }
+      );
+
+      teacher!.subjectTaken!.push(subjectName);
+      teacher?.save();
+
+      return res.status(200).json({
+        message: `Teacher has been assigned to this subject: ${subject?.subjectName}...!`,
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Please check if the Name is rightly spelt` });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewClassSubjects = async (req: Request, res: Response) => {
   try {
     const school = await schoolModel.findById(req.params.id);
