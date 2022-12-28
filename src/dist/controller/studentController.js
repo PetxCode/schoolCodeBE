@@ -37,9 +37,10 @@ const moment_1 = __importDefault(require("moment"));
 const proc = (0, dotenv_1.config)().parsed;
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, schoolName } = req.body;
+        const { name, schoolName, className } = req.body;
         const getSchool = yield schoolModel_1.default.findOne({ schoolName });
-        if (getSchool) {
+        const classes = yield classModel_1.default.findOne({ className });
+        if ((getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName) === (classes === null || classes === void 0 ? void 0 : classes.schoolName)) {
             const pass = `${name.split(" ")[0] + name.split(" ")[1]}`;
             const salt = yield bcrypt_1.default.genSalt(10);
             const hash = yield bcrypt_1.default.hash(pass, salt);
@@ -54,6 +55,7 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 token: "",
                 verified: true,
                 status: "Student",
+                className,
             });
             getSchool.students.push(new mongoose_1.default.Types.ObjectId(student._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();

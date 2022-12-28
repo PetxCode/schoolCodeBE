@@ -21,10 +21,11 @@ const proc: any = config().parsed;
 
 export const createStudent = async (req: Request, res: Response) => {
   try {
-    const { name, schoolName } = req.body;
+    const { name, schoolName, className } = req.body;
     const getSchool = await schoolModel.findOne({ schoolName });
+    const classes = await classModel.findOne({ className });
 
-    if (getSchool) {
+    if (getSchool?.schoolName === classes?.schoolName) {
       const pass = `${name.split(" ")[0] + name.split(" ")[1]}`;
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(pass, salt);
@@ -39,11 +40,12 @@ export const createStudent = async (req: Request, res: Response) => {
         registerDate: `${moment(date).format("dddd")}, ${moment(date).format(
           "MMMM Do YYYY, h:mm:ss"
         )}`,
-        schoolName: getSchool.schoolName,
+        schoolName: getSchool!.schoolName,
         password: hash,
         token: "",
         verified: true,
         status: "Student",
+        className,
       });
 
       getSchool!.students!.push(new mongoose.Types.ObjectId(student._id));

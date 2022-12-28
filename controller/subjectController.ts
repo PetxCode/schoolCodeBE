@@ -15,7 +15,7 @@ export const createSubject = async (req: Request, res: Response) => {
     const getTeacher = await teacherModel.findOne({
       subjectTeacher,
     });
-    const getClass = await classModel.findById(req.params.classID);
+    const getClass = await classModel.findOne({ classCode });
 
     const teacherName = await teacherModel.findOne({ subjectTeacher });
 

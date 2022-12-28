@@ -26,7 +26,7 @@ const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const getTeacher = yield teacherModel_1.default.findOne({
             subjectTeacher,
         });
-        const getClass = yield classModel_1.default.findById(req.params.classID);
+        const getClass = yield classModel_1.default.findOne({ classCode });
         const teacherName = yield teacherModel_1.default.findOne({ subjectTeacher });
         if (getSchool && getClass) {
             if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.schoolName) === (teacherName === null || teacherName === void 0 ? void 0 : teacherName.schoolName)) {
