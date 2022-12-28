@@ -4,7 +4,7 @@ const subjectController_1 = require("../controller/subjectController");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 router.route("/:id/view-class-subject").get(subjectController_1.viewClassSubjects);
-router.route("/:id/:classID/create-class-subject").post(subjectController_1.createSubject);
+router.route("/:id/create-class-subject").post(subjectController_1.createSubject);
 router
     .route("/:id/:subjectID/reassign-subject-teacher")
     .patch(subjectController_1.reAssignSubjectTeacher);
