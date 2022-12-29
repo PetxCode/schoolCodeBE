@@ -75,7 +75,44 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
 
     if (teacher?.schoolName === school?.schoolName) {
       await classModel.findByIdAndUpdate(
-        classes._id,
+        classes?._id,
+        {
+          classTeacher: teacher?.name,
+        },
+        { new: true }
+      );
+      await teacherModel.findByIdAndUpdate(
+        teacher!._id,
+        {
+          classes: classes!.className,
+        },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        message: `Teacher has been assigned to this Class...!`,
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Please check if the Name is rightly spelt` });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const assigClassTeacherToClass = async (req: Request, res: Response) => {
+  try {
+    const { teacherName } = req.body;
+
+    const school = await schoolModel.findById(req.params.id);
+    const teacher = await teacherModel.findOne({ name: teacherName });
+    const classes = await classModel.findById(req.params.classID);
+
+    if (teacher?.schoolName === school?.schoolName) {
+      await classModel.findByIdAndUpdate(
+        classes?._id,
         {
           classTeacher: teacher?.name,
         },
