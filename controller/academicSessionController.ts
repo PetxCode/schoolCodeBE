@@ -15,6 +15,10 @@ export const createAcademicSession = async (req: Request, res: Response) => {
     const getSchool = await schoolModel.findById(req.params.id);
     const { academicSession, academicTerm } = req.body;
 
+    const getClass = await classModel.findOne({
+      schoolName: getSchool!.schoolName,
+    });
+
     if (getSchool) {
       const dater = Date.now();
       const code = crypto.randomBytes(3).toString("hex");
@@ -33,7 +37,39 @@ export const createAcademicSession = async (req: Request, res: Response) => {
       getSchool!.academicSession!.push(
         new mongoose.Types.ObjectId(academicSessionData._id)
       );
+
+      getSchool!.sessions?.push(academicSession);
       getSchool?.save();
+
+      console.log(getSchool!.sessions![getSchool!.sessions!.length - 1]);
+
+      // let arr = getSchool!.sessions;
+
+      let oldSession = parseInt(
+        getSchool!.sessions![getSchool!.sessions!!.length - 1].split("/")[0]
+      );
+      let presentSession = parseInt(
+        getSchool!.sessions![getSchool!.sessions!.length - 1].split("/")[1]
+      );
+      let newSession = presentSession - oldSession;
+      console.log(newSession);
+      if (newSession === 1) {
+        let getNumber = getClass!.className!.match!(/\d+/)![0];
+        let replaceNumber = parseInt(getNumber) + 1;
+        let newClass = getClass?.className?.replace(
+          getNumber,
+          replaceNumber.toString()
+        );
+
+        await getClass?.update({ className: newClass }, { new: true });
+
+        console.log(
+          getClass?.className?.replace(getNumber, replaceNumber.toString())
+        );
+        return res.status(200).json({
+          message: "students has been promoted to new class",
+        });
+      }
 
       return res.status(201).json({
         message: "Academic session is now created",

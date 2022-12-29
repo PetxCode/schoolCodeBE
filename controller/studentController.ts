@@ -22,6 +22,7 @@ const proc: any = config().parsed;
 export const createStudent = async (req: Request, res: Response) => {
   try {
     const { name, schoolName, className } = req.body;
+
     const getSchool = await schoolModel.findOne({ schoolName });
     const classes = await classModel.findOne({ className });
 

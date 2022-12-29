@@ -15,6 +15,7 @@ interface iSchool {
   academicSession?: {}[];
   notification?: {}[];
   event?: {}[];
+  sessions?: any[];
 }
 
 interface iSchoolData extends iSchool, mongoose.Document {
@@ -24,6 +25,12 @@ interface iSchoolData extends iSchool, mongoose.Document {
 
 const schoolModel = new mongoose.Schema(
   {
+    sessions: {
+      type: Array,
+      require: true,
+      unique: true,
+    },
+
     schoolName: {
       type: String,
       require: true,

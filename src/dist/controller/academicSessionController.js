@@ -17,12 +17,17 @@ const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const crypto_1 = __importDefault(require("crypto"));
+const classModel_1 = __importDefault(require("../model/classModel"));
 const moment_1 = __importDefault(require("moment"));
 const academicSessionModel_1 = __importDefault(require("../model/academicSessionModel"));
 const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
     try {
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
         const { academicSession, academicTerm } = req.body;
+        const getClass = yield classModel_1.default.findOne({
+            schoolName: getSchool.schoolName,
+        });
         if (getSchool) {
             const dater = Date.now();
             const code = crypto_1.default.randomBytes(3).toString("hex");
@@ -35,7 +40,24 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 date: `${(0, moment_1.default)(dater).format("dddd")}`,
             });
             getSchool.academicSession.push(new mongoose_1.default.Types.ObjectId(academicSessionData._id));
+            (_a = getSchool.sessions) === null || _a === void 0 ? void 0 : _a.push(academicSession);
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
+            console.log(getSchool.sessions[getSchool.sessions.length - 1]);
+            // let arr = getSchool!.sessions;
+            let oldSession = parseInt(getSchool.sessions[getSchool.sessions.length - 1].split("/")[0]);
+            let presentSession = parseInt(getSchool.sessions[getSchool.sessions.length - 1].split("/")[1]);
+            let newSession = presentSession - oldSession;
+            console.log(newSession);
+            if (newSession === 1) {
+                let getNumber = getClass.className.match(/\d+/)[0];
+                let replaceNumber = parseInt(getNumber) + 1;
+                let newClass = (_b = getClass === null || getClass === void 0 ? void 0 : getClass.className) === null || _b === void 0 ? void 0 : _b.replace(getNumber, replaceNumber.toString());
+                yield (getClass === null || getClass === void 0 ? void 0 : getClass.update({ className: newClass }, { new: true }));
+                console.log((_c = getClass === null || getClass === void 0 ? void 0 : getClass.className) === null || _c === void 0 ? void 0 : _c.replace(getNumber, replaceNumber.toString()));
+                return res.status(200).json({
+                    message: "students has been promoted to new class",
+                });
+            }
             return res.status(201).json({
                 message: "Academic session is now created",
                 data: academicSessionData,

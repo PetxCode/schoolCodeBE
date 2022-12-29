@@ -125,5 +125,33 @@ var bills = [
 var resData = bills
     .map((bill) => bill.pendingAmount)
     .reduce((acc, bill) => bill + acc);
-console.log(resData);
-console.log(bills.length);
+// console.log(resData);
+// console.log(bills.length);
+let x = "2006/2007";
+// let x: string = "2007/2008";
+let arr = ["2003/2004", "2004/2005", "2005/2006"];
+arr.push(x);
+console.log(arr);
+console.log(arr[arr.length - 1].split("/")[1]);
+let xx1 = parseInt(arr[arr.length - 1].split("/")[0]);
+let xx = parseInt(arr[arr.length - 1].split("/")[1]);
+let xxx = 1;
+console.log(xxx);
+let yy = "JSS6 A";
+let yy1 = parseInt(yy.match(/\d+/)[0]);
+console.log(yy1);
+if (xxx === 1) {
+    yy1 = yy1 + 1;
+    yy = yy.replace(yy.match(/\d+/)[0], yy1.toString());
+    console.log("change class to: ", yy);
+}
+else {
+    yy1;
+    console.log("remain in class: ", yy1);
+}
+// if () {
+//   console.log("increases");
+// } else {
+//   console.log("nothing Happen");
+// }
+// console.log(parseInt(y[1]));
