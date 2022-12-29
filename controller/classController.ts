@@ -67,15 +67,15 @@ export const updateClassFee = async (req: Request, res: Response) => {
 
 export const assigClassTeacher = async (req: Request, res: Response) => {
   try {
-    const { name } = req.body;
+    const { classToken } = req.body;
 
     const school = await schoolModel.findById(req.params.id);
-    const classes = await classModel.findById(req.params.classID);
-    const teacher = await teacherModel.findOne({ name });
+    const classes = await classModel.findOne({ classToken });
+    const teacher = await teacherModel.findById(req.params.teacherID);
 
     if (teacher?.schoolName === school?.schoolName) {
       await classModel.findByIdAndUpdate(
-        req.params.classID,
+        classes._id,
         {
           classTeacher: teacher?.name,
         },

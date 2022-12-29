@@ -52,7 +52,7 @@ const createAcademicSession = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 let getNumber = getClass.className.match(/\d+/)[0];
                 let replaceNumber = parseInt(getNumber) + 1;
                 let newClass = (_b = getClass === null || getClass === void 0 ? void 0 : getClass.className) === null || _b === void 0 ? void 0 : _b.replace(getNumber, replaceNumber.toString());
-                yield (getClass === null || getClass === void 0 ? void 0 : getClass.update({ className: newClass }, { new: true }));
+                yield (classModel_1.default === null || classModel_1.default === void 0 ? void 0 : classModel_1.default.updateMany({ schoolName: getSchool.schoolName }, { $set: { className: newClass } }));
                 console.log((_c = getClass === null || getClass === void 0 ? void 0 : getClass.className) === null || _c === void 0 ? void 0 : _c.replace(getNumber, replaceNumber.toString()));
                 return res.status(200).json({
                     message: "students has been promoted to new class",

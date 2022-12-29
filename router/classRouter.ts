@@ -19,7 +19,7 @@ router.route("/:id/viewing-class-payment").get(viewClassSchoolFeeInfo);
 router.route("/:id/viewing-class-students").get(viewClassStudents);
 router.route("/:id/viewing-school-class").get(viewClassDetailFromSchool);
 router.route("/:id/create-class").post(createClass);
-router.route("/:id/:classID/assign-teacher").patch(assigClassTeacher);
+router.route("/:id/:teacherID/assign-teacher").post(assigClassTeacher);
 router.route("/:id/:classID/update-class-fee").patch(updateClassFee);
 
 export default router;

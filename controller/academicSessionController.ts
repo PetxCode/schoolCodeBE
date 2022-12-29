@@ -61,7 +61,10 @@ export const createAcademicSession = async (req: Request, res: Response) => {
           replaceNumber.toString()
         );
 
-        await getClass?.update({ className: newClass }, { new: true });
+        await classModel?.updateMany(
+          { schoolName: getSchool.schoolName },
+          { $set: { className: newClass } }
+        );
 
         console.log(
           getClass?.className?.replace(getNumber, replaceNumber.toString())

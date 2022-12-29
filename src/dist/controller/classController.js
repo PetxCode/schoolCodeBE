@@ -72,12 +72,12 @@ const updateClassFee = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updateClassFee = updateClassFee;
 const assigClassTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name } = req.body;
+        const { classToken } = req.body;
         const school = yield schoolModel_1.default.findById(req.params.id);
-        const classes = yield classModel_1.default.findById(req.params.classID);
-        const teacher = yield teacherModel_1.default.findOne({ name });
+        const classes = yield classModel_1.default.findOne({ classToken });
+        const teacher = yield teacherModel_1.default.findById(req.params.teacherID);
         if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
-            yield classModel_1.default.findByIdAndUpdate(req.params.classID, {
+            yield classModel_1.default.findByIdAndUpdate(classes._id, {
                 classTeacher: teacher === null || teacher === void 0 ? void 0 : teacher.name,
             }, { new: true });
             yield teacherModel_1.default.findByIdAndUpdate(teacher._id, {
