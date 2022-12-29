@@ -140,3 +140,26 @@ export const loginStudent = async (
     });
   }
 };
+
+export const viewStudent = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const school = await schoolModel.findById(req.params.id);
+    const student = await studentModel.findById(req.params.studentID);
+
+    if (school && student) {
+      return res.status(200).json({
+        message: "Awesome",
+        data: student,
+      });
+    } else {
+      return res.status(404).json({ message: "something went wrong" });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};

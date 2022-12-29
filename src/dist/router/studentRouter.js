@@ -6,4 +6,5 @@ const router = (0, express_1.Router)();
 router.route("/:id/create-student").post(studentController_1.createStudent);
 router.route("/login").post(studentController_1.loginStudent);
 router.route("/:id/:classID/assign-student").post(studentController_1.assigningStudentToClass);
+router.route("/:id/:studentID/view-student").get(studentController_1.viewStudent);
 exports.default = router;
