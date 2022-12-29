@@ -10,6 +10,7 @@ router.route("/:id/viewing-class-students").get(classController_1.viewClassStude
 router.route("/:id/viewing-school-class").get(classController_1.viewClassDetailFromSchool);
 router.route("/:id/create-class").post(classController_1.createClass);
 router.route("/:id/:teacherID/assign-teacher").post(classController_1.assigClassTeacher);
+router.route("/:id/:studentID/assign-student").post(classController_1.assigClassStudent);
 router
     .route("/:id/:classID/assign-teacher-class")
     .post(classController_1.assigClassTeacherToClass);

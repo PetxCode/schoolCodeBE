@@ -9,6 +9,10 @@ const subjectModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    subjectToken: {
+        type: String,
+        require: true,
+    },
     subjectName: {
         type: String,
         require: true,

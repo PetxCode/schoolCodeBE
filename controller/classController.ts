@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { Request, Response } from "express";
 import crypto from "crypto";
 import classModel from "../model/classModel";
+import studentModel from "../model/studentModel";
 
 export const createClass = async (req: Request, res: Response) => {
   try {
@@ -91,6 +92,41 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
 
       return res.status(200).json({
         message: `Teacher has been assigned to this Class...!`,
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Please check if the Name is rightly spelt` });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const assigClassStudent = async (req: Request, res: Response) => {
+  try {
+    const { classToken } = req.body;
+
+    const school = await schoolModel.findById(req.params.id);
+    const classes = await classModel.findOne({ classToken });
+    const student = await studentModel.findById(req.params.studentID);
+
+    if (student?.schoolName === school?.schoolName) {
+      await studentModel.findByIdAndUpdate(
+        student!._id,
+        {
+          className: classes!.className,
+        },
+        { new: true }
+      );
+
+      console.log(classes!.className);
+
+      classes!.students!.push(new mongoose.Types.ObjectId(student!._id));
+      classes!.save();
+
+      return res.status(200).json({
+        message: `student has been assigned to this Class...!`,
       });
     } else {
       return res

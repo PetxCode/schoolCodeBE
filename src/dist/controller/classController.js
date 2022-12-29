@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewClasses = exports.viewClassSchoolFeeInfo = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacherToClass = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
+exports.viewClasses = exports.viewClassSchoolFeeInfo = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacherToClass = exports.assigClassStudent = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const crypto_1 = __importDefault(require("crypto"));
 const classModel_1 = __importDefault(require("../model/classModel"));
+const studentModel_1 = __importDefault(require("../model/studentModel"));
 const createClass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { className, termFee } = req.body;
@@ -98,6 +99,34 @@ const assigClassTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.assigClassTeacher = assigClassTeacher;
+const assigClassStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { classToken } = req.body;
+        const school = yield schoolModel_1.default.findById(req.params.id);
+        const classes = yield classModel_1.default.findOne({ classToken });
+        const student = yield studentModel_1.default.findById(req.params.studentID);
+        if ((student === null || student === void 0 ? void 0 : student.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
+            yield studentModel_1.default.findByIdAndUpdate(student._id, {
+                className: classes.className,
+            }, { new: true });
+            console.log(classes.className);
+            classes.students.push(new mongoose_1.default.Types.ObjectId(student._id));
+            classes.save();
+            return res.status(200).json({
+                message: `student has been assigned to this Class...!`,
+            });
+        }
+        else {
+            return res
+                .status(404)
+                .json({ message: `Please check if the Name is rightly spelt` });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.assigClassStudent = assigClassStudent;
 const assigClassTeacherToClass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { teacherName } = req.body;

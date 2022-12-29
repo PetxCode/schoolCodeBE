@@ -49,10 +49,95 @@ export const createSubject = async (req: Request, res: Response) => {
   }
 };
 
+export const createSubjectTeacherToSingle = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { subjectName, subjectToken, subjectTeacher, classToken } = req.body;
+
+    const getSchool = await schoolModel.findById(req.params.id);
+
+    const getTeacher = await teacherModel.findOne({
+      name: subjectTeacher,
+    });
+
+    const getSubject = await subjectModel.findOne({ subjectToken });
+
+    if (getSchool && getSubject) {
+      if (getTeacher?.schoolName === getSchool?.schoolName) {
+        console.log(getTeacher?.schoolName === getSchool?.schoolName);
+        const code = crypto.randomBytes(2).toString("hex");
+
+        const subject = await subjectModel.findByIdAndUpdate(
+          getSubject!._id,
+          {
+            subjectTeacher: getTeacher!.name,
+          },
+          { new: true }
+        );
+        console.log(getSubject);
+        // getClass!.subject!.push(new mongoose.Types.ObjectId(subject._id));
+        // getClass?.save();
+
+        getTeacher!.subjectTaken!.push(subject!.subjectName!);
+        getTeacher?.save();
+
+        return res.status(201).json({
+          message: "subject assing to teacher",
+          data: subject,
+        });
+      } else {
+        return res.status(200).json({ message: "something isn't correct" });
+      }
+    } else {
+      return res.status(404).json({ message: "School can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const createSingleSubject = async (req: Request, res: Response) => {
+  try {
+    const { subjectName, subjectTeacher, classToken } = req.body;
+
+    const getSchool = await schoolModel.findById(req.params.id);
+
+    const getClass = await classModel.findOne({ classToken });
+
+    if (getSchool && getClass) {
+      if (getClass?.schoolName === getSchool?.schoolName) {
+        const code = crypto.randomBytes(2).toString("hex");
+
+        const subject = await subjectModel.create({
+          className: getClass.className,
+          subjectName,
+          subjectToken: code,
+        });
+
+        getClass!.subject!.push(new mongoose.Types.ObjectId(subject._id));
+        getClass?.save();
+
+        return res.status(201).json({
+          message: "subject created",
+          data: subject,
+        });
+      } else {
+        return res.status(200).json({ message: "something isn't correct" });
+      }
+    } else {
+      return res.status(404).json({ message: "School can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const reAssignSubjectTeacher = async (req: Request, res: Response) => {
   try {
     const { subjectName, subjectTeacher } = req.body;
-    console.log(subjectName);
+
     // const classes = await classModel.findById(req.params.subjectID);
 
     const school = await schoolModel.findById(req.params.id);
@@ -60,6 +145,7 @@ export const reAssignSubjectTeacher = async (req: Request, res: Response) => {
     const teacher = await teacherModel.findOne({ name: subjectTeacher });
 
     if (teacher?.schoolName === school?.schoolName) {
+      console.log(teacher?.schoolName === school?.schoolName);
       await subjectModel.findByIdAndUpdate(
         req.params.subjectID,
         {
