@@ -51,6 +51,9 @@ export const createStudent = async (req: Request, res: Response) => {
       getSchool!.students!.push(new mongoose.Types.ObjectId(student._id));
       getSchool?.save();
 
+      classes!.students!.push(new mongoose.Types.ObjectId(student._id));
+      classes?.save();
+
       return res.status(201).json({
         message: "student created",
         data: student,

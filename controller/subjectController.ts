@@ -12,14 +12,10 @@ export const createSubject = async (req: Request, res: Response) => {
 
     const getSchool = await schoolModel.findById(req.params.id);
 
-    console.log(subjectTeacher);
-
     const getTeacher = await teacherModel.findOne({
       name: subjectTeacher,
     });
     const getClass = await classModel.findOne({ classToken });
-
-    // const teacherName = await teacherModel.findOne({ subjectTeacher });
 
     if (getSchool && getClass) {
       if (getTeacher?.schoolName === getSchool?.schoolName) {
@@ -97,7 +93,7 @@ export const reAssignSubjectTeacher = async (req: Request, res: Response) => {
 
 export const assignSubjectToTeacher = async (req: Request, res: Response) => {
   try {
-    const { subjectName, subjectTeacher } = req.body;
+    const { subjectName, classToken } = req.body;
     console.log(subjectName);
     // const classes = await classModel.findById(req.params.subjectID);
 
@@ -105,14 +101,26 @@ export const assignSubjectToTeacher = async (req: Request, res: Response) => {
     const teacher = await teacherModel.findById(req.params.teacherID);
     const findSubject = await subjectModel.findOne({ subjectName });
 
-    if (teacher?.schoolName === school?.schoolName) {
-      const subject = await subjectModel.findByIdAndUpdate(
-        findSubject?._id,
-        {
-          subjectTeacher: teacher?.name,
-        },
-        { new: true }
-      );
+    const code = crypto.randomBytes(2).toString("hex");
+
+    const getClass = await classModel.findOne({ classToken });
+
+    if (teacher?.schoolName === school?.schoolName && getClass) {
+      // const subject = await subjectModel.findByIdAndUpdate(
+      //   findSubject?._id,
+      //   {
+      //     subjectTeacher: teacher?.name,
+      //   },
+      //   { new: true }
+      // );
+
+      const subject = await subjectModel.create({
+        className: getClass.className,
+        subjectName,
+        subjectToken: code,
+        subjectTeacher: teacher!.name,
+      });
+
       await teacherModel.findByIdAndUpdate(
         teacher!._id,
         {
@@ -120,6 +128,9 @@ export const assignSubjectToTeacher = async (req: Request, res: Response) => {
         },
         { new: true }
       );
+
+      getClass!.subject!.push(new mongoose.Types.ObjectId(subject._id));
+      getClass?.save();
 
       teacher!.subjectTaken!.push(subjectName);
       teacher?.save();

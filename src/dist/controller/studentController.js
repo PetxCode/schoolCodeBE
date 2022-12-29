@@ -59,6 +59,8 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             getSchool.students.push(new mongoose_1.default.Types.ObjectId(student._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
+            classes.students.push(new mongoose_1.default.Types.ObjectId(student._id));
+            classes === null || classes === void 0 ? void 0 : classes.save();
             return res.status(201).json({
                 message: "student created",
                 data: student,

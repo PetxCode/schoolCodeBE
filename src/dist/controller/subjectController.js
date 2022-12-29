@@ -23,12 +23,10 @@ const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const { subjectName, subjectTeacher, classToken } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
-        console.log(subjectTeacher);
         const getTeacher = yield teacherModel_1.default.findOne({
             name: subjectTeacher,
         });
         const getClass = yield classModel_1.default.findOne({ classToken });
-        // const teacherName = await teacherModel.findOne({ subjectTeacher });
         if (getSchool && getClass) {
             if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.schoolName) === (getSchool === null || getSchool === void 0 ? void 0 : getSchool.schoolName)) {
                 const code = crypto_1.default.randomBytes(2).toString("hex");
@@ -94,19 +92,33 @@ const reAssignSubjectTeacher = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.reAssignSubjectTeacher = reAssignSubjectTeacher;
 const assignSubjectToTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { subjectName, subjectTeacher } = req.body;
+        const { subjectName, classToken } = req.body;
         console.log(subjectName);
         // const classes = await classModel.findById(req.params.subjectID);
         const school = yield schoolModel_1.default.findById(req.params.id);
         const teacher = yield teacherModel_1.default.findById(req.params.teacherID);
         const findSubject = yield subjectModel_1.default.findOne({ subjectName });
-        if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
-            const subject = yield subjectModel_1.default.findByIdAndUpdate(findSubject === null || findSubject === void 0 ? void 0 : findSubject._id, {
-                subjectTeacher: teacher === null || teacher === void 0 ? void 0 : teacher.name,
-            }, { new: true });
+        const code = crypto_1.default.randomBytes(2).toString("hex");
+        const getClass = yield classModel_1.default.findOne({ classToken });
+        if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName) && getClass) {
+            // const subject = await subjectModel.findByIdAndUpdate(
+            //   findSubject?._id,
+            //   {
+            //     subjectTeacher: teacher?.name,
+            //   },
+            //   { new: true }
+            // );
+            const subject = yield subjectModel_1.default.create({
+                className: getClass.className,
+                subjectName,
+                subjectToken: code,
+                subjectTeacher: teacher.name,
+            });
             yield teacherModel_1.default.findByIdAndUpdate(teacher._id, {
                 subjectTaken: subject.subjectName,
             }, { new: true });
+            getClass.subject.push(new mongoose_1.default.Types.ObjectId(subject._id));
+            getClass === null || getClass === void 0 ? void 0 : getClass.save();
             teacher.subjectTaken.push(subjectName);
             teacher === null || teacher === void 0 ? void 0 : teacher.save();
             return res.status(200).json({
