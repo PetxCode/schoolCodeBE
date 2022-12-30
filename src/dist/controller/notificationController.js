@@ -76,7 +76,7 @@ const viewSchoolNotification = (req, res) => __awaiter(void 0, void 0, void 0, f
                     .populate({
                     path: "notification",
                     options: {
-                        createdAt: -1,
+                        sort: { createdAt: -1 },
                     },
                 });
                 return res.status(200).json({
@@ -117,7 +117,7 @@ const viewSchoolNotificationOne = (req, res) => __awaiter(void 0, void 0, void 0
                     .populate({
                     path: "notification",
                     options: {
-                        createdAt: -1,
+                        sort: { createdAt: -1 },
                         limit: 1,
                     },
                 });

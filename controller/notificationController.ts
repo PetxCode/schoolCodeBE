@@ -75,7 +75,7 @@ export const viewSchoolNotification = async (req: Request, res: Response) => {
           .populate({
             path: "notification",
             options: {
-              createdAt: -1,
+              sort: { createdAt: -1 },
             },
           });
 
@@ -119,7 +119,7 @@ export const viewSchoolNotificationOne = async (
           .populate({
             path: "notification",
             options: {
-              createdAt: -1,
+              sort: { createdAt: -1 },
               limit: 1,
             },
           });
