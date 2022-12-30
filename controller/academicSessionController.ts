@@ -94,15 +94,16 @@ export const AcademicSessionForTeacher = async (
     const view = await teacherModel.findById(req.params.id);
 
     const session = await schoolModel.findOne({ schoolName: view?.schoolName });
-
+    console.log(session);
+    
     if (view?.schoolName === session!.schoolName) {
       const school = await schoolModel.findById(session?._id).populate({
         path: "academicSession",
         options: { sort: { createdAt: -1 }, limit: 1 },
       });
       return res.status(200).json({
-        message: `Viewing academic session detail...!`,
-        data: school!.academicSession![0],
+        message: `Viewing academic session detail now...!`,
+        data: school,
       });
     } else {
       return res.status(404).json({ message: "Check your session code again" });

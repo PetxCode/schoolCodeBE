@@ -13,13 +13,13 @@ const router = Router();
 
 router.route("/:id/create-announcement").post(createNotification);
 
-router.route("/:id/viewing-announcement-school").get(viewSchoolNotification);
+router.route("/:id/viewing-announcement-school").post(viewSchoolNotification);
 router
   .route("/:id/viewing-announcement-school-one")
-  .get(viewSchoolNotificationOne);
+  .post(viewSchoolNotificationOne);
 
-router.route("/:id/viewing-announcement-teacher").get(viewTeacherNotification);
+router.route("/:id/viewing-announcement-teacher").post(viewTeacherNotification);
 
-router.route("/:id/viewing-announcement-student").get(viewStudentNotification);
+router.route("/:id/viewing-announcement-student").post(viewStudentNotification);
 
 export default router;

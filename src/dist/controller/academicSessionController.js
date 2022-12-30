@@ -76,14 +76,15 @@ const AcademicSessionForTeacher = (req, res) => __awaiter(void 0, void 0, void 0
     try {
         const view = yield teacherModel_1.default.findById(req.params.id);
         const session = yield schoolModel_1.default.findOne({ schoolName: view === null || view === void 0 ? void 0 : view.schoolName });
+        console.log(session);
         if ((view === null || view === void 0 ? void 0 : view.schoolName) === session.schoolName) {
             const school = yield schoolModel_1.default.findById(session === null || session === void 0 ? void 0 : session._id).populate({
                 path: "academicSession",
                 options: { sort: { createdAt: -1 }, limit: 1 },
             });
             return res.status(200).json({
-                message: `Viewing academic session detail...!`,
-                data: school.academicSession[0],
+                message: `Viewing academic session detail now...!`,
+                data: school,
             });
         }
         else {

@@ -10,3 +10,4 @@ declare module "*express";
 declare module "*session";
 declare module "*cloudinary";
 declare module "*dotenv";
+declare module "*mongoose";
