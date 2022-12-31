@@ -8,6 +8,7 @@ interface iSubject {
 
   classes?: {};
   students?: {}[];
+  teacher?: {};
   test?: {}[];
   lecture?: {}[];
 }
@@ -64,6 +65,11 @@ const subjectModel = new mongoose.Schema(
     classes: {
       type: mongoose.Types.ObjectId,
       ref: "classes",
+    },
+
+    teacher: {
+      type: mongoose.Types.ObjectId,
+      ref: "teachers",
     },
   },
   { timestamps: true }

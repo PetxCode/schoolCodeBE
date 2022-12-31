@@ -5,6 +5,7 @@ import {
   assignSubjectToTeacher,
   createSingleSubject,
   createSubjectTeacherToSingle,
+  viewTeacherSubjects,
 } from "../controller/subjectController";
 
 import { Router } from "express";
@@ -21,8 +22,11 @@ router
 router
   .route("/:id/:subjectID/reassign-subject-teacher")
   .patch(reAssignSubjectTeacher);
+
 router
   .route("/:id/:teacherID/assign-subject-teacher")
   .patch(assignSubjectToTeacher);
+
+router.route("/:id/viewing-subject-teacher").get(viewTeacherSubjects);
 
 export default router;

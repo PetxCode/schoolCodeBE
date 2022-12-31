@@ -15,4 +15,5 @@ router
 router
     .route("/:id/:teacherID/assign-subject-teacher")
     .patch(subjectController_1.assignSubjectToTeacher);
+router.route("/:id/viewing-subject-teacher").get(subjectController_1.viewTeacherSubjects);
 exports.default = router;

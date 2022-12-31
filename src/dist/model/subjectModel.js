@@ -46,5 +46,9 @@ const subjectModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "classes",
     },
+    teacher: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "teachers",
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("subjects", subjectModel);

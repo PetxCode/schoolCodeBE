@@ -18,6 +18,7 @@ interface iTeacher {
   notification?: {}[];
   event?: {}[];
   subjectTaken?: string[];
+  mySubjects?: {}[];
 }
 
 interface iTeacherData extends iTeacher, mongoose.Document {
@@ -72,6 +73,12 @@ const teacherModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "tests",
+      },
+    ],
+    mySubjects: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "subjects",
       },
     ],
     lecture: [

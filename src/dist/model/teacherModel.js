@@ -52,6 +52,12 @@ const teacherModel = new mongoose_1.default.Schema({
             ref: "tests",
         },
     ],
+    mySubjects: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "subjects",
+        },
+    ],
     lecture: [
         {
             type: mongoose_1.default.Types.ObjectId,

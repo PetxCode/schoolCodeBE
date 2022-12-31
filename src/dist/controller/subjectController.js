@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewClassSubjects = exports.assignSubjectToTeacher = exports.reAssignSubjectTeacher = exports.createSingleSubject = exports.createSubjectTeacherToSingle = exports.createSubject = void 0;
+exports.viewTeacherSubjects = exports.viewClassSubjects = exports.assignSubjectToTeacher = exports.reAssignSubjectTeacher = exports.createSingleSubject = exports.createSubjectTeacherToSingle = exports.createSubject = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -77,6 +77,7 @@ const createSubjectTeacherToSingle = (req, res) => __awaiter(void 0, void 0, voi
                 // getClass!.subject!.push(new mongoose.Types.ObjectId(subject._id));
                 // getClass?.save();
                 getTeacher.subjectTaken.push(subject.subjectName);
+                getTeacher.mySubjects.push(new mongoose_1.default.Types.ObjectId(subject._id));
                 getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
                 return res.status(201).json({
                     message: "subject assing to teacher",
@@ -192,6 +193,8 @@ const assignSubjectToTeacher = (req, res) => __awaiter(void 0, void 0, void 0, f
             getClass === null || getClass === void 0 ? void 0 : getClass.save();
             teacher.subjectTaken.push(subjectName);
             teacher === null || teacher === void 0 ? void 0 : teacher.save();
+            teacher.mySubjects.push(new mongoose_1.default.Types.ObjectId(subject._id));
+            teacher === null || teacher === void 0 ? void 0 : teacher.save();
             return res.status(200).json({
                 message: `Teacher has been assigned to this subject: ${subject === null || subject === void 0 ? void 0 : subject.subjectName}...!`,
             });
@@ -227,6 +230,27 @@ const viewClassSubjects = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewClassSubjects = viewClassSubjects;
+const viewTeacherSubjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // const school = await schoolModel.findById(req.params.id);
+        // const getClass = await classModel.findById(req.params.id);
+        const myClass = yield teacherModel_1.default.findById(req.params.id).populate({
+            path: "mySubjects",
+            options: {
+                sort: { createdAt: -1 },
+            },
+        });
+        console.log(myClass);
+        return res.status(200).json({
+            message: `Viewing teacher subjects...!`,
+            data: myClass.mySubjects,
+        });
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewTeacherSubjects = viewTeacherSubjects;
 // export const viewClassStudents = async (req: Request, res: Response) => {
 //   try {
 //     const classStudents = await classModel.findById(req.params.id);
