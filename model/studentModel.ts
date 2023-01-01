@@ -8,6 +8,7 @@ interface iStudent {
   status?: string;
   image?: string;
   token?: string;
+  classID?: string;
   teacherName?: string;
   verified?: boolean;
   className: string;
@@ -25,6 +26,10 @@ interface iStudentData extends iStudent, mongoose.Document {
 
 const studentModel = new mongoose.Schema(
   {
+    classID: {
+      type: String,
+      require: true,
+    },
     className: {
       type: String,
       require: true,

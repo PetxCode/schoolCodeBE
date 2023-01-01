@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudent = exports.loginStudent = exports.assigningStudentToClass = exports.createStudent = void 0;
+exports.viewStudentDetail = exports.viewStudent = exports.loginStudent = exports.assigningStudentToClass = exports.createStudent = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
@@ -56,6 +56,7 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 verified: true,
                 status: "Student",
                 className,
+                classID: classes === null || classes === void 0 ? void 0 : classes._id,
             });
             getSchool.students.push(new mongoose_1.default.Types.ObjectId(student._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
@@ -159,3 +160,26 @@ const viewStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.viewStudent = viewStudent;
+const viewStudentDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const student = yield studentModel_1.default.findById(req.params.id);
+        const school = yield schoolModel_1.default.findOne({
+            schoolName: student.schoolName,
+        });
+        if (school && student) {
+            return res.status(200).json({
+                message: "Awesome",
+                data: student,
+            });
+        }
+        else {
+            return res.status(404).json({ message: "something went wrong" });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.viewStudentDetail = viewStudentDetail;

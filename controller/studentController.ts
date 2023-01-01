@@ -47,6 +47,7 @@ export const createStudent = async (req: Request, res: Response) => {
         verified: true,
         status: "Student",
         className,
+        classID: classes?._id,
       });
 
       getSchool!.students!.push(new mongoose.Types.ObjectId(student._id));
@@ -148,6 +149,30 @@ export const viewStudent = async (
   try {
     const school = await schoolModel.findById(req.params.id);
     const student = await studentModel.findById(req.params.studentID);
+
+    if (school && student) {
+      return res.status(200).json({
+        message: "Awesome",
+        data: student,
+      });
+    } else {
+      return res.status(404).json({ message: "something went wrong" });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};
+export const viewStudentDetail = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const student = await studentModel.findById(req.params.id);
+    const school = await schoolModel.findOne({
+      schoolName: student!.schoolName,
+    });
 
     if (school && student) {
       return res.status(200).json({

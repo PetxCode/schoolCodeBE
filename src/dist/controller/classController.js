@@ -108,8 +108,8 @@ const assigClassStudent = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if ((student === null || student === void 0 ? void 0 : student.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
             yield studentModel_1.default.findByIdAndUpdate(student._id, {
                 className: classes.className,
+                classID: classes === null || classes === void 0 ? void 0 : classes._id,
             }, { new: true });
-            console.log(classes.className);
             classes.students.push(new mongoose_1.default.Types.ObjectId(student._id));
             classes.save();
             return res.status(200).json({

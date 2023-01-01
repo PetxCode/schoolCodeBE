@@ -3,6 +3,7 @@ import {
   createStudent,
   loginStudent,
   viewStudent,
+  viewStudentDetail,
 } from "../controller/studentController";
 import upload from "../utils/multer";
 
@@ -15,5 +16,6 @@ router.route("/login").post(loginStudent);
 
 router.route("/:id/:classID/assign-student").post(assigningStudentToClass);
 router.route("/:id/:studentID/view-student").get(viewStudent);
+router.route("/:id/student-detail").get(viewStudentDetail);
 
 export default router;

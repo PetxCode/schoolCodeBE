@@ -116,11 +116,10 @@ export const assigClassStudent = async (req: Request, res: Response) => {
         student!._id,
         {
           className: classes!.className,
+          classID: classes?._id,
         },
         { new: true }
       );
-
-      console.log(classes!.className);
 
       classes!.students!.push(new mongoose.Types.ObjectId(student!._id));
       classes!.save();
