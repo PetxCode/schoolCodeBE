@@ -13,4 +13,7 @@ router
 router
     .route("/:id/:sessionID/view-student-school-fee")
     .get(schoolFeeController_1.viewAcademicSessionPaySchoolFee);
+router
+    .route("/:id/:studentID/view-student-school-fee-detail")
+    .get(schoolFeeController_1.viewStudentSchoolFeeDetail);
 exports.default = router;

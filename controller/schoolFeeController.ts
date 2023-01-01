@@ -205,21 +205,36 @@ export const viewAcademicSessionPaySchoolFee = async (
   }
 };
 
-// export const viewPresentAcademicSession = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   try {
-//     const school = await schoolModel.findById(req.params.id).populate({
-//       path: "academicSession",
-//       options: { sort: { createdAt: -1 }, limit: 1 },
-//     });
+export const viewStudentSchoolFeeDetail = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const school = await schoolModel.findById(req.params.id);
+    const student = await studentModel.findById(req.params.studentID);
 
-//     return res.status(200).json({
-//       message: `Viewing present academic session detail...!`,
-//       data: school,
-//     });
-//   } catch (error) {
-//     return res.status(404).json({ message: `Error: ${error}` });
-//   }
-// };
+    if (school?.schoolName === student?.schoolName) {
+      const studentDetail = await studentModel
+        .findById(req.params.studentID)
+        .populate({
+          path: "schoolFees",
+          options: {
+            sort: {
+              createdAt: -1,
+            },
+          },
+        });
+
+      return res.status(200).json({
+        message: `Viewing academic school fee detail...!`,
+        data: studentDetail,
+      });
+    } else {
+      return res.status(200).json({
+        message: `something went wrong...!`,
+      });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};

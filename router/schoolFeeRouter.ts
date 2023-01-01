@@ -3,6 +3,7 @@ import {
   createPaySchoolFeeByParant,
   viewAcademicSessionPaySchoolFee,
   updatePaySchoolFeeByAdmin,
+  viewStudentSchoolFeeDetail,
 } from "../controller/schoolFeeController";
 import upload from "../utils/multer";
 
@@ -23,5 +24,9 @@ router
 router
   .route("/:id/:sessionID/view-student-school-fee")
   .get(viewAcademicSessionPaySchoolFee);
+
+router
+  .route("/:id/:studentID/view-student-school-fee-detail")
+  .get(viewStudentSchoolFeeDetail);
 
 export default router;

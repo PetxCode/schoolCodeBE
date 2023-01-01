@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewAcademicSessionPaySchoolFee = exports.createPaySchoolFeeByParant = exports.updatePaySchoolFeeByAdmin = exports.createPaySchoolFeeByAdmin = void 0;
+exports.viewStudentSchoolFeeDetail = exports.viewAcademicSessionPaySchoolFee = exports.createPaySchoolFeeByParant = exports.updatePaySchoolFeeByAdmin = exports.createPaySchoolFeeByAdmin = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const classModel_1 = __importDefault(require("../model/classModel"));
@@ -174,20 +174,34 @@ const viewAcademicSessionPaySchoolFee = (req, res) => __awaiter(void 0, void 0, 
     }
 });
 exports.viewAcademicSessionPaySchoolFee = viewAcademicSessionPaySchoolFee;
-// export const viewPresentAcademicSession = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   try {
-//     const school = await schoolModel.findById(req.params.id).populate({
-//       path: "academicSession",
-//       options: { sort: { createdAt: -1 }, limit: 1 },
-//     });
-//     return res.status(200).json({
-//       message: `Viewing present academic session detail...!`,
-//       data: school,
-//     });
-//   } catch (error) {
-//     return res.status(404).json({ message: `Error: ${error}` });
-//   }
-// };
+const viewStudentSchoolFeeDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const school = yield schoolModel_1.default.findById(req.params.id);
+        const student = yield studentModel_1.default.findById(req.params.studentID);
+        if ((school === null || school === void 0 ? void 0 : school.schoolName) === (student === null || student === void 0 ? void 0 : student.schoolName)) {
+            const studentDetail = yield studentModel_1.default
+                .findById(req.params.studentID)
+                .populate({
+                path: "schoolFees",
+                options: {
+                    sort: {
+                        createdAt: -1,
+                    },
+                },
+            });
+            return res.status(200).json({
+                message: `Viewing academic school fee detail...!`,
+                data: studentDetail,
+            });
+        }
+        else {
+            return res.status(200).json({
+                message: `something went wrong...!`,
+            });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewStudentSchoolFeeDetail = viewStudentSchoolFeeDetail;
