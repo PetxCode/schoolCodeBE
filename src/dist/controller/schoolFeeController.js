@@ -178,17 +178,19 @@ const viewStudentSchoolFeeDetail = (req, res) => __awaiter(void 0, void 0, void 
     try {
         const school = yield schoolModel_1.default.findById(req.params.id);
         const student = yield studentModel_1.default.findById(req.params.studentID);
+        console.log(yield studentModel_1.default.findById(req.params.studentID));
         if ((school === null || school === void 0 ? void 0 : school.schoolName) === (student === null || student === void 0 ? void 0 : student.schoolName)) {
             const studentDetail = yield studentModel_1.default
                 .findById(req.params.studentID)
                 .populate({
-                path: "schoolFees",
+                path: "schoolFee",
                 options: {
                     sort: {
                         createdAt: -1,
                     },
                 },
             });
+            console.log(studentDetail);
             return res.status(200).json({
                 message: `Viewing academic school fee detail...!`,
                 data: studentDetail,

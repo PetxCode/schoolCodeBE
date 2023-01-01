@@ -213,17 +213,20 @@ export const viewStudentSchoolFeeDetail = async (
     const school = await schoolModel.findById(req.params.id);
     const student = await studentModel.findById(req.params.studentID);
 
+    console.log(await studentModel.findById(req.params.studentID));
+
     if (school?.schoolName === student?.schoolName) {
       const studentDetail = await studentModel
         .findById(req.params.studentID)
         .populate({
-          path: "schoolFees",
+          path: "schoolFee",
           options: {
             sort: {
               createdAt: -1,
             },
           },
         });
+      console.log(studentDetail);
 
       return res.status(200).json({
         message: `Viewing academic school fee detail...!`,
