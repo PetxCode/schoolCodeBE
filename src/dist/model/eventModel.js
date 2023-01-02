@@ -36,5 +36,9 @@ const eventModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "schools",
     },
+    academicSession: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "academicSessions",
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("events", eventModel);

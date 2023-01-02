@@ -69,8 +69,8 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));
                     getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
                     getTest.student.push(new mongoose_1.default.Types.ObjectId(performance._id));
-                    getTest === null || getTest === void 0 ? void 0 : getTest.save();
                     getTest.students.push(performance.studentName);
+                    getTest === null || getTest === void 0 ? void 0 : getTest.save();
                     return res.status(201).json({
                         message: "performance created",
                         data: performance,

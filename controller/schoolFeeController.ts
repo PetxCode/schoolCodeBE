@@ -213,8 +213,6 @@ export const viewStudentSchoolFeeDetail = async (
     const school = await schoolModel.findById(req.params.id);
     const student = await studentModel.findById(req.params.studentID);
 
-    console.log(await studentModel.findById(req.params.studentID));
-
     if (school?.schoolName === student?.schoolName) {
       const studentDetail = await studentModel
         .findById(req.params.studentID)

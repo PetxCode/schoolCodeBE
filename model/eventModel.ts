@@ -9,6 +9,7 @@ interface iEvent {
   fixedDate?: string;
   dateTime?: string;
   school?: {}[];
+  academicSession?: {};
   date?: string;
 }
 
@@ -48,6 +49,10 @@ const eventModel = new mongoose.Schema(
     school: {
       type: mongoose.Types.ObjectId,
       ref: "schools",
+    },
+    academicSession: {
+      type: mongoose.Types.ObjectId,
+      ref: "academicSessions",
     },
   },
   { timestamps: true }

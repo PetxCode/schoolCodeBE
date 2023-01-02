@@ -26,9 +26,9 @@ const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { title, desc, month, time, year, fixedDate, code } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
         const getSession = yield academicSessionModel_1.default.findOne({
-            sessionPaymentCode: code,
+            sessionCode: code,
         });
-        if (getSchool) {
+        if (getSchool.schoolName === getSession.schoolName) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
             const event = yield eventModel_1.default.create({
@@ -87,9 +87,10 @@ const viewSchoolEvent = (req, res) => __awaiter(void 0, void 0, void 0, function
             path: "event",
             options: { sort: { createdAt: -1 } },
         });
+        console.log(event.event);
         return res.status(200).json({
             message: `Viewing events...!`,
-            data: event,
+            data: event === null || event === void 0 ? void 0 : event.event,
         });
     }
     catch (error) {

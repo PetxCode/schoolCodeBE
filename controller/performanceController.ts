@@ -61,10 +61,9 @@ export const createPerformance = async (req: Request, res: Response) => {
           getStudent?.save();
 
           getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
-
-          getTest?.save();
           getTest!.students!.push(performance!.studentName);
 
+          getTest?.save();
           return res.status(201).json({
             message: "performance created",
             data: performance,

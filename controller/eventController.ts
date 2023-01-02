@@ -19,10 +19,10 @@ export const createEvent = async (req: Request, res: Response) => {
     const getSchool = await schoolModel.findById(req.params.id);
 
     const getSession = await academicSessionModel.findOne({
-      sessionPaymentCode: code,
+      sessionCode: code,
     });
 
-    if (getSchool) {
+    if (getSchool!.schoolName === getSession!.schoolName) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
 
@@ -89,10 +89,10 @@ export const viewSchoolEvent = async (req: Request, res: Response) => {
       path: "event",
       options: { sort: { createdAt: -1 } },
     });
-
+    console.log(event!.event);
     return res.status(200).json({
       message: `Viewing events...!`,
-      data: event,
+      data: event?.event,
     });
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });
