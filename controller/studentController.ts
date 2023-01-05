@@ -152,7 +152,7 @@ export const viewStudent = async (
 
     if (school && student) {
       return res.status(200).json({
-        message: "Awesome",
+        message: "Awesome Detail",
         data: student,
       });
     } else {
