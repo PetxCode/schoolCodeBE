@@ -164,6 +164,7 @@ export const viewStudent = async (
     });
   }
 };
+
 export const viewStudentDetail = async (
   req: Request,
   res: Response
@@ -178,6 +179,33 @@ export const viewStudentDetail = async (
       return res.status(200).json({
         message: "Awesome",
         data: student,
+      });
+    } else {
+      return res.status(404).json({ message: "something went wrong" });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};
+
+export const viewStudentDetailSchool = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const student = await studentModel.findById(req.params.id);
+    const school = await schoolModel.findOne({
+      schoolName: student!.schoolName,
+    });
+
+    console.log(school);
+
+    if (school && student) {
+      return res.status(200).json({
+        message: "Awesome for school",
+        data: school,
       });
     } else {
       return res.status(404).json({ message: "something went wrong" });
