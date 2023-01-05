@@ -18,7 +18,7 @@ router
 router.route("/:id/student-school-fee-parent").post(createPaySchoolFeeByParant);
 
 router
-  .route("/:id/:studentID/:paymentID/update-student-school-fee-parent")
+  .route("/:id/:studentID/:paymentID/update-student-school-fee")
   .patch(updatePaySchoolFeeByAdmin);
 
 router
