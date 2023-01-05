@@ -70,7 +70,7 @@ export const updatePaySchoolFeeByAdmin = async (
   res: Response
 ) => {
   try {
-    const { amountPaid, sessionPaymentCode } = req.body;
+    const { amountPaid, sessionCode } = req.body;
 
     const getSchool = await schoolModel.findById(req.params.id);
 
@@ -78,7 +78,7 @@ export const updatePaySchoolFeeByAdmin = async (
     const getPayment = await schoolFeeModel.findById(req.params.paymentID);
 
     const getSession = await academicSessionModel.findOne({
-      sessionPaymentCode,
+      sessionCode,
     });
 
     const classFee = await classModel.findOne({
