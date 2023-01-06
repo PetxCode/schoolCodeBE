@@ -8,4 +8,5 @@ router.route("/login").post(studentController_1.loginStudent);
 router.route("/:id/:classID/assign-student").post(studentController_1.assigningStudentToClass);
 router.route("/:id/:studentID/view-student").get(studentController_1.viewStudent);
 router.route("/:id/student-detail").get(studentController_1.viewStudentDetail);
+router.route("/:id/student-detail-school").get(studentController_1.viewStudentDetailSchool);
 exports.default = router;

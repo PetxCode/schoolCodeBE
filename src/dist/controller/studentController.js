@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudentDetail = exports.viewStudent = exports.loginStudent = exports.assigningStudentToClass = exports.createStudent = void 0;
+exports.viewStudentDetailSchool = exports.viewStudentDetail = exports.viewStudent = exports.loginStudent = exports.assigningStudentToClass = exports.createStudent = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
@@ -145,7 +145,7 @@ const viewStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const student = yield studentModel_1.default.findById(req.params.studentID);
         if (school && student) {
             return res.status(200).json({
-                message: "Awesome",
+                message: "Awesome Detail",
                 data: student,
             });
         }
@@ -183,3 +183,27 @@ const viewStudentDetail = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewStudentDetail = viewStudentDetail;
+const viewStudentDetailSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const student = yield studentModel_1.default.findById(req.params.id);
+        const school = yield schoolModel_1.default.findOne({
+            schoolName: student.schoolName,
+        });
+        // console.log(school);
+        if (school && student) {
+            return res.status(200).json({
+                message: "Awesome for school",
+                data: school,
+            });
+        }
+        else {
+            return res.status(404).json({ message: "something went wrong" });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.viewStudentDetailSchool = viewStudentDetailSchool;

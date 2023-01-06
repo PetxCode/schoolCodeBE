@@ -8,7 +8,7 @@ router
     .post(schoolFeeController_1.createPaySchoolFeeByAdmin);
 router.route("/:id/student-school-fee-parent").post(schoolFeeController_1.createPaySchoolFeeByParant);
 router
-    .route("/:id/:studentID/:paymentID/update-student-school-fee-parent")
+    .route("/:id/:studentID/:paymentID/update-student-school-fee")
     .patch(schoolFeeController_1.updatePaySchoolFeeByAdmin);
 router
     .route("/:id/:sessionID/view-student-school-fee")

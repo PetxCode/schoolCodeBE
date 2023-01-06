@@ -21,6 +21,10 @@ const testModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    instruction: {
+        type: String,
+        require: true,
+    },
     testDetails: {
         type: Array,
     },

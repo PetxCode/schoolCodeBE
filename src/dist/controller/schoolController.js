@@ -129,7 +129,7 @@ exports.createSchool = createSchool;
 const loginSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        console.log(req.session);
+        // console.log(req.session);
         const school = yield schoolModel_1.default.findOne({ email });
         if (school) {
             if (school.verified) {
@@ -200,7 +200,7 @@ exports.verifiedSchool = verifiedSchool;
 const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
-        console.log("Got it");
+        // console.log("Got it");
         const school = yield schoolModel_1.default.findOne({ email });
         if (school) {
             if ((school === null || school === void 0 ? void 0 : school.verified) && (school === null || school === void 0 ? void 0 : school.token) === "") {
