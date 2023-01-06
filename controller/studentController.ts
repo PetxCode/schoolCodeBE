@@ -200,7 +200,7 @@ export const viewStudentDetailSchool = async (
       schoolName: student!.schoolName,
     });
 
-    console.log(school);
+    // console.log(school);
 
     if (school && student) {
       return res.status(200).json({

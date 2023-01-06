@@ -140,7 +140,7 @@ export const loginSchool = async (
 ): Promise<Response> => {
   try {
     const { email, password } = req.body;
-    console.log(req.session);
+    // console.log(req.session);
     const school = await schoolModel.findOne({ email });
 
     if (school) {
@@ -222,7 +222,7 @@ export const resetPassword = async (
 ): Promise<Response> => {
   try {
     const { email } = req.body;
-    console.log("Got it");
+    // console.log("Got it");
     const school = await schoolModel.findOne({ email });
     if (school) {
       if (school?.verified && school?.token === "") {

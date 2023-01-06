@@ -81,6 +81,19 @@ export const viewTopTest = async (req: Request, res: Response) => {
   }
 };
 
+export const viewSingleTest = async (req: Request, res: Response) => {
+  try {
+    const test = await testModel.findById(req.params.id);
+
+    return res.status(200).json({
+      message: "viewing test",
+      data: test,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewTeacherTest = async (req: Request, res: Response) => {
   try {
     const test = await teacherModel.findById(req.params.id).populate({
