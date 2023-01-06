@@ -15,6 +15,7 @@ interface iSchool {
   academicSession?: {}[];
   notification?: {}[];
   event?: {}[];
+  report?: {}[];
   sessions?: any[];
 }
 
@@ -63,6 +64,12 @@ const schoolModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "teachers",
+      },
+    ],
+    report: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "reports",
       },
     ],
     notification: [

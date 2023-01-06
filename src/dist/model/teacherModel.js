@@ -64,6 +64,12 @@ const teacherModel = new mongoose_1.default.Schema({
             ref: "tests",
         },
     ],
+    report: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "reports",
+        },
+    ],
     attendance: [
         {
             type: mongoose_1.default.Types.ObjectId,

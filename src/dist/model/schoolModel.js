@@ -44,6 +44,12 @@ const schoolModel = new mongoose_1.default.Schema({
             ref: "teachers",
         },
     ],
+    report: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "reports",
+        },
+    ],
     notification: [
         {
             type: mongoose_1.default.Types.ObjectId,

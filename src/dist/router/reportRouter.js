@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const reportController_1 = require("../controller/reportController");
+const express_1 = require("express");
+const router = (0, express_1.Router)();
+router.route("/:id/create-teacher-report").post(reportController_1.createReportForTeacher);
+router.route("/:id/create-student-report").post(reportController_1.createReportForStudent);
+router.route("/:id/update-report").patch(reportController_1.updateReportForStudent);
+router.route("/:id/view-school-report").get(reportController_1.viewSchoolReport);
+router.route("/:id/view-teacher-report").get(reportController_1.viewTeacherReport);
+router.route("/:id/view-student-report").get(reportController_1.viewStudentReport);
+exports.default = router;

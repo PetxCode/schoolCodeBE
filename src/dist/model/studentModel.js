@@ -74,6 +74,12 @@ const studentModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "classes",
     },
+    report: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "reports",
+        },
+    ],
     school: {
         type: mongoose_1.default.Types.ObjectId,
         ref: "schools",

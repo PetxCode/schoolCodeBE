@@ -17,6 +17,7 @@ import event from "./router/eventRouter";
 import subject from "./router/subjectRouter";
 import lecture from "./router/lectureRouter";
 import lectureRating from "./router/ratingLectureRouter";
+import report from "./router/reportRouter";
 
 config();
 const proc: any = config().parsed;
@@ -41,6 +42,7 @@ app.use("/api/announcement", announcement);
 app.use("/api/event", event);
 app.use("/api/subject", subject);
 app.use("/api/lecture", lecture);
+app.use("/api/report", report);
 app.use("/api/lecture-rating", lectureRating);
 
 app.use("/", (req: Request, res: Response): Response => {

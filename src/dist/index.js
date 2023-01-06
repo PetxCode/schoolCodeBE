@@ -21,6 +21,7 @@ const eventRouter_1 = __importDefault(require("./router/eventRouter"));
 const subjectRouter_1 = __importDefault(require("./router/subjectRouter"));
 const lectureRouter_1 = __importDefault(require("./router/lectureRouter"));
 const ratingLectureRouter_1 = __importDefault(require("./router/ratingLectureRouter"));
+const reportRouter_1 = __importDefault(require("./router/reportRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -41,6 +42,7 @@ app.use("/api/announcement", notificationRouter_1.default);
 app.use("/api/event", eventRouter_1.default);
 app.use("/api/subject", subjectRouter_1.default);
 app.use("/api/lecture", lectureRouter_1.default);
+app.use("/api/report", reportRouter_1.default);
 app.use("/api/lecture-rating", ratingLectureRouter_1.default);
 app.use("/", (req, res) => {
     return res.status(200).json({

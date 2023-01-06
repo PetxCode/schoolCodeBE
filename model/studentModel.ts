@@ -17,6 +17,7 @@ interface iStudent {
   attendance?: {}[];
   schoolFee?: {}[];
   notification?: {}[];
+  report?: {}[];
   event?: {}[];
 }
 
@@ -101,6 +102,13 @@ const studentModel = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "classes",
     },
+
+    report: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "reports",
+      },
+    ],
 
     school: {
       type: mongoose.Types.ObjectId,
