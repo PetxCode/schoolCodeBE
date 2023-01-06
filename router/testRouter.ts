@@ -14,6 +14,8 @@ const router = Router();
 router.route("/:id/:subjectID/creating-test").post(createTest);
 router.route("/:id/view-class-test").get(viewTest);
 router.route("/:id/view-recent-test").get(viewTopTest);
+
+// get single test data
 router.route("/:id/view-single-test").get(viewSingleTest);
 
 router.route("/:id/view-all-teacher-test").get(viewTeacherAllTest);
