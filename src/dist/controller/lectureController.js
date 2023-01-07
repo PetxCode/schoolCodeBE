@@ -30,7 +30,7 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             className: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes,
         });
         const dater = Date.now();
-        if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getTeacher) {
+        if (getTeacher) {
             const lectureData = yield lectureModel_1.default.create({
                 lectureNote,
                 lectureTime,
@@ -39,9 +39,9 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 lectureTopic,
                 time: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
                 teacherName: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.name,
-                className: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes,
+                className: getSubject === null || getSubject === void 0 ? void 0 : getSubject.className,
                 subjectName: getSubject === null || getSubject === void 0 ? void 0 : getSubject.subjectName,
-                classes: getClass,
+                // classes: getClass,
                 lecturePerformance: 0,
             });
             getSubject.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData._id));

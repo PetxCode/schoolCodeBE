@@ -20,7 +20,7 @@ export const createLecture = async (req: Request, res: Response) => {
     });
 
     const dater = Date.now();
-    if (getTeacher?.classes === getClass?.className || getTeacher) {
+    if (getTeacher) {
       const lectureData = await lectureModel.create({
         lectureNote,
         lectureTime,
@@ -31,9 +31,9 @@ export const createLecture = async (req: Request, res: Response) => {
           "MMMM Do YYYY, h:mm:ss"
         )}`,
         teacherName: getTeacher?.name,
-        className: getTeacher?.classes,
+        className: getSubject?.className,
         subjectName: getSubject?.subjectName,
-        classes: getClass,
+        // classes: getClass,
         lecturePerformance: 0,
       });
 
