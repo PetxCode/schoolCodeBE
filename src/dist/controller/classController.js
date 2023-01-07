@@ -88,11 +88,13 @@ const assigClassTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functi
             //   },
             //   { new: true }
             // );
-            teacher.myClass.push(new mongoose_1.default.Types.ObjectId(justClass === null || justClass === void 0 ? void 0 : justClass._id));
+            teacher.myClass.push(new mongoose_1.default.Types.ObjectId(classes === null || classes === void 0 ? void 0 : classes._id));
             teacher.classes.push(justClass === null || justClass === void 0 ? void 0 : justClass.className);
             teacher === null || teacher === void 0 ? void 0 : teacher.save();
+            console.log(teacher);
             return res.status(200).json({
-                message: `Teacher has been assigned to this Class...!`,
+                message: `Teacher has been assigned to this Class yet...!`,
+                data: teacher,
             });
         }
         else {
@@ -141,12 +143,13 @@ const assigClassTeacherToClass = (req, res) => __awaiter(void 0, void 0, void 0,
         const teacher = yield teacherModel_1.default.findOne({ name: teacherName });
         const classes = yield classModel_1.default.findById(req.params.classID);
         if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
-            yield classModel_1.default.findByIdAndUpdate(classes === null || classes === void 0 ? void 0 : classes._id, {
+            const justClass = yield classModel_1.default.findByIdAndUpdate(classes === null || classes === void 0 ? void 0 : classes._id, {
                 classTeacher: teacher === null || teacher === void 0 ? void 0 : teacher.name,
             }, { new: true });
-            yield teacherModel_1.default.findByIdAndUpdate(teacher._id, {
-                classes: classes.className,
-            }, { new: true });
+            teacher.myClass.push(new mongoose_1.default.Types.ObjectId(classes === null || classes === void 0 ? void 0 : classes._id));
+            teacher.classes.push(justClass === null || justClass === void 0 ? void 0 : justClass.className);
+            teacher === null || teacher === void 0 ? void 0 : teacher.save();
+            console.log(teacher);
             return res.status(200).json({
                 message: `Teacher has been assigned to this Class...!`,
             });

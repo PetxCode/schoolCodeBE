@@ -11,6 +11,7 @@ interface iClass {
   test?: {}[];
   schoolFee?: {}[];
   subject?: {}[];
+  myClass?: {};
   attendance?: {}[];
 }
 
@@ -61,6 +62,11 @@ const classModel = new mongoose.Schema(
         ref: "subjects",
       },
     ],
+    myClass: {
+      type: mongoose.Types.ObjectId,
+      ref: "teachers",
+    },
+
     attendance: [
       {
         type: mongoose.Types.ObjectId,

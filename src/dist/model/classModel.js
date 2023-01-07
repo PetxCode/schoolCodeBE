@@ -44,6 +44,10 @@ const classModel = new mongoose_1.default.Schema({
             ref: "subjects",
         },
     ],
+    myClass: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "teachers",
+    },
     attendance: [
         {
             type: mongoose_1.default.Types.ObjectId,

@@ -82,6 +82,7 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
         },
         { new: true }
       );
+
       // await teacherModel.findByIdAndUpdate(
       //   teacher!._id,
       //   {
@@ -90,13 +91,16 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
       //   { new: true }
       // );
 
-      teacher!.myClass!.push(new mongoose.Types.ObjectId(justClass?._id));
+      teacher!.myClass!.push(new mongoose.Types.ObjectId(classes?._id));
 
       teacher!.classes!.push(justClass?.className!);
       teacher?.save();
 
+      console.log(teacher);
+
       return res.status(200).json({
-        message: `Teacher has been assigned to this Class...!`,
+        message: `Teacher has been assigned to this Class yet...!`,
+        data: teacher,
       });
     } else {
       return res
@@ -151,20 +155,20 @@ export const assigClassTeacherToClass = async (req: Request, res: Response) => {
     const classes = await classModel.findById(req.params.classID);
 
     if (teacher?.schoolName === school?.schoolName) {
-      await classModel.findByIdAndUpdate(
+      const justClass = await classModel.findByIdAndUpdate(
         classes?._id,
         {
           classTeacher: teacher?.name,
         },
         { new: true }
       );
-      await teacherModel.findByIdAndUpdate(
-        teacher!._id,
-        {
-          classes: classes!.className,
-        },
-        { new: true }
-      );
+
+      teacher!.myClass!.push(new mongoose.Types.ObjectId(classes?._id));
+
+      teacher!.classes!.push(justClass?.className!);
+      teacher?.save();
+
+      console.log(teacher);
 
       return res.status(200).json({
         message: `Teacher has been assigned to this Class...!`,
