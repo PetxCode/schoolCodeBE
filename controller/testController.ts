@@ -13,6 +13,10 @@ export const createTest = async (req: Request, res: Response) => {
 
     const getSubject = await subjectModel.findById(req.params.subjectID);
 
+    const getClass = await classModel.findOne({
+      className: getSubject?.className,
+    });
+
     const getTeacher = await teacherModel.findById(req.params.id);
 
     if (getTeacher!.name === getSubject?.subjectTeacher || getTeacher) {
@@ -31,6 +35,9 @@ export const createTest = async (req: Request, res: Response) => {
 
       getTeacher!.test!.push(new mongoose.Types.ObjectId(test?._id));
       getTeacher?.save();
+
+      getClass!.test!.push(new mongoose.Types.ObjectId(test?._id));
+      getClass?.save();
 
       return res.status(201).json({
         message: "tested created",
@@ -55,6 +62,24 @@ export const viewTest = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "viewing test",
+      data: test,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const viewClassTest = async (req: Request, res: Response) => {
+  try {
+    const test = await classModel.findById(req.params.id).populate({
+      path: "test",
+      options: {
+        sort: { createdAt: -1 },
+      },
+    });
+
+    return res.status(200).json({
+      message: "viewing class test",
       data: test,
     });
   } catch (error) {

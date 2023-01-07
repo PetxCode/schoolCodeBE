@@ -12,7 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewTeacherAllTest = exports.viewTeacherTest = exports.viewSingleTest = exports.viewTopTest = exports.viewTest = exports.createTest = void 0;
+exports.viewTeacherAllTest = exports.viewTeacherTest = exports.viewSingleTest = exports.viewTopTest = exports.viewClassTest = exports.viewTest = exports.createTest = void 0;
+const classModel_1 = __importDefault(require("../model/classModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const testModel_1 = __importDefault(require("../model/testModel"));
@@ -23,6 +24,9 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const code = crypto_1.default.randomBytes(3).toString("hex");
         const { instruction, time, testDetails, gradeScore } = req.body;
         const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
+        const getClass = yield classModel_1.default.findOne({
+            className: getSubject === null || getSubject === void 0 ? void 0 : getSubject.className,
+        });
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
         if (getTeacher.name === (getSubject === null || getSubject === void 0 ? void 0 : getSubject.subjectTeacher) || getTeacher) {
             const test = yield testModel_1.default.create({
@@ -38,6 +42,8 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             getSubject === null || getSubject === void 0 ? void 0 : getSubject.save();
             getTeacher.test.push(new mongoose_1.default.Types.ObjectId(test === null || test === void 0 ? void 0 : test._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
+            getClass.test.push(new mongoose_1.default.Types.ObjectId(test === null || test === void 0 ? void 0 : test._id));
+            getClass === null || getClass === void 0 ? void 0 : getClass.save();
             return res.status(201).json({
                 message: "tested created",
                 data: test,
@@ -70,6 +76,24 @@ const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.viewTest = viewTest;
+const viewClassTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const test = yield classModel_1.default.findById(req.params.id).populate({
+            path: "test",
+            options: {
+                sort: { createdAt: -1 },
+            },
+        });
+        return res.status(200).json({
+            message: "viewing class test",
+            data: test,
+        });
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewClassTest = viewClassTest;
 const viewTopTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const test = yield subjectModel_1.default.findById(req.params.id).populate({
