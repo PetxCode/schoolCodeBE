@@ -17,11 +17,15 @@ const lectureModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
-    subjectTopic: {
+    lectureTopic: {
         type: String,
         require: true,
     },
-    subjectDetails: {
+    lectureObjective: {
+        type: String,
+        require: true,
+    },
+    lectureNote: {
         type: String,
         require: true,
     },

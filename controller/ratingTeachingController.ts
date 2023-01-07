@@ -40,7 +40,7 @@ export const createLecture = async (req: Request, res: Response) => {
         )}`,
         className: getLecture?.className,
         studentName: getStudent?.name,
-        lectureName: getLecture!.subjectTopic,
+        lectureName: getLecture!.lectureTopic,
         subjectName: getLecture!.subjectName,
         subjectTeacher: getLecture?.teacherName,
       });

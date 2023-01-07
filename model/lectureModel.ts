@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 interface iLecture {
-  subjectTopic?: string;
+  lectureTopic?: string;
   time?: string;
-  subjectDetails?: string;
+  lectureObjective?: string;
+  lectureNote?: string;
   teacherName?: string;
   className?: string;
   subjectName?: string;
@@ -33,11 +34,15 @@ const lectureModel = new mongoose.Schema(
       type: String,
       require: true,
     },
-    subjectTopic: {
+    lectureTopic: {
       type: String,
       require: true,
     },
-    subjectDetails: {
+    lectureObjective: {
+      type: String,
+      require: true,
+    },
+    lectureNote: {
       type: String,
       require: true,
     },

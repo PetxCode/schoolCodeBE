@@ -40,7 +40,7 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 time: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
                 className: getLecture === null || getLecture === void 0 ? void 0 : getLecture.className,
                 studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
-                lectureName: getLecture.subjectTopic,
+                lectureName: getLecture.lectureTopic,
                 subjectName: getLecture.subjectName,
                 subjectTeacher: getLecture === null || getLecture === void 0 ? void 0 : getLecture.teacherName,
             });
