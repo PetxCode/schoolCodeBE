@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudentSchoolFeeDetail = exports.viewAcademicSessionPaySchoolFee = exports.createPaySchoolFeeByParant = exports.updatePaySchoolFeeByAdmin = exports.createPaySchoolFeeByAdmin = void 0;
+exports.viewStudentSchoolFeeDetailByStudent = exports.viewStudentSchoolFeeDetail = exports.viewAcademicSessionPaySchoolFee = exports.createPaySchoolFeeByParant = exports.updatePaySchoolFeeByAdmin = exports.createPaySchoolFeeByAdmin = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const classModel_1 = __importDefault(require("../model/classModel"));
@@ -189,7 +189,6 @@ const viewStudentSchoolFeeDetail = (req, res) => __awaiter(void 0, void 0, void 
                     },
                 },
             });
-            console.log(studentDetail);
             return res.status(200).json({
                 message: `Viewing academic school fee detail...!`,
                 data: studentDetail,
@@ -206,3 +205,34 @@ const viewStudentSchoolFeeDetail = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.viewStudentSchoolFeeDetail = viewStudentSchoolFeeDetail;
+const viewStudentSchoolFeeDetailByStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // const school = await schoolModel.findById(req.params.id);
+        const student = yield studentModel_1.default.findById(req.params.id);
+        if (student) {
+            const studentDetail = yield studentModel_1.default
+                .findById(req.params.studentID)
+                .populate({
+                path: "schoolFee",
+                options: {
+                    sort: {
+                        createdAt: -1,
+                    },
+                },
+            });
+            return res.status(200).json({
+                message: `Viewing academic school fee detail by student...!`,
+                data: studentDetail,
+            });
+        }
+        else {
+            return res.status(200).json({
+                message: `something went wrong...!`,
+            });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewStudentSchoolFeeDetailByStudent = viewStudentSchoolFeeDetailByStudent;

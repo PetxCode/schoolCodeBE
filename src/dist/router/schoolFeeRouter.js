@@ -16,4 +16,7 @@ router
 router
     .route("/:id/:studentID/view-student-school-fee-detail")
     .get(schoolFeeController_1.viewStudentSchoolFeeDetail);
+router
+    .route("/:id/view-student-school-fee-detail-by-student")
+    .get(schoolFeeController_1.viewStudentSchoolFeeDetailByStudent);
 exports.default = router;

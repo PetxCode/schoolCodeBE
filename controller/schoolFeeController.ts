@@ -224,10 +224,43 @@ export const viewStudentSchoolFeeDetail = async (
             },
           },
         });
-      console.log(studentDetail);
 
       return res.status(200).json({
         message: `Viewing academic school fee detail...!`,
+        data: studentDetail,
+      });
+    } else {
+      return res.status(200).json({
+        message: `something went wrong...!`,
+      });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
+export const viewStudentSchoolFeeDetailByStudent = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    // const school = await schoolModel.findById(req.params.id);
+    const student = await studentModel.findById(req.params.id);
+
+    if (student) {
+      const studentDetail = await studentModel
+        .findById(req.params.studentID)
+        .populate({
+          path: "schoolFee",
+          options: {
+            sort: {
+              createdAt: -1,
+            },
+          },
+        });
+
+      return res.status(200).json({
+        message: `Viewing academic school fee detail by student...!`,
         data: studentDetail,
       });
     } else {
