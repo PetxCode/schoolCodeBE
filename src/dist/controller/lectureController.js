@@ -23,7 +23,7 @@ const subjectModel_1 = __importDefault(require("../model/subjectModel"));
 const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const code = crypto_1.default.randomBytes(3).toString("hex");
-        const { lectureTopic, lectureDetails, lectureNote } = req.body;
+        const { lectureTopic, lectureDetails, lectureNote, lectureTime } = req.body;
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
         const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
         const getClass = yield classModel_1.default.findOne({
@@ -32,6 +32,8 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const dater = Date.now();
         if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getTeacher) {
             const lectureData = yield lectureModel_1.default.create({
+                lectureNote,
+                lectureTime,
                 lectureCode: code,
                 lectureDetails,
                 lectureTopic,

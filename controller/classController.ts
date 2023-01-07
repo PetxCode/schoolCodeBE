@@ -96,8 +96,6 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
       teacher!.classes!.push(justClass?.className!);
       teacher?.save();
 
-      console.log(teacher);
-
       return res.status(200).json({
         message: `Teacher has been assigned to this Class yet...!`,
         data: teacher,
@@ -167,8 +165,6 @@ export const assigClassTeacherToClass = async (req: Request, res: Response) => {
 
       teacher!.classes!.push(justClass?.className!);
       teacher?.save();
-
-      console.log(teacher);
 
       return res.status(200).json({
         message: `Teacher has been assigned to this Class...!`,

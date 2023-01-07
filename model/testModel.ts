@@ -12,6 +12,7 @@ interface iClass {
   classes?: {};
   testCode?: String;
   student?: {}[];
+  mainTest?: {}[];
   students?: any[];
 }
 
@@ -66,6 +67,12 @@ const testModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "students",
+      },
+    ],
+    mainTest: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "mainTests",
       },
     ],
 

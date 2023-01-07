@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface iLecture {
   lectureTopic?: string;
   time?: string;
+  lectureTime?: string;
   lectureObjective?: string;
   lectureNote?: string;
   teacherName?: string;
@@ -27,6 +28,11 @@ const lectureModel = new mongoose.Schema(
     },
 
     subjectName: {
+      type: String,
+      require: true,
+    },
+
+    lectureTime: {
       type: String,
       require: true,
     },

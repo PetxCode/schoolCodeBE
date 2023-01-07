@@ -46,6 +46,12 @@ const testModel = new mongoose_1.default.Schema({
             ref: "students",
         },
     ],
+    mainTest: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "mainTests",
+        },
+    ],
     students: [{ type: String }],
     teacherName: {
         type: String,

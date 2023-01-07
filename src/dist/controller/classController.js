@@ -91,7 +91,6 @@ const assigClassTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functi
             teacher.myClass.push(new mongoose_1.default.Types.ObjectId(classes === null || classes === void 0 ? void 0 : classes._id));
             teacher.classes.push(justClass === null || justClass === void 0 ? void 0 : justClass.className);
             teacher === null || teacher === void 0 ? void 0 : teacher.save();
-            console.log(teacher);
             return res.status(200).json({
                 message: `Teacher has been assigned to this Class yet...!`,
                 data: teacher,
@@ -149,7 +148,6 @@ const assigClassTeacherToClass = (req, res) => __awaiter(void 0, void 0, void 0,
             teacher.myClass.push(new mongoose_1.default.Types.ObjectId(classes === null || classes === void 0 ? void 0 : classes._id));
             teacher.classes.push(justClass === null || justClass === void 0 ? void 0 : justClass.className);
             teacher === null || teacher === void 0 ? void 0 : teacher.save();
-            console.log(teacher);
             return res.status(200).json({
                 message: `Teacher has been assigned to this Class...!`,
             });
