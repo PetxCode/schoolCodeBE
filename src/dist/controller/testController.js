@@ -22,7 +22,7 @@ const subjectModel_1 = __importDefault(require("../model/subjectModel"));
 const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const code = crypto_1.default.randomBytes(3).toString("hex");
-        const { instruction, time, testDetails, gradeScore, testName, testState } = req.body;
+        const { testTitle, instruction, time, testDetails, gradeScore, testName, testState, } = req.body;
         const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
         const getClass = yield classModel_1.default.findOne({
             className: getSubject === null || getSubject === void 0 ? void 0 : getSubject.className,
@@ -36,6 +36,7 @@ const createTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 testDetails,
                 teacherName: getTeacher.name,
                 subjectTest: getSubject.subjectName,
+                testTitle,
                 instruction,
                 testName,
                 testState: true,

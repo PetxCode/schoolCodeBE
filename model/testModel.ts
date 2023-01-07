@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface iClass {
   subjectTest?: string;
   time?: string;
+  testTitle?: string;
   testDetails?: [];
   teacher?: {};
   teacherName?: string;
@@ -23,6 +24,10 @@ interface iClassData extends iClass, mongoose.Document {
 
 const testModel = new mongoose.Schema(
   {
+    testTitle: {
+      type: String,
+      require: true,
+    },
     subjectTest: {
       type: String,
       require: true,

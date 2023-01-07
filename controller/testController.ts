@@ -9,8 +9,15 @@ import subjectModel from "../model/subjectModel";
 export const createTest = async (req: Request, res: Response) => {
   try {
     const code = crypto.randomBytes(3).toString("hex");
-    const { instruction, time, testDetails, gradeScore, testName, testState } =
-      req.body;
+    const {
+      testTitle,
+      instruction,
+      time,
+      testDetails,
+      gradeScore,
+      testName,
+      testState,
+    } = req.body;
 
     const getSubject = await subjectModel.findById(req.params.subjectID);
 
@@ -28,6 +35,7 @@ export const createTest = async (req: Request, res: Response) => {
         testDetails,
         teacherName: getTeacher!.name,
         subjectTest: getSubject!.subjectName,
+        testTitle,
         instruction,
         testName,
         testState: true,
