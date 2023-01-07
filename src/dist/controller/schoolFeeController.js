@@ -210,9 +210,7 @@ const viewStudentSchoolFeeDetailByStudent = (req, res) => __awaiter(void 0, void
         // const school = await schoolModel.findById(req.params.id);
         const student = yield studentModel_1.default.findById(req.params.id);
         if (student) {
-            const studentDetail = yield studentModel_1.default
-                .findById(req.params.studentID)
-                .populate({
+            const studentDetail = yield studentModel_1.default.findById(student._id).populate({
                 path: "schoolFee",
                 options: {
                     sort: {
