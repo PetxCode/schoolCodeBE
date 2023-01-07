@@ -22,6 +22,10 @@ const reportModel = new mongoose.Schema(
       type: String,
       require: true,
     },
+    senderName: {
+      type: String,
+      require: true,
+    },
     teacher: {
       type: mongoose.Types.ObjectId,
       ref: "tests",

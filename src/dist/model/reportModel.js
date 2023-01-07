@@ -13,6 +13,10 @@ const reportModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    senderName: {
+        type: String,
+        require: true,
+    },
     teacher: {
         type: mongoose_1.default.Types.ObjectId,
         ref: "tests",
