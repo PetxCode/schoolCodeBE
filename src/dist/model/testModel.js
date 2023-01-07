@@ -29,6 +29,9 @@ const testModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    testState: {
+        type: Boolean,
+    },
     testDetails: {
         type: Array,
     },

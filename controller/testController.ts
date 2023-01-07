@@ -9,7 +9,8 @@ import subjectModel from "../model/subjectModel";
 export const createTest = async (req: Request, res: Response) => {
   try {
     const code = crypto.randomBytes(3).toString("hex");
-    const { instruction, time, testDetails, gradeScore, testName } = req.body;
+    const { instruction, time, testDetails, gradeScore, testName, testState } =
+      req.body;
 
     const getSubject = await subjectModel.findById(req.params.subjectID);
 
@@ -29,6 +30,7 @@ export const createTest = async (req: Request, res: Response) => {
         subjectTest: getSubject!.subjectName,
         instruction,
         testName,
+        testState: true,
       });
 
       getSubject!.test!.push(new mongoose.Types.ObjectId(test._id));
