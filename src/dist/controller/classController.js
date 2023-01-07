@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewClasses = exports.viewClassSchoolFeeInfo = exports.viewClassDetailInfo = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacherToClass = exports.assigClassStudent = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
+exports.viewClasses = exports.viewClassSchoolFeeInfo = exports.viewClassDetailInfo = exports.viewClassStudentSubject = exports.viewClassStudents = exports.viewClassDetailFromSchool = exports.assigClassTeacherToClass = exports.assigClassStudent = exports.assigClassTeacher = exports.updateClassFee = exports.createClass = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -205,6 +205,30 @@ const viewClassStudents = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewClassStudents = viewClassStudents;
+const viewClassStudentSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const classStudents = yield classModel_1.default.findById(req.params.id);
+        if (classStudents) {
+            const myClass = yield classModel_1.default.findById(classStudents._id).populate({
+                path: "subject",
+                options: {
+                    sort: { createdAt: -1 },
+                },
+            });
+            return res.status(200).json({
+                message: `Viewing class subject...!`,
+                data: myClass,
+            });
+        }
+        else {
+            return res.status(404).json({ message: `Please fixed the school Name` });
+        }
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewClassStudentSubject = viewClassStudentSubject;
 const viewClassDetailInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const myClass = yield classModel_1.default.findById(req.params.id);

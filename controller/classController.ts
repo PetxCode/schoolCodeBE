@@ -229,6 +229,30 @@ export const viewClassStudents = async (req: Request, res: Response) => {
   }
 };
 
+export const viewClassStudentSubject = async (req: Request, res: Response) => {
+  try {
+    const classStudents = await classModel.findById(req.params.id);
+
+    if (classStudents) {
+      const myClass = await classModel.findById(classStudents._id).populate({
+        path: "subject",
+        options: {
+          sort: { createdAt: -1 },
+        },
+      });
+
+      return res.status(200).json({
+        message: `Viewing class subject...!`,
+        data: myClass,
+      });
+    } else {
+      return res.status(404).json({ message: `Please fixed the school Name` });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewClassDetailInfo = async (req: Request, res: Response) => {
   try {
     const myClass = await classModel.findById(req.params.id);
