@@ -18,7 +18,7 @@ export const createAttendancePresent = async (req: Request, res: Response) => {
       className: getStudent!.className,
     });
 
-    if (getTeacher?.classes === getStudent?.className) {
+    if (getTeacher && getStudent) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
 
@@ -68,7 +68,7 @@ export const createAttendanceAbsent = async (req: Request, res: Response) => {
       className: getStudent!.className,
     });
 
-    if (getTeacher?.classes === getStudent?.className) {
+    if (getTeacher && getStudent) {
       const code = crypto.randomBytes(2).toString("hex");
       const dater = Date.now();
 

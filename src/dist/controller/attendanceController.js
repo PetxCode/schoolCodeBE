@@ -27,7 +27,7 @@ const createAttendancePresent = (req, res) => __awaiter(void 0, void 0, void 0, 
         const getClass = yield classModel_1.default.findOne({
             className: getStudent.className,
         });
-        if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getStudent === null || getStudent === void 0 ? void 0 : getStudent.className)) {
+        if (getTeacher && getStudent) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
             const attendance = yield attendanceModel_1.default.create({
@@ -68,7 +68,7 @@ const createAttendanceAbsent = (req, res) => __awaiter(void 0, void 0, void 0, f
         const getClass = yield classModel_1.default.findOne({
             className: getStudent.className,
         });
-        if ((getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes) === (getStudent === null || getStudent === void 0 ? void 0 : getStudent.className)) {
+        if (getTeacher && getStudent) {
             const code = crypto_1.default.randomBytes(2).toString("hex");
             const dater = Date.now();
             const attendance = yield attendanceModel_1.default.create({
