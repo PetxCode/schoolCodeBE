@@ -28,14 +28,17 @@ const testModel = new mongoose.Schema(
       type: String,
       require: true,
     },
+
     subjectTest: {
       type: String,
       require: true,
     },
+
     testName: {
       type: Number,
       require: true,
     },
+
     gradeScore: {
       type: Number,
       require: true,
@@ -50,6 +53,7 @@ const testModel = new mongoose.Schema(
       type: String,
       require: true,
     },
+
     instruction: {
       type: String,
       require: true,

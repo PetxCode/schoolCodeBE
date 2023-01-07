@@ -7,14 +7,16 @@ import {
   viewSingleTest,
   viewClassTest,
 } from "../controller/testController";
-import { createTestOption } from "../controller/mainTest";
+import { createTestOption, viewTestOption } from "../controller/mainTest";
 
 import { Router } from "express";
 
 const router = Router();
 
-router.route("/:id/:subjectID/creating-test").post(createTest);
 router.route("/:id/creating-option").post(createTestOption);
+router.route("/:id/viewing-option").get(viewTestOption);
+
+router.route("/:id/:subjectID/creating-test").post(createTest);
 router.route("/:id/view-class-test").get(viewTest);
 router.route("/:id/view-class-test-now").get(viewClassTest);
 router.route("/:id/view-recent-test").get(viewTopTest);

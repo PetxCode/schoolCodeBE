@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewTeacherAllTest = exports.viewTeacherTest = exports.viewSingleTest = exports.viewTopTest = exports.viewClassTest = exports.viewTest = exports.createTestOption = void 0;
+exports.viewTeacherAllTest = exports.viewTeacherTest = exports.viewSingleTest = exports.viewTopTest = exports.viewClassTest = exports.viewTestOption = exports.createTestOption = void 0;
 const classModel_1 = __importDefault(require("../model/classModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -49,10 +49,10 @@ const createTestOption = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createTestOption = createTestOption;
-const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const viewTestOption = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const test = yield subjectModel_1.default.findById(req.params.id).populate({
-            path: "test",
+            path: "mainTest",
             options: {
                 sort: { createdAt: -1 },
             },
@@ -66,7 +66,7 @@ const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
-exports.viewTest = viewTest;
+exports.viewTestOption = viewTestOption;
 const viewClassTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const test = yield classModel_1.default.findById(req.params.id).populate({
