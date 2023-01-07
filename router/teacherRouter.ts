@@ -6,6 +6,7 @@ import {
   loginTeacher,
   updateTeacherImage,
   getSchoolTeacherInfo,
+  getSchoolTeacherInfoForClasses,
 } from "../controller/teacherController";
 import upload from "../utils/multer";
 
@@ -23,5 +24,6 @@ router.route("/reset/password").patch(resetPassword);
 router.route("/:id/:token/reset").post(changePassword);
 
 router.route("/:id").get(getSchoolTeacherInfo);
+router.route("/:id/get-classes").get(getSchoolTeacherInfoForClasses);
 
 export default router;

@@ -9,6 +9,10 @@ const testModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    testName: {
+        type: Number,
+        require: true,
+    },
     gradeScore: {
         type: Number,
         require: true,

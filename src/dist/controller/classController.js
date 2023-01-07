@@ -78,12 +78,19 @@ const assigClassTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const classes = yield classModel_1.default.findOne({ classToken });
         const teacher = yield teacherModel_1.default.findById(req.params.teacherID);
         if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName)) {
-            yield classModel_1.default.findByIdAndUpdate(classes === null || classes === void 0 ? void 0 : classes._id, {
+            const justClass = yield classModel_1.default.findByIdAndUpdate(classes === null || classes === void 0 ? void 0 : classes._id, {
                 classTeacher: teacher === null || teacher === void 0 ? void 0 : teacher.name,
             }, { new: true });
-            yield teacherModel_1.default.findByIdAndUpdate(teacher._id, {
-                classes: classes.className,
-            }, { new: true });
+            // await teacherModel.findByIdAndUpdate(
+            //   teacher!._id,
+            //   {
+            //     $set: { classes: classes!.push(classes?.className) },
+            //   },
+            //   { new: true }
+            // );
+            teacher.myClass.push(new mongoose_1.default.Types.ObjectId(justClass === null || justClass === void 0 ? void 0 : justClass._id));
+            teacher.classes.push(justClass === null || justClass === void 0 ? void 0 : justClass.className);
+            teacher === null || teacher === void 0 ? void 0 : teacher.save();
             return res.status(200).json({
                 message: `Teacher has been assigned to this Class...!`,
             });
@@ -229,6 +236,28 @@ const viewClassStudentSubject = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.viewClassStudentSubject = viewClassStudentSubject;
+// export const viewClassForTeacher = async (req: Request, res: Response) => {
+//   try {
+//     const classTeacher = await teacherModel.findById(req.params.id);
+//     const myClass = await classModel.findOne({classTeacher: classTeacher.name})
+//     if (classTeacher) {
+//       const myClass = await classModel.findById(classTeacher._id).populate({
+//         path: "subject",
+//         options: {
+//           sort: { createdAt: -1 },
+//         },
+//       });
+//       return res.status(200).json({
+//         message: `Viewing class subject...!`,
+//         data: myClass,
+//       });
+//     } else {
+//       return res.status(404).json({ message: `Please fixed the school Name` });
+//     }
+//   } catch (error) {
+//     return res.status(404).json({ message: `Error: ${error}` });
+//   }
+// };
 const viewClassDetailInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const myClass = yield classModel_1.default.findById(req.params.id);

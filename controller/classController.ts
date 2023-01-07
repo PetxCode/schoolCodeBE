@@ -75,20 +75,25 @@ export const assigClassTeacher = async (req: Request, res: Response) => {
     const teacher = await teacherModel.findById(req.params.teacherID);
 
     if (teacher?.schoolName === school?.schoolName) {
-      await classModel.findByIdAndUpdate(
+      const justClass = await classModel.findByIdAndUpdate(
         classes?._id,
         {
           classTeacher: teacher?.name,
         },
         { new: true }
       );
-      await teacherModel.findByIdAndUpdate(
-        teacher!._id,
-        {
-          classes: classes!.className,
-        },
-        { new: true }
-      );
+      // await teacherModel.findByIdAndUpdate(
+      //   teacher!._id,
+      //   {
+      //     $set: { classes: classes!.push(classes?.className) },
+      //   },
+      //   { new: true }
+      // );
+
+      teacher!.myClass!.push(new mongoose.Types.ObjectId(justClass?._id));
+
+      teacher!.classes!.push(justClass?.className!);
+      teacher?.save();
 
       return res.status(200).json({
         message: `Teacher has been assigned to this Class...!`,
@@ -252,6 +257,32 @@ export const viewClassStudentSubject = async (req: Request, res: Response) => {
     return res.status(404).json({ message: `Error: ${error}` });
   }
 };
+
+// export const viewClassForTeacher = async (req: Request, res: Response) => {
+//   try {
+//     const classTeacher = await teacherModel.findById(req.params.id);
+
+//     const myClass = await classModel.findOne({classTeacher: classTeacher.name})
+
+//     if (classTeacher) {
+//       const myClass = await classModel.findById(classTeacher._id).populate({
+//         path: "subject",
+//         options: {
+//           sort: { createdAt: -1 },
+//         },
+//       });
+
+//       return res.status(200).json({
+//         message: `Viewing class subject...!`,
+//         data: myClass,
+//       });
+//     } else {
+//       return res.status(404).json({ message: `Please fixed the school Name` });
+//     }
+//   } catch (error) {
+//     return res.status(404).json({ message: `Error: ${error}` });
+//   }
+// };
 
 export const viewClassDetailInfo = async (req: Request, res: Response) => {
   try {

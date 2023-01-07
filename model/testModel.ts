@@ -8,6 +8,7 @@ interface iClass {
   teacherName?: string;
   instruction?: string;
   gradeScore?: number;
+  testName?: string;
   classes?: {};
   testCode?: String;
   student?: {}[];
@@ -22,6 +23,10 @@ const testModel = new mongoose.Schema(
   {
     subjectTest: {
       type: String,
+      require: true,
+    },
+    testName: {
+      type: Number,
       require: true,
     },
     gradeScore: {

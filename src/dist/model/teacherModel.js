@@ -38,7 +38,7 @@ const teacherModel = new mongoose_1.default.Schema({
         type: String,
     },
     classes: {
-        type: String,
+        type: Array,
     },
     verified: {
         type: Boolean,
@@ -56,6 +56,12 @@ const teacherModel = new mongoose_1.default.Schema({
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "subjects",
+        },
+    ],
+    myClass: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "classes",
         },
     ],
     lecture: [

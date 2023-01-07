@@ -181,7 +181,6 @@ export const reAssignSubjectTeacher = async (req: Request, res: Response) => {
 export const assignSubjectToTeacher = async (req: Request, res: Response) => {
   try {
     const { subjectName, classToken } = req.body;
-    console.log(subjectName);
     // const classes = await classModel.findById(req.params.subjectID);
 
     const school = await schoolModel.findById(req.params.id);
@@ -193,14 +192,6 @@ export const assignSubjectToTeacher = async (req: Request, res: Response) => {
     const getClass = await classModel.findOne({ classToken });
 
     if (teacher?.schoolName === school?.schoolName && getClass) {
-      // const subject = await subjectModel.findByIdAndUpdate(
-      //   findSubject?._id,
-      //   {
-      //     subjectTeacher: teacher?.name,
-      //   },
-      //   { new: true }
-      // );
-
       const subject = await subjectModel.create({
         className: getClass.className,
         subjectName,
@@ -261,9 +252,6 @@ export const viewClassSubjects = async (req: Request, res: Response) => {
 
 export const viewTeacherSubjects = async (req: Request, res: Response) => {
   try {
-    // const school = await schoolModel.findById(req.params.id);
-    // const getClass = await classModel.findById(req.params.id);
-
     const myClass = await teacherModel.findById(req.params.id).populate({
       path: "mySubjects",
       options: {

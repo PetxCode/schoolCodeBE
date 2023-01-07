@@ -14,4 +14,5 @@ router.route("/:id/upload").patch(multer_1.default, teacherController_1.updateTe
 router.route("/reset/password").patch(teacherController_1.resetPassword);
 router.route("/:id/:token/reset").post(teacherController_1.changePassword);
 router.route("/:id").get(teacherController_1.getSchoolTeacherInfo);
+router.route("/:id/get-classes").get(teacherController_1.getSchoolTeacherInfoForClasses);
 exports.default = router;

@@ -10,7 +10,7 @@ interface iTeacher {
   token?: string;
   teacherCode?: string;
   verified?: boolean;
-  classes?: string;
+  classes?: string[];
   resumedDate?: string;
   test?: {}[];
   lecture?: {}[];
@@ -19,6 +19,7 @@ interface iTeacher {
   event?: {}[];
   subjectTaken?: string[];
   mySubjects?: {}[];
+  myClass?: {}[];
   report?: {}[];
 }
 
@@ -62,7 +63,7 @@ const teacherModel = new mongoose.Schema(
       type: String,
     },
     classes: {
-      type: String,
+      type: Array,
     },
     verified: {
       type: Boolean,
@@ -80,6 +81,12 @@ const teacherModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "subjects",
+      },
+    ],
+    myClass: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "classes",
       },
     ],
     lecture: [

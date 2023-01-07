@@ -19,6 +19,7 @@ const router = Router();
 router.route("/viewing-class").get(viewClasses);
 router.route("/:id/viewing-class").get(viewClassDetailInfo);
 router.route("/:id/viewing-class-payment").get(viewClassSchoolFeeInfo);
+
 router.route("/:id/viewing-class-students").get(viewClassStudents);
 router.route("/:id/viewing-student-class-subject").get(viewClassStudentSubject);
 

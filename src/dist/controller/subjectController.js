@@ -165,7 +165,6 @@ exports.reAssignSubjectTeacher = reAssignSubjectTeacher;
 const assignSubjectToTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { subjectName, classToken } = req.body;
-        console.log(subjectName);
         // const classes = await classModel.findById(req.params.subjectID);
         const school = yield schoolModel_1.default.findById(req.params.id);
         const teacher = yield teacherModel_1.default.findById(req.params.teacherID);
@@ -173,13 +172,6 @@ const assignSubjectToTeacher = (req, res) => __awaiter(void 0, void 0, void 0, f
         const code = crypto_1.default.randomBytes(2).toString("hex");
         const getClass = yield classModel_1.default.findOne({ classToken });
         if ((teacher === null || teacher === void 0 ? void 0 : teacher.schoolName) === (school === null || school === void 0 ? void 0 : school.schoolName) && getClass) {
-            // const subject = await subjectModel.findByIdAndUpdate(
-            //   findSubject?._id,
-            //   {
-            //     subjectTeacher: teacher?.name,
-            //   },
-            //   { new: true }
-            // );
             const subject = yield subjectModel_1.default.create({
                 className: getClass.className,
                 subjectName,
@@ -232,8 +224,6 @@ const viewClassSubjects = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.viewClassSubjects = viewClassSubjects;
 const viewTeacherSubjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const school = await schoolModel.findById(req.params.id);
-        // const getClass = await classModel.findById(req.params.id);
         const myClass = yield teacherModel_1.default.findById(req.params.id).populate({
             path: "mySubjects",
             options: {
