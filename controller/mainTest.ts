@@ -41,7 +41,7 @@ export const createTestOption = async (req: Request, res: Response) => {
 
 export const viewTestOption = async (req: Request, res: Response) => {
   try {
-    const test = await subjectModel.findById(req.params.id).populate({
+    const test = await testModel.findById(req.params.id).populate({
       path: "mainTest",
       options: {
         sort: { createdAt: -1 },

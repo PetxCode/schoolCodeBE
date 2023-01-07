@@ -51,7 +51,7 @@ const createTestOption = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.createTestOption = createTestOption;
 const viewTestOption = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const test = yield subjectModel_1.default.findById(req.params.id).populate({
+        const test = yield testModel_1.default.findById(req.params.id).populate({
             path: "mainTest",
             options: {
                 sort: { createdAt: -1 },
