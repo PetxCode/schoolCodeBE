@@ -18,7 +18,7 @@ export const createPerformance = async (req: Request, res: Response) => {
     });
 
     let gradeScore = getTest?.gradeScore;
-    let total = getTest!.testDetails!.length;
+    let total = getTest!.mainTest!.length;
     let score = (right / total) * 100;
 
     let scoreGrade = (): string | undefined => {
@@ -44,7 +44,7 @@ export const createPerformance = async (req: Request, res: Response) => {
         } else {
           const performance = await performanceModel.create({
             right,
-            failed,
+            failed: total - right,
             gradeScore: getTest?.gradeScore,
             totalScore: gradeScore! * right,
             testName: getTest?.subjectTest,

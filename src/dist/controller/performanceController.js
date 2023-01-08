@@ -26,7 +26,7 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
             testCode,
         });
         let gradeScore = getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore;
-        let total = getTest.testDetails.length;
+        let total = getTest.mainTest.length;
         let score = (right / total) * 100;
         let scoreGrade = () => {
             if (score < 60) {
@@ -55,7 +55,7 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 else {
                     const performance = yield performanceModel_1.default.create({
                         right,
-                        failed,
+                        failed: total - right,
                         gradeScore: getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore,
                         totalScore: gradeScore * right,
                         testName: getTest === null || getTest === void 0 ? void 0 : getTest.subjectTest,
