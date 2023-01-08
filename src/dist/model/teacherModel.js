@@ -70,6 +70,12 @@ const teacherModel = new mongoose_1.default.Schema({
             ref: "tests",
         },
     ],
+    lectures: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "lectures",
+        },
+    ],
     report: [
         {
             type: mongoose_1.default.Types.ObjectId,

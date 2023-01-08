@@ -12,6 +12,7 @@ interface iLecture {
   lecturePerformance?: number;
   classes?: {};
   teacher?: {};
+  teachers?: {};
   lectureCode?: String;
   rated?: {}[];
 }
@@ -71,6 +72,11 @@ const lectureModel = new mongoose.Schema(
     teacher: {
       type: mongoose.Types.ObjectId,
       ref: "tests",
+    },
+
+    teachers: {
+      type: mongoose.Types.ObjectId,
+      ref: "teachers",
     },
 
     rated: [
