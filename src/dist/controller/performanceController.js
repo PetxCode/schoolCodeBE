@@ -77,7 +77,6 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                         data: performance,
                     });
                 }
-                // }
             }
             else {
                 return res.status(404).json({ message: "Get a Test Code to continue" });

@@ -10,17 +10,21 @@ import subjectModel from "../model/subjectModel";
 export const createLecture = async (req: Request, res: Response) => {
   try {
     const code = crypto.randomBytes(3).toString("hex");
-    const { lectureTopic, lectureDetails, lectureNote, lectureTime } = req.body;
+    const {
+      lectureTopic,
+      lectureDetails,
+      lectureNote,
+      lectureTime,
+      subjectCode,
+    } = req.body;
 
     const getTeacher = await teacherModel.findById(req.params.id);
-    const getSubject = await subjectModel.findById(req.params.subjectID);
-
-    const getClass = await classModel.findOne({
-      className: getTeacher?.classes,
+    const getSubject = await subjectModel.findOne({
+      subjectToken: subjectCode,
     });
 
     const dater = Date.now();
-    if (getTeacher) {
+    if (getTeacher && getSubject) {
       const lectureData = await lectureModel.create({
         lectureNote,
         lectureTime,
@@ -33,7 +37,6 @@ export const createLecture = async (req: Request, res: Response) => {
         teacherName: getTeacher?.name,
         className: getSubject?.className,
         subjectName: getSubject?.subjectName,
-        // classes: getClass,
         lecturePerformance: 0,
       });
 

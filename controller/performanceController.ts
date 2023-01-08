@@ -56,19 +56,21 @@ export const createPerformance = async (req: Request, res: Response) => {
             precentage: `${score.toFixed(2)}%`,
             maxLength: total,
           });
+
           getStudent!.performance!.push(
             new mongoose.Types.ObjectId(performance._id)
           );
           getStudent?.save();
+
           getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
           getTest!.students!.push(performance!.studentName);
+
           getTest?.save();
           return res.status(201).json({
             message: "performance created",
             data: performance,
           });
         }
-        // }
       } else {
         return res.status(404).json({ message: "Get a Test Code to continue" });
       }

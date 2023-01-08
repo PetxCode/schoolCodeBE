@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewTeacherAllLecture = exports.viewTeacherLecture = exports.viewTopLecture = exports.viewLecture = exports.createLecture = void 0;
-const classModel_1 = __importDefault(require("../model/classModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const lectureModel_1 = __importDefault(require("../model/lectureModel"));
@@ -23,14 +22,13 @@ const subjectModel_1 = __importDefault(require("../model/subjectModel"));
 const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const code = crypto_1.default.randomBytes(3).toString("hex");
-        const { lectureTopic, lectureDetails, lectureNote, lectureTime } = req.body;
+        const { lectureTopic, lectureDetails, lectureNote, lectureTime, subjectCode, } = req.body;
         const getTeacher = yield teacherModel_1.default.findById(req.params.id);
-        const getSubject = yield subjectModel_1.default.findById(req.params.subjectID);
-        const getClass = yield classModel_1.default.findOne({
-            className: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.classes,
+        const getSubject = yield subjectModel_1.default.findOne({
+            subjectToken: subjectCode,
         });
         const dater = Date.now();
-        if (getTeacher) {
+        if (getTeacher && getSubject) {
             const lectureData = yield lectureModel_1.default.create({
                 lectureNote,
                 lectureTime,
@@ -41,7 +39,6 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 teacherName: getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.name,
                 className: getSubject === null || getSubject === void 0 ? void 0 : getSubject.className,
                 subjectName: getSubject === null || getSubject === void 0 ? void 0 : getSubject.subjectName,
-                // classes: getClass,
                 lecturePerformance: 0,
             });
             getSubject.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData._id));
