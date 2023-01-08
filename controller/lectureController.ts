@@ -100,7 +100,7 @@ export const viewTopLecture = async (req: Request, res: Response) => {
 export const viewTeacherLecture = async (req: Request, res: Response) => {
   try {
     const lecture = await teacherModel.findById(req.params.id).populate({
-      path: "lecture",
+      path: "lectures",
       options: {
         sort: { createdAt: -1 },
         limit: 1,

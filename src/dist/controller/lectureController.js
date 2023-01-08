@@ -100,7 +100,7 @@ exports.viewTopLecture = viewTopLecture;
 const viewTeacherLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const lecture = yield teacherModel_1.default.findById(req.params.id).populate({
-            path: "lecture",
+            path: "lectures",
             options: {
                 sort: { createdAt: -1 },
                 limit: 1,
