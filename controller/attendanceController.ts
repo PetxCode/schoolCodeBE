@@ -30,7 +30,7 @@ export const createAttendancePresent = async (req: Request, res: Response) => {
         studentName: getStudent!.name,
         classTeacher: getTeacher!.name,
         dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
-          "MMMM Do YYYY, h:mm:ss"
+          "MMMM Do YYYY"
         )}`,
 
         date: `${moment(dater).format("dddd")}`,
