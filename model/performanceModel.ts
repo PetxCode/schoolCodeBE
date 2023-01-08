@@ -12,6 +12,7 @@ interface iClass {
   teacherName?: string;
   grade?: string;
   precentage?: string;
+  testTitle?: string;
   maxLength?: number;
 }
 
@@ -66,6 +67,9 @@ const performanceModel = new mongoose.Schema(
     },
 
     studentName: {
+      type: String,
+    },
+    testTitle: {
       type: String,
     },
     testName: {

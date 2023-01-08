@@ -43,6 +43,9 @@ const performanceModel = new mongoose_1.default.Schema({
     studentName: {
         type: String,
     },
+    testTitle: {
+        type: String,
+    },
     testName: {
         type: String,
     },

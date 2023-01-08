@@ -35,44 +35,43 @@ export const createPerformance = async (req: Request, res: Response) => {
       }
     };
 
-    console.log(scoreGrade(score));
-
     if (getStudent) {
-      // if (getTest) {
-      //   if (getTest!.students?.includes(getStudent?.name)) {
-      //     return res
-      //       .status(404)
-      //       .json({ message: "You've already took the test before!" });
-      //   } else {
-      //     const performance = await performanceModel.create({
-      //       right,
-      //       failed: total - right,
-      //       gradeScore: getTest?.gradeScore,
-      //       totalScore: gradeScore! * right,
-      //       testName: getTest?.subjectTest,
-      //       teacherName: getTest?.teacherName,
-      //       studentName: getStudent?.name,
-      //       class: getStudent?.className,
-      //       grade: scoreGrade(score),
-      //       precentage: `${score.toFixed(2)}%`,
-      //       maxLength: total,
-      //     });
-      //     getStudent!.performance!.push(
-      //       new mongoose.Types.ObjectId(performance._id)
-      //     );
-      //     getStudent?.save();
-      //     getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
-      //     getTest!.students!.push(performance!.studentName);
-      //     getTest?.save();
-      //     return res.status(201).json({
-      //       message: "performance created",
-      //       data: performance,
-      //     });
-      //   }
-      //   // }
-      // } else {
-      //   return res.status(404).json({ message: "Get a Test Code to continue" });
-      // }
+      if (getTest) {
+        if (getTest!.students?.includes(getStudent?.name)) {
+          return res
+            .status(404)
+            .json({ message: "You've already took the test before!" });
+        } else {
+          const performance = await performanceModel.create({
+            right,
+            failed: total - right,
+            gradeScore: getTest?.gradeScore,
+            totalScore: gradeScore! * right,
+            testName: getTest?.subjectTest,
+            testTitle: getTest?.testTitle,
+            teacherName: getTest?.teacherName,
+            studentName: getStudent?.name,
+            class: getStudent?.className,
+            grade: scoreGrade(score),
+            precentage: `${score.toFixed(2)}%`,
+            maxLength: total,
+          });
+          getStudent!.performance!.push(
+            new mongoose.Types.ObjectId(performance._id)
+          );
+          getStudent?.save();
+          getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
+          getTest!.students!.push(performance!.studentName);
+          getTest?.save();
+          return res.status(201).json({
+            message: "performance created",
+            data: performance,
+          });
+        }
+        // }
+      } else {
+        return res.status(404).json({ message: "Get a Test Code to continue" });
+      }
     } else {
       return res.status(404).json({ message: "Student can't be found" });
     }

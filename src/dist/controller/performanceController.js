@@ -13,9 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.recentPerformance = exports.viewPerformance = exports.createPerformance = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const testModel_1 = __importDefault(require("../model/testModel"));
+const performanceModel_1 = __importDefault(require("../model/performanceModel"));
 const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { totalScore, right, failed, testCode, grade, precentage } = req.body;
         const getStudent = yield studentModel_1.default.findById(req.params.id);
@@ -42,43 +45,43 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 return "A";
             }
         };
-        console.log(scoreGrade(score));
         if (getStudent) {
-            // if (getTest) {
-            //   if (getTest!.students?.includes(getStudent?.name)) {
-            //     return res
-            //       .status(404)
-            //       .json({ message: "You've already took the test before!" });
-            //   } else {
-            //     const performance = await performanceModel.create({
-            //       right,
-            //       failed: total - right,
-            //       gradeScore: getTest?.gradeScore,
-            //       totalScore: gradeScore! * right,
-            //       testName: getTest?.subjectTest,
-            //       teacherName: getTest?.teacherName,
-            //       studentName: getStudent?.name,
-            //       class: getStudent?.className,
-            //       grade: scoreGrade(score),
-            //       precentage: `${score.toFixed(2)}%`,
-            //       maxLength: total,
-            //     });
-            //     getStudent!.performance!.push(
-            //       new mongoose.Types.ObjectId(performance._id)
-            //     );
-            //     getStudent?.save();
-            //     getTest!.student!.push(new mongoose.Types.ObjectId(performance._id));
-            //     getTest!.students!.push(performance!.studentName);
-            //     getTest?.save();
-            //     return res.status(201).json({
-            //       message: "performance created",
-            //       data: performance,
-            //     });
-            //   }
-            //   // }
-            // } else {
-            //   return res.status(404).json({ message: "Get a Test Code to continue" });
-            // }
+            if (getTest) {
+                if ((_a = getTest.students) === null || _a === void 0 ? void 0 : _a.includes(getStudent === null || getStudent === void 0 ? void 0 : getStudent.name)) {
+                    return res
+                        .status(404)
+                        .json({ message: "You've already took the test before!" });
+                }
+                else {
+                    const performance = yield performanceModel_1.default.create({
+                        right,
+                        failed: total - right,
+                        gradeScore: getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore,
+                        totalScore: gradeScore * right,
+                        testName: getTest === null || getTest === void 0 ? void 0 : getTest.subjectTest,
+                        testTitle: getTest === null || getTest === void 0 ? void 0 : getTest.testTitle,
+                        teacherName: getTest === null || getTest === void 0 ? void 0 : getTest.teacherName,
+                        studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
+                        class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
+                        grade: scoreGrade(score),
+                        precentage: `${score.toFixed(2)}%`,
+                        maxLength: total,
+                    });
+                    getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));
+                    getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
+                    getTest.student.push(new mongoose_1.default.Types.ObjectId(performance._id));
+                    getTest.students.push(performance.studentName);
+                    getTest === null || getTest === void 0 ? void 0 : getTest.save();
+                    return res.status(201).json({
+                        message: "performance created",
+                        data: performance,
+                    });
+                }
+                // }
+            }
+            else {
+                return res.status(404).json({ message: "Get a Test Code to continue" });
+            }
         }
         else {
             return res.status(404).json({ message: "Student can't be found" });
