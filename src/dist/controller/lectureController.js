@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewTeacherAllLecture = exports.viewTeacherLecture = exports.viewTopLecture = exports.viewLecture = exports.createLecture = void 0;
+exports.viewSingleLecture = exports.viewTeacherAllLecture = exports.viewTeacherLecture = exports.viewTopLecture = exports.viewLecture = exports.createLecture = void 0;
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const lectureModel_1 = __importDefault(require("../model/lectureModel"));
@@ -134,3 +134,16 @@ const viewTeacherAllLecture = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.viewTeacherAllLecture = viewTeacherAllLecture;
+const viewSingleLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const lecture = yield lectureModel_1.default.findById(req.params.id);
+        return res.status(200).json({
+            message: "viewing single lecture",
+            data: lecture,
+        });
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.viewSingleLecture = viewSingleLecture;

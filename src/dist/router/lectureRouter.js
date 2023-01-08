@@ -7,5 +7,6 @@ router.route("/:id/creating-lecture").post(lectureController_1.createLecture);
 router.route("/:id/view-class-lecture").get(lectureController_1.viewLecture);
 router.route("/:id/view-recent-lecture").get(lectureController_1.viewTopLecture);
 router.route("/:id/view-all-teacher-lecture").get(lectureController_1.viewTeacherAllLecture);
+router.route("/:id/view-single-teacher-lecture").get(lectureController_1.viewSingleLecture);
 router.route("/:id/view-teacher-recent-lecture").get(lectureController_1.viewTeacherLecture);
 exports.default = router;

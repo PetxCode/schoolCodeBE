@@ -4,6 +4,7 @@ import {
   viewTopLecture,
   viewTeacherLecture,
   viewTeacherAllLecture,
+  viewSingleLecture,
 } from "../controller/lectureController";
 
 import { Router } from "express";
@@ -15,6 +16,7 @@ router.route("/:id/view-class-lecture").get(viewLecture);
 router.route("/:id/view-recent-lecture").get(viewTopLecture);
 
 router.route("/:id/view-all-teacher-lecture").get(viewTeacherAllLecture);
+router.route("/:id/view-single-teacher-lecture").get(viewSingleLecture);
 router.route("/:id/view-teacher-recent-lecture").get(viewTeacherLecture);
 
 export default router;

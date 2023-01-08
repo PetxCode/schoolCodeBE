@@ -133,3 +133,16 @@ export const viewTeacherAllLecture = async (req: Request, res: Response) => {
     return res.status(404).json({ message: `Error: ${error}` });
   }
 };
+
+export const viewSingleLecture = async (req: Request, res: Response) => {
+  try {
+    const lecture = await lectureModel.findById(req.params.id);
+
+    return res.status(200).json({
+      message: "viewing single lecture",
+      data: lecture,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
