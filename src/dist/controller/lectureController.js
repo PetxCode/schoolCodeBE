@@ -43,7 +43,7 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             getSubject.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData._id));
             getSubject === null || getSubject === void 0 ? void 0 : getSubject.save();
-            getTeacher.lecture.push(new mongoose_1.default.Types.ObjectId(lectureData === null || lectureData === void 0 ? void 0 : lectureData._id));
+            getTeacher.lectures.push(new mongoose_1.default.Types.ObjectId(lectureData === null || lectureData === void 0 ? void 0 : lectureData._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
             return res.status(201).json({
                 message: "lecture created",

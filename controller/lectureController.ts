@@ -43,7 +43,7 @@ export const createLecture = async (req: Request, res: Response) => {
       getSubject!.lecture!.push(new mongoose.Types.ObjectId(lectureData._id));
       getSubject?.save();
 
-      getTeacher!.lecture!.push(new mongoose.Types.ObjectId(lectureData?._id));
+      getTeacher!.lectures!.push(new mongoose.Types.ObjectId(lectureData?._id));
       getTeacher?.save();
 
       return res.status(201).json({
