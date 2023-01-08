@@ -21,7 +21,7 @@ export const createPerformance = async (req: Request, res: Response) => {
     let total = getTest!.mainTest!.length;
     let score = (right / total) * 100;
 
-    let scoreGrade = (): string | undefined => {
+    let scoreGrade = (score: number): string | undefined => {
       if (score < 60) {
         return "F";
       } else if (score < 70) {
@@ -51,10 +51,14 @@ export const createPerformance = async (req: Request, res: Response) => {
             teacherName: getTest?.teacherName,
             studentName: getStudent?.name,
             class: getStudent?.className,
-            grade: scoreGrade(),
+            grade: scoreGrade(score),
             precentage: `${score.toFixed(2)}%`,
             maxLength: total,
           });
+
+          console.log("How: ", scoreGrade(score));
+          console.log("performance: ", performance);
+
           getStudent!.performance!.push(
             new mongoose.Types.ObjectId(performance._id)
           );

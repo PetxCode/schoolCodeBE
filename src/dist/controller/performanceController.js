@@ -28,7 +28,7 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
         let gradeScore = getTest === null || getTest === void 0 ? void 0 : getTest.gradeScore;
         let total = getTest.mainTest.length;
         let score = (right / total) * 100;
-        let scoreGrade = () => {
+        let scoreGrade = (score) => {
             if (score < 60) {
                 return "F";
             }
@@ -62,10 +62,12 @@ const createPerformance = (req, res) => __awaiter(void 0, void 0, void 0, functi
                         teacherName: getTest === null || getTest === void 0 ? void 0 : getTest.teacherName,
                         studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
                         class: getStudent === null || getStudent === void 0 ? void 0 : getStudent.className,
-                        grade: scoreGrade(),
+                        grade: scoreGrade(score),
                         precentage: `${score.toFixed(2)}%`,
                         maxLength: total,
                     });
+                    console.log("How: ", scoreGrade(score));
+                    console.log("performance: ", performance);
                     getStudent.performance.push(new mongoose_1.default.Types.ObjectId(performance._id));
                     getStudent === null || getStudent === void 0 ? void 0 : getStudent.save();
                     getTest.student.push(new mongoose_1.default.Types.ObjectId(performance._id));
