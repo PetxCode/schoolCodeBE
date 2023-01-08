@@ -12,7 +12,7 @@ export const createLecture = async (req: Request, res: Response) => {
     const code = crypto.randomBytes(3).toString("hex");
     const {
       lectureTopic,
-      lectureDetails,
+      lectureObjective,
       lectureNote,
       lectureTime,
       subjectCode,
@@ -29,7 +29,7 @@ export const createLecture = async (req: Request, res: Response) => {
         lectureNote,
         lectureTime,
         lectureCode: code,
-        lectureDetails,
+        lectureObjective,
         lectureTopic,
         time: `${moment(dater).format("dddd")}, ${moment(dater).format(
           "MMMM Do YYYY, h:mm:ss"
