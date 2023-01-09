@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudentReport = exports.viewTeacherReport = exports.viewSchoolReport = exports.updateReportForStudent = exports.createReportForStudent = exports.createReportForTeacher = void 0;
+exports.updateStatusReport = exports.viewStudentReport = exports.viewTeacherReport = exports.viewSchoolReport = exports.updateReportForStudent = exports.createReportForStudent = exports.createReportForTeacher = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -162,3 +162,19 @@ const viewStudentReport = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewStudentReport = viewStudentReport;
+const updateStatusReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { status } = req.body;
+        const notify = yield reportModel_1.default.findByIdAndUpdate(req.params.id, {
+            status,
+        }, { new: true });
+        return res.status(200).json({
+            message: "Here are data for this session...!",
+            data: notify,
+        });
+    }
+    catch (error) {
+        return res.status(404).json({ message: `Error: ${error}` });
+    }
+});
+exports.updateStatusReport = updateStatusReport;

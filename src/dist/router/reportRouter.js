@@ -9,4 +9,5 @@ router.route("/:id/update-report").patch(reportController_1.updateReportForStude
 router.route("/:id/view-school-report").get(reportController_1.viewSchoolReport);
 router.route("/:id/view-teacher-report").get(reportController_1.viewTeacherReport);
 router.route("/:id/view-student-report").get(reportController_1.viewStudentReport);
+router.route("/:id/update-report").get(reportController_1.updateStatusReport);
 exports.default = router;

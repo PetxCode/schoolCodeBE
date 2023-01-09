@@ -158,3 +158,23 @@ export const viewStudentReport = async (req: Request, res: Response) => {
     return res.status(404).json({ message: `Error: ${error}` });
   }
 };
+
+export const updateStatusReport = async (req: Request, res: Response) => {
+  try {
+    const { status } = req.body;
+    const notify = await reportModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        status,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Here are data for this session...!",
+      data: notify,
+    });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
