@@ -19,6 +19,6 @@ router.route("/:id/update-report").patch(updateReportForStudent);
 router.route("/:id/view-school-report").get(viewSchoolReport);
 router.route("/:id/view-teacher-report").get(viewTeacherReport);
 router.route("/:id/view-student-report").get(viewStudentReport);
-router.route("/:id/update-report").get(updateStatusReport);
+router.route("/:id/update-report-data").patch(updateStatusReport);
 
 export default router;
