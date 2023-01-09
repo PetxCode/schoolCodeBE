@@ -17,6 +17,7 @@ export const createReportForTeacher = async (req: Request, res: Response) => {
     if (getSchool) {
       const note = await reportModel.create({
         message,
+        who: "Student",
         status: "not seen",
         senderName: getTeacher!.name,
         teacher: new mongoose.Types.ObjectId(getTeacher!._id),
@@ -52,6 +53,7 @@ export const createReportForStudent = async (req: Request, res: Response) => {
     if (getSchool) {
       const note = await reportModel.create({
         message,
+        who: "Teacher",
         status: "not seen",
         senderName: getTeacher!.name,
         student: new mongoose.Types.ObjectId(getTeacher!._id),

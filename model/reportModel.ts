@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface iReport {
   message?: string;
   senderName?: string;
+  who?: string;
   status?: string;
   student?: {}[];
   teacher?: {}[];
@@ -14,6 +15,10 @@ interface iReportData extends iReport, mongoose.Document {
 
 const reportModel = new mongoose.Schema(
   {
+    who: {
+      type: String,
+      require: true,
+    },
     message: {
       type: String,
       require: true,

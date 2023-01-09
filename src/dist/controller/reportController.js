@@ -28,6 +28,7 @@ const createReportForTeacher = (req, res) => __awaiter(void 0, void 0, void 0, f
         if (getSchool) {
             const note = yield reportModel_1.default.create({
                 message,
+                who: "Student",
                 status: "not seen",
                 senderName: getTeacher.name,
                 teacher: new mongoose_1.default.Types.ObjectId(getTeacher._id),
@@ -60,6 +61,7 @@ const createReportForStudent = (req, res) => __awaiter(void 0, void 0, void 0, f
         if (getSchool) {
             const note = yield reportModel_1.default.create({
                 message,
+                who: "Teacher",
                 status: "not seen",
                 senderName: getTeacher.name,
                 student: new mongoose_1.default.Types.ObjectId(getTeacher._id),
