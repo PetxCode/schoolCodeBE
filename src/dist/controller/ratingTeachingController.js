@@ -32,9 +32,19 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const getClass = yield classModel_1.default.findOne({
             className: getLecture === null || getLecture === void 0 ? void 0 : getLecture.className,
         });
+        let getRated = yield ratingTeachingModel_1.default.findOne({
+            studentName: getStudent === null || getStudent === void 0 ? void 0 : getStudent.name,
+        });
         const dater = Date.now();
         if ((getStudent === null || getStudent === void 0 ? void 0 : getStudent.className) === (getClass === null || getClass === void 0 ? void 0 : getClass.className) || getLecture) {
-            console.log("start");
+            if (getLecture.rated.length > 0) {
+                if (getLecture.rated.includes(getRated._id)) {
+                    const ratedData = yield ratingTeachingModel_1.default.findByIdAndUpdate(getRated._id, { ratingLecture }, { new: true });
+                    return res
+                        .status(200)
+                        .json({ message: "rating Lecture updated", data: ratedData });
+                }
+            }
             const ratingData = yield ratingTeachingModel_1.default.create({
                 ratingLecture,
                 time: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
@@ -44,7 +54,7 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 subjectName: getLecture.subjectName,
                 subjectTeacher: getLecture === null || getLecture === void 0 ? void 0 : getLecture.teacherName,
             });
-            getLecture.rated.push(new mongoose_1.default.Types.ObjectId(ratingData._id));
+            getLecture.rated.push(new mongoose_1.default.Types.ObjectId(ratingData === null || ratingData === void 0 ? void 0 : ratingData._id));
             getLecture === null || getLecture === void 0 ? void 0 : getLecture.save();
             getTeacher.rated.push(new mongoose_1.default.Types.ObjectId(ratingData === null || ratingData === void 0 ? void 0 : ratingData._id));
             getTeacher === null || getTeacher === void 0 ? void 0 : getTeacher.save();
@@ -75,7 +85,7 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
     catch (error) {
-        return res.status(404).json({ message: `Error: ${error.message}` });
+        return res.status(404).json({ message: `Error: ${error}` });
     }
 });
 exports.createLecture = createLecture;

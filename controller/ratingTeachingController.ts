@@ -29,9 +29,25 @@ export const createLecture = async (req: Request, res: Response) => {
       className: getLecture?.className,
     });
 
+    let getRated = await ratingTeachingModel.findOne({
+      studentName: getStudent?.name,
+    });
+
     const dater = Date.now();
     if (getStudent?.className === getClass?.className || getLecture) {
-      console.log("start");
+      if (getLecture!.rated!.length > 0) {
+        if (getLecture!.rated!.includes(getRated!._id)) {
+          const ratedData = await ratingTeachingModel.findByIdAndUpdate(
+            getRated!._id,
+            { ratingLecture },
+            { new: true }
+          );
+
+          return res
+            .status(200)
+            .json({ message: "rating Lecture updated", data: ratedData });
+        }
+      }
 
       const ratingData = await ratingTeachingModel.create({
         ratingLecture,
@@ -45,7 +61,7 @@ export const createLecture = async (req: Request, res: Response) => {
         subjectTeacher: getLecture?.teacherName,
       });
 
-      getLecture!.rated!.push(new mongoose.Types.ObjectId(ratingData._id));
+      getLecture!.rated!.push(new mongoose.Types.ObjectId(ratingData?._id));
       getLecture?.save();
 
       getTeacher!.rated!.push(new mongoose.Types.ObjectId(ratingData?._id));
@@ -86,7 +102,7 @@ export const createLecture = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "School can't be found" });
     }
   } catch (error: any) {
-    return res.status(404).json({ message: `Error: ${error.message}` });
+    return res.status(404).json({ message: `Error: ${error}` });
   }
 };
 
