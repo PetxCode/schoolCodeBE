@@ -33,21 +33,63 @@ export const createLecture = async (req: Request, res: Response) => {
       studentName: getStudent?.name,
     });
 
+    let getRatedCoded = await ratingTeachingModel.findOne({
+      lectureCode: "e6036f",
+    });
+
     const dater = Date.now();
     if (getStudent?.className === getClass?.className || getLecture) {
-      if (getLecture!.rated!.length > 0) {
-        if (getLecture!.rated!.includes(getRated!._id)) {
-          const ratedData = await ratingTeachingModel.findByIdAndUpdate(
-            getRated!._id,
-            { ratingLecture },
-            { new: true }
-          );
+      // console.log(getLecture!.rated!.length);
+      // if (getLecture!.rated!.length > 0) {
+      //   console.log("got it: ", getRated!._id.toString());
 
-          return res
-            .status(200)
-            .json({ message: "rating Lecture updated", data: ratedData });
-        }
-      }
+      //   console.log("got it array: ", getLecture!.rated!);
+      //   console.log(
+      //     "got it array: ",
+      //     getLecture!.rated!.includes(getRated!._id === getRatedCoded!._id)
+      //   );
+      //   const dataID = getRated!._id.toString();
+
+      //   if (getLecture!.rated!.includes("63bd67f8d2d84919740cc44c")) {
+      //     // const ratedData = await ratingTeachingModel.findByIdAndUpdate(
+      //     //   getRated!._id,
+      //     //   { ratingLecture },
+      //     //   { new: true }
+      //     // );
+
+      //     // const lectureData = await lectureModel
+      //     //   .findById(req.params.lectureID)
+      //     //   .populate({
+      //     //     path: "rated",
+      //     //     options: {
+      //     //       sort: { createdAt: -1 },
+      //     //     },
+      //     //   });
+
+      //     // const sumData = lectureData!.rated!.map((rate: any) => {
+      //     //   return rate!.ratingLecture;
+      //     // });
+
+      //     // const totalRated = sumData.reduce((a: number, b: number) => {
+      //     //   return a + b;
+      //     // }, 0);
+
+      //     // await lectureModel.findByIdAndUpdate(
+      //     //   req.params.lectureID,
+      //     //   {
+      //     //     lecturePerformance: parseInt(
+      //     //       (totalRated / lectureData!.rated!.length).toFixed(2)
+      //     //     ),
+      //     //   },
+      //     //   { new: true }
+      //     // );
+
+      //     return res.status(200).json({
+      //       message: "rating Lecture updated",
+      //       // data: ratedData
+      //     });
+      //   }
+      // }
 
       const ratingData = await ratingTeachingModel.create({
         ratingLecture,
@@ -82,14 +124,19 @@ export const createLecture = async (req: Request, res: Response) => {
 
       const totalRated = sumData.reduce((a: number, b: number) => {
         return a + b;
-      });
+      }, 0);
+
+      const value = totalRated / lectureData!.rated!.length;
+      // .toFixed(2)
+
+      console.log(totalRated);
+      console.log(lectureData!.rated!.length);
+      console.log(value);
 
       await lectureModel.findByIdAndUpdate(
         req.params.lectureID,
         {
-          lecturePerformance: (totalRated / lectureData!.rated!.length).toFixed(
-            2
-          ),
+          lecturePerformance: value.toFixed(2),
         },
         { new: true }
       );
