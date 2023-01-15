@@ -368,12 +368,12 @@ let newData = [
   },
 ];
 
-var groubedByTeam = groupData(newData, "testName");
+var groubedTestName = groupData(newData, "testName");
 // console.log("start...");
 // console.log("");
 // console.log("");
 
-let resTest = Object.values(groubedByTeam);
+let resTest = Object.values(groubedTestName);
 
 const realData = [
   [
