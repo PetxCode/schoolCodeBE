@@ -127,11 +127,6 @@ export const createLecture = async (req: Request, res: Response) => {
       }, 0);
 
       const value = totalRated / lectureData!.rated!.length;
-      // .toFixed(2)
-
-      console.log(totalRated);
-      console.log(lectureData!.rated!.length);
-      console.log(value);
 
       await lectureModel.findByIdAndUpdate(
         req.params.lectureID,
