@@ -45,6 +45,7 @@ export const createPerformance = async (req: Request, res: Response) => {
           const performance = await performanceModel.create({
             right,
             failed: total - right,
+
             gradeScore: getTest?.gradeScore,
             totalScore: gradeScore! * right,
             testName: getTest?.subjectTest,
@@ -55,6 +56,7 @@ export const createPerformance = async (req: Request, res: Response) => {
             grade: scoreGrade(score),
             precentage: `${score.toFixed(2)}%`,
             maxLength: total,
+            rateScore: total * getTest!.gradeScore!,
           });
 
           getStudent!.performance!.push(

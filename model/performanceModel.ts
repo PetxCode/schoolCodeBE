@@ -14,6 +14,7 @@ interface iClass {
   precentage?: string;
   testTitle?: string;
   maxLength?: number;
+  rateScore?: number;
 }
 
 interface iClassData extends iClass, mongoose.Document {
@@ -22,6 +23,10 @@ interface iClassData extends iClass, mongoose.Document {
 
 const performanceModel = new mongoose.Schema(
   {
+    rateScore: {
+      type: Number,
+      require: true,
+    },
     totalScore: {
       type: Number,
       require: true,
