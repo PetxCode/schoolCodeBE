@@ -185,31 +185,7 @@ export const createGeneralPerformance = async (req: Request, res: Response) => {
     };
 
     let remark: string = "";
-
-    for (let i = 0; i < overAllMark.length; i++) {
-      if (mainScore[i] < overAllMark[i] * 0.4) {
-        remark =
-          "very good performance, please do try to improve in your studies!";
-        console.log(mainScore[i] < overAllMark[i] * 0.4);
-        console.log("very poor performance", mainScore[i]);
-        console.log("very poor performance", overAllMark[i]);
-      } else if (mainScore[i] < overAllMark[i] * 0.6) {
-        remark = "fair performance, still need to improve in your studies!";
-        console.log(mainScore[i] < overAllMark[i] * 0.6);
-        console.log("very fair performance", mainScore[i]);
-        console.log("very fair performance", overAllMark[i]);
-      } else if (mainScore[i] < overAllMark[i] * 0.8) {
-        remark = "good performance, but can still improve!";
-        console.log(mainScore[i] < overAllMark[i] * 0.8);
-        console.log("very good performance", mainScore[i]);
-        console.log("very good performance", overAllMark[i]);
-      } else if (mainScore[i] <= overAllMark[i] * 0.1) {
-        remark = "good performance, but can still improve!";
-        console.log(mainScore[i] < overAllMark[i] * 0.1);
-        console.log("Excellent performance", mainScore[i]);
-        console.log("Excellent performance", overAllMark[i]);
-      }
-    }
+    let remarkData: {}[] = [];
 
     for (let i = 0; i < overAllMark.length; i++) {
       for (let j = 0; j < mainScore.length; j++) {
@@ -218,27 +194,27 @@ export const createGeneralPerformance = async (req: Request, res: Response) => {
             remark =
               "a very Poor performance,  please do try to improve in your studies!";
 
-            mainScore.push({ remark });
+            remarkData.push({ remark });
 
             break;
           } else if (mainScore[j] < overAllMark[i] * 0.6) {
             remark =
               "a Fair performance, still need to improve in your studies!";
 
-            mainScore.push({ remark });
+            remarkData.push({ remark });
             break;
           } else if (mainScore[j] < overAllMark[i] * 0.8) {
             remark = "a Good performance, but can still improve!";
-            mainScore.push({ remark });
+            remarkData.push({ remark });
             break;
           } else if (mainScore[j] <= overAllMark[i] * 1) {
             remark = "an Excellent performance, Keep it up...!";
-            mainScore.push({ remark });
+            remarkData.push({ remark });
 
             break;
           } else {
             remark = "Error";
-            mainScore.push({ remark });
+            remarkData.push({ remark });
 
             break;
           }
@@ -254,6 +230,7 @@ export const createGeneralPerformance = async (req: Request, res: Response) => {
           mainScore,
           subjectName,
           overAllMark,
+          remarkData,
         },
       });
     } else {
