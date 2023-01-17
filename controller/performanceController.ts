@@ -84,6 +84,186 @@ export const createPerformance = async (req: Request, res: Response) => {
   }
 };
 
+export const createGeneralPerformance = async (req: Request, res: Response) => {
+  try {
+    const getStudent = await studentModel.findById(req.params.id);
+    // const getTest = await testModel.findOne({
+    //   testCode,
+    // });
+
+    // let gradeScore = getTest?.gradeScore;
+    // let total = getTest!.mainTest!.length;
+    // let score = (right / total) * 100;
+
+    // let scoreGrade = (score: number): string | undefined => {
+    //   if (score < 60) {
+    //     return "F";
+    //   } else if (score < 70) {
+    //     return "D";
+    //   } else if (score < 80) {
+    //     return "C";
+    //   } else if (score < 90) {
+    //     return "B";
+    //   } else if (score <= 100) {
+    //     return "A";
+    //   }
+    // };
+
+    const groupData = (data: {}[], props: string) => {
+      return data.reduce((el: any, newEL: any) => {
+        (el[newEL[props]] = el[newEL[props]] || []).push(newEL);
+        return el;
+      }, {});
+    };
+
+    const getNewStudent = await studentModel.findById(req.params.id).populate({
+      path: "performance",
+      options: {
+        sort: { createdAt: 1 },
+      },
+    });
+
+    const buildData = groupData(getNewStudent!.performance!, "testName");
+    const subjectName = Object.keys(buildData);
+    const subjectData = Object.values(buildData);
+
+    const overAllMark = subjectData
+      .map((el: any) => {
+        return el.map((el: any) => {
+          return el.rateScore;
+        });
+      })
+      .map((el: any) => {
+        return el;
+      })
+      .map((el: any) => {
+        return el.reduce((a: any, b: any) => {
+          return a + b;
+        });
+      });
+
+    const mainScore = subjectData
+      .map((el: any) => {
+        return el.map((el: any) => {
+          return el.totalScore;
+        });
+      })
+      .map((el: any) => {
+        return el;
+      })
+      .map((el: any) => {
+        return el.reduce((a: any, b: any) => {
+          return a + b;
+        });
+      });
+
+    const score = subjectData
+      .map((el: any) => {
+        return el.map((el: any) => {
+          return el.totalScore;
+        });
+      })
+      .map((el: any) => {
+        return el;
+      })
+      .map((el: any) => {
+        return el;
+      });
+
+    let scoreRemake = (score: number): string | undefined => {
+      if (score < 60) {
+        return "F";
+      } else if (score < 70) {
+        return "D";
+      } else if (score < 80) {
+        return "C";
+      } else if (score < 90) {
+        return "B";
+      } else if (score <= 100) {
+        return "A";
+      }
+    };
+
+    let remark: string = "";
+
+    for (let i = 0; i < overAllMark.length; i++) {
+      if (mainScore[i] < overAllMark[i] * 0.4) {
+        remark =
+          "very good performance, please do try to improve in your studies!";
+        console.log(mainScore[i] < overAllMark[i] * 0.4);
+        console.log("very poor performance", mainScore[i]);
+        console.log("very poor performance", overAllMark[i]);
+      } else if (mainScore[i] < overAllMark[i] * 0.6) {
+        remark = "fair performance, still need to improve in your studies!";
+        console.log(mainScore[i] < overAllMark[i] * 0.6);
+        console.log("very fair performance", mainScore[i]);
+        console.log("very fair performance", overAllMark[i]);
+      } else if (mainScore[i] < overAllMark[i] * 0.8) {
+        remark = "good performance, but can still improve!";
+        console.log(mainScore[i] < overAllMark[i] * 0.8);
+        console.log("very good performance", mainScore[i]);
+        console.log("very good performance", overAllMark[i]);
+      } else if (mainScore[i] <= overAllMark[i] * 0.1) {
+        remark = "good performance, but can still improve!";
+        console.log(mainScore[i] < overAllMark[i] * 0.1);
+        console.log("Excellent performance", mainScore[i]);
+        console.log("Excellent performance", overAllMark[i]);
+      }
+    }
+
+    for (let i = 0; i < overAllMark.length; i++) {
+      for (let j = 0; j < mainScore.length; j++) {
+        if (i === j) {
+          if (mainScore[j] < overAllMark[i] * 0.4) {
+            remark =
+              "a very Poor performance,  please do try to improve in your studies!";
+
+            mainScore.push({ remark });
+
+            break;
+          } else if (mainScore[j] < overAllMark[i] * 0.6) {
+            remark =
+              "a Fair performance, still need to improve in your studies!";
+
+            mainScore.push({ remark });
+            break;
+          } else if (mainScore[j] < overAllMark[i] * 0.8) {
+            remark = "a Good performance, but can still improve!";
+            mainScore.push({ remark });
+            break;
+          } else if (mainScore[j] <= overAllMark[i] * 1) {
+            remark = "an Excellent performance, Keep it up...!";
+            mainScore.push({ remark });
+
+            break;
+          } else {
+            remark = "Error";
+            mainScore.push({ remark });
+
+            break;
+          }
+        }
+      }
+    }
+
+    if (getStudent) {
+      return res.status(200).json({
+        message: "Get a Test Code to continue",
+        data: {
+          score,
+          mainScore,
+          subjectName,
+          overAllMark,
+        },
+      });
+    } else {
+      return res.status(404).json({ message: "Student can't be found" });
+    }
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
+  }
+};
+
 export const viewPerformance = async (req: Request, res: Response) => {
   try {
     const student = await studentModel.findById(req.params.id).populate({
