@@ -41,5 +41,17 @@ const academicSessionModel = new mongoose_1.default.Schema({
             ref: "events",
         },
     ],
+    payRolls: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "payRolls",
+        },
+    ],
+    expense: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "expenses",
+        },
+    ],
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("academicSessions", academicSessionModel);

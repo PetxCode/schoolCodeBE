@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const payRollController_1 = require("../controller/payRollController");
+const express_1 = require("express");
+const router = (0, express_1.Router)();
+router.route("/:id/:teacherID/create-teacher-payment").post(payRollController_1.createPayTeacher);
+router.route("/:id/:paymentID/update-payment").patch(payRollController_1.updateTeacherPay);
+router.route("/:id/get-teacher-payment-record").get(payRollController_1.viewTeacherPayment);
+router.route("/:id/get-school-payment-record").get(payRollController_1.viewSchoolPayment);
+exports.default = router;

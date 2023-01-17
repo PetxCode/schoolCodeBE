@@ -193,23 +193,23 @@ const createGeneralPerformance = (req, res) => __awaiter(void 0, void 0, void 0,
                 if (i === j) {
                     if (mainScore[j] < overAllMark[i] * 0.4) {
                         remark =
-                            "a very Poor performance,  please do try to improve in your studies!";
+                            "A very Poor performance,  please do try to improve in your studies!";
                         remarkData.push({ remark });
                         break;
                     }
                     else if (mainScore[j] < overAllMark[i] * 0.6) {
                         remark =
-                            "a Fair performance, still need to improve in your studies!";
+                            "A Fair performance, still need to improve in your studies!";
                         remarkData.push({ remark });
                         break;
                     }
                     else if (mainScore[j] < overAllMark[i] * 0.8) {
-                        remark = "a Good performance, but can still improve!";
+                        remark = "A Good performance, but can still improve!";
                         remarkData.push({ remark });
                         break;
                     }
                     else if (mainScore[j] <= overAllMark[i] * 1) {
-                        remark = "an Excellent performance, Keep it up...!";
+                        remark = "An Excellent performance, Keep it up...!";
                         remarkData.push({ remark });
                         break;
                     }

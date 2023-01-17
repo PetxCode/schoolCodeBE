@@ -12,6 +12,10 @@ const teacherModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    salary: {
+        type: Number,
+        require: true,
+    },
     name: {
         type: String,
         require: true,
@@ -74,6 +78,12 @@ const teacherModel = new mongoose_1.default.Schema({
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "lectures",
+        },
+    ],
+    payRolls: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "payRolls",
         },
     ],
     report: [

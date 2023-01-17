@@ -7,6 +7,7 @@ import {
   updateTeacherImage,
   getSchoolTeacherInfo,
   getSchoolTeacherInfoForClasses,
+  assignTeacherPay,
 } from "../controller/teacherController";
 import upload from "../utils/multer";
 
@@ -25,5 +26,7 @@ router.route("/:id/:token/reset").post(changePassword);
 
 router.route("/:id").get(getSchoolTeacherInfo);
 router.route("/:id/get-classes").get(getSchoolTeacherInfoForClasses);
+
+router.route("/:id/:teacherID/update-teacher-payment").patch(assignTeacherPay);
 
 export default router;

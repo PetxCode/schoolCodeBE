@@ -9,6 +9,8 @@ interface iSession {
   schoolFees?: {}[];
   notification?: {}[];
   event?: {}[];
+  payRolls?: {}[];
+  expense?: {}[];
   date?: string;
 }
 
@@ -53,6 +55,20 @@ const academicSessionModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "events",
+      },
+    ],
+
+    payRolls: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "payRolls",
+      },
+    ],
+
+    expense: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "expenses",
       },
     ],
   },

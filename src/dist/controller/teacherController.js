@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
+exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.assignTeacherPay = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -240,6 +240,31 @@ const getSchoolTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getSchoolTeacherInfo = getSchoolTeacherInfo;
+const assignTeacherPay = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { salary } = req.body;
+        const teacher = yield teacherModel_1.default.findById(req.params.teacherID);
+        const school = yield schoolModel_1.default.findById(req.params.id);
+        if (school) {
+            const teacherData = yield teacherModel_1.default.findByIdAndUpdate(req.params.teacherID, { salary }, { new: true });
+            return res.status(200).json({
+                message: "Teachers salary updated",
+                data: teacherData,
+            });
+        }
+        else {
+            return res.status(200).json({
+                message: "something went wrong",
+            });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: `Error: ${err}`,
+        });
+    }
+});
+exports.assignTeacherPay = assignTeacherPay;
 const assignStudentToClass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;

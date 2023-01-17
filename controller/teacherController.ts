@@ -263,6 +263,39 @@ export const getSchoolTeacherInfo = async (
   }
 };
 
+export const assignTeacherPay = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { salary } = req.body;
+
+    const teacher = await teacherModel.findById(req.params.teacherID);
+    const school = await schoolModel.findById(req.params.id);
+
+    if (school) {
+      const teacherData = await teacherModel.findByIdAndUpdate(
+        req.params.teacherID,
+        { salary },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        message: "Teachers salary updated",
+        data: teacherData,
+      });
+    } else {
+      return res.status(200).json({
+        message: "something went wrong",
+      });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: `Error: ${err}`,
+    });
+  }
+};
+
 export const assignStudentToClass = async (
   req: Request,
   res: Response

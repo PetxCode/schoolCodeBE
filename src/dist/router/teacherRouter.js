@@ -15,4 +15,5 @@ router.route("/reset/password").patch(teacherController_1.resetPassword);
 router.route("/:id/:token/reset").post(teacherController_1.changePassword);
 router.route("/:id").get(teacherController_1.getSchoolTeacherInfo);
 router.route("/:id/get-classes").get(teacherController_1.getSchoolTeacherInfoForClasses);
+router.route("/:id/:teacherID/update-teacher-payment").patch(teacherController_1.assignTeacherPay);
 exports.default = router;

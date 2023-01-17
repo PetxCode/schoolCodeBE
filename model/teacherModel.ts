@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 interface iTeacher {
   name?: string;
+  salary?: number;
   schoolName?: string;
   email?: string;
   password?: string;
@@ -22,6 +23,7 @@ interface iTeacher {
   myClass?: {}[];
   report?: {}[];
   lectures?: {}[];
+  payRolls?: {}[];
 }
 
 interface iTeacherData extends iTeacher, mongoose.Document {
@@ -38,6 +40,12 @@ const teacherModel = new mongoose.Schema(
       type: String,
       require: true,
     },
+
+    salary: {
+      type: Number,
+      require: true,
+    },
+
     name: {
       type: String,
       require: true,
@@ -100,6 +108,13 @@ const teacherModel = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "lectures",
+      },
+    ],
+
+    payRolls: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "payRolls",
       },
     ],
 
