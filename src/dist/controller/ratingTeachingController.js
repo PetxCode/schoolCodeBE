@@ -112,10 +112,6 @@ const createLecture = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 return a + b;
             }, 0);
             const value = totalRated / lectureData.rated.length;
-            // .toFixed(2)
-            console.log(totalRated);
-            console.log(lectureData.rated.length);
-            console.log(value);
             yield lectureModel_1.default.findByIdAndUpdate(req.params.lectureID, {
                 lecturePerformance: value.toFixed(2),
             }, { new: true });

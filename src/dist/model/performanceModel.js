@@ -5,6 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const performanceModel = new mongoose_1.default.Schema({
+    rateScore: {
+        type: Number,
+        require: true,
+    },
     totalScore: {
         type: Number,
         require: true,
