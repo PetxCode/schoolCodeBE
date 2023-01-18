@@ -8,6 +8,12 @@ const payRollModel = new mongoose_1.default.Schema({
     payData: {
         type: String,
     },
+    payYear: {
+        type: String,
+    },
+    payMonth: {
+        type: String,
+    },
     name: {
         type: String,
     },

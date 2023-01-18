@@ -26,9 +26,12 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             sessionCode: code,
         });
         const dateTime = Date.now();
+        const monthDate = (0, moment_1.default)(dateTime).format("MMMM Do YYYY, h:mm:ss");
         if (getSchool) {
             const expense = yield expenseModel_1.default.create({
                 date: (0, moment_1.default)(dateTime).format("LLLL"),
+                paidMonth: monthDate.split(" ")[0],
+                paidYear: monthDate.split(",")[0].split(" ")[2],
                 cost,
                 item,
                 description,
@@ -37,7 +40,7 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             getSession === null || getSession === void 0 ? void 0 : getSession.save();
             return res.status(201).json({
                 message: `expense has been recorded for ${(0, moment_1.default)(dateTime).format("LLLL")}`,
-                data: expense,
+                // data: expense,
             });
         }
         else {

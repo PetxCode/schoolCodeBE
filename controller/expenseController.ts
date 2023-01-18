@@ -17,10 +17,13 @@ export const createExpense = async (req: Request, res: Response) => {
     });
 
     const dateTime = Date.now();
+    const monthDate = moment(dateTime).format("MMMM Do YYYY, h:mm:ss");
 
     if (getSchool) {
       const expense = await expenseModel.create({
         date: moment(dateTime).format("LLLL"),
+        paidMonth: monthDate.split(" ")[0],
+        paidYear: monthDate.split(",")[0].split(" ")[2],
         cost,
         item,
         description,
@@ -33,7 +36,7 @@ export const createExpense = async (req: Request, res: Response) => {
         message: `expense has been recorded for ${moment(dateTime).format(
           "LLLL"
         )}`,
-        data: expense,
+        // data: expense,
       });
     } else {
       return res.status(404).json({ message: "school can't be found" });

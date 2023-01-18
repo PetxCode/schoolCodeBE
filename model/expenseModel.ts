@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 interface iExpense {
   item?: string;
   date?: string;
+  paidMonth?: string;
+  paidYear?: string;
   description?: string;
 
   cost?: number;
@@ -18,6 +20,12 @@ const expenseModel = new mongoose.Schema(
       type: String,
     },
     date: {
+      type: String,
+    },
+    paidMonth: {
+      type: String,
+    },
+    paidYear: {
       type: String,
     },
     description: {

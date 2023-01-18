@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 interface iPayRoll {
   payData?: string;
+  payMonth?: string;
+  payYear?: string;
   recieved?: boolean;
 
   salary?: number;
@@ -17,6 +19,12 @@ interface iPayRollData extends iPayRoll, mongoose.Document {
 const payRollModel = new mongoose.Schema(
   {
     payData: {
+      type: String,
+    },
+    payYear: {
+      type: String,
+    },
+    payMonth: {
       type: String,
     },
     name: {

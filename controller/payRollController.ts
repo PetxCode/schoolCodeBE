@@ -18,9 +18,12 @@ export const createPayTeacher = async (req: Request, res: Response) => {
     });
 
     const dateTime = Date.now();
+    const monthDate = moment(dateTime).format("MMMM Do YYYY, h:mm:ss");
 
     if (getSchool) {
       const pay = await payRollModel.create({
+        paidMonth: monthDate.split(" ")[0],
+        paidYear: monthDate.split(",")[0].split(" ")[2],
         payData: moment(dateTime).format("LLLL"),
         recieved: false,
         name: getTeacher!.name,

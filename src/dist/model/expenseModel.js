@@ -11,6 +11,12 @@ const expenseModel = new mongoose_1.default.Schema({
     date: {
         type: String,
     },
+    paidMonth: {
+        type: String,
+    },
+    paidYear: {
+        type: String,
+    },
     description: {
         type: String,
     },
