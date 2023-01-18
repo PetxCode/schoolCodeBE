@@ -31,8 +31,8 @@ const createPayTeacher = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const monthDate = (0, moment_1.default)(dateTime).format("MMMM Do YYYY, h:mm:ss");
         if (getSchool) {
             const pay = yield payRollModel_1.default.create({
-                paidMonth: monthDate.split(" ")[0],
-                paidYear: monthDate.split(",")[0].split(" ")[2],
+                payMonth: monthDate.split(" ")[0],
+                payYear: monthDate.split(",")[0].split(" ")[2],
                 payData: (0, moment_1.default)(dateTime).format("LLLL"),
                 recieved: false,
                 name: getTeacher.name,

@@ -22,8 +22,8 @@ export const createPayTeacher = async (req: Request, res: Response) => {
 
     if (getSchool) {
       const pay = await payRollModel.create({
-        paidMonth: monthDate.split(" ")[0],
-        paidYear: monthDate.split(",")[0].split(" ")[2],
+        payMonth: monthDate.split(" ")[0],
+        payYear: monthDate.split(",")[0].split(" ")[2],
         payData: moment(dateTime).format("LLLL"),
         recieved: false,
         name: getTeacher!.name,
@@ -38,7 +38,6 @@ export const createPayTeacher = async (req: Request, res: Response) => {
 
       getTeacher!.payRolls!.push(new mongoose.Types.ObjectId(pay._id));
       getTeacher?.save();
-
       return res.status(201).json({
         message: `Payment has been made for ${moment(dateTime).format("LLLL")}`,
         data: pay,
