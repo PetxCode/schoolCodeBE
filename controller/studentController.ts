@@ -226,7 +226,6 @@ export const updateStudent = async (req: any, res: any): Promise<Response> => {
             if (result) {
               return resolve(result);
             } else {
-              console.log("reading Error: ", error);
               return reject(error);
             }
           }
@@ -240,7 +239,7 @@ export const updateStudent = async (req: any, res: any): Promise<Response> => {
 
     const user = await schoolModel.findByIdAndUpdate(
       req.params.id,
-      { logo: image.secure_url! },
+      { image: image.secure_url! },
       { new: true }
     );
 

@@ -218,7 +218,6 @@ const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                         return resolve(result);
                     }
                     else {
-                        console.log("reading Error: ", error);
                         return reject(error);
                     }
                 });
@@ -226,7 +225,7 @@ const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             }));
         };
         const image = yield streamUpload(req);
-        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { logo: image.secure_url }, { new: true });
+        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { image: image.secure_url }, { new: true });
         return res.status(200).json({
             message: "school found",
             data: user,
