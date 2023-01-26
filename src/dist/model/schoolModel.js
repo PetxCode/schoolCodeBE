@@ -20,6 +20,18 @@ const schoolModel = new mongoose_1.default.Schema({
         require: true,
         unique: true,
     },
+    contact: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    vision: {
+        type: String,
+    },
+    mission: {
+        type: String,
+    },
     status: {
         type: String,
     },

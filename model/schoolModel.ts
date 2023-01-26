@@ -18,6 +18,10 @@ interface iSchool {
   report?: {}[];
   payRolls?: {}[];
   sessions?: any[];
+  address?: string;
+  contact?: string;
+  vision?: string;
+  mission?: string;
 }
 
 interface iSchoolData extends iSchool, mongoose.Document {
@@ -43,6 +47,19 @@ const schoolModel = new mongoose.Schema(
       require: true,
       unique: true,
     },
+    contact: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    vision: {
+      type: String,
+    },
+    mission: {
+      type: String,
+    },
+
     status: {
       type: String,
     },

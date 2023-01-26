@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import fs from "fs";
 import { config } from "dotenv";
 config();
 import { resetMyPasswordSchoolMail, verifiedSchoolMail } from "../utils/email";
@@ -58,36 +59,56 @@ export const getSchool = async (
 
 export const updateSchool = async (req: any, res: any): Promise<Response> => {
   try {
-    // let streamUpload = (req) => {
-    //   return new Promise(async (resolve, reject) => {
-    //     let stream = await cloudinary.uploader.upload_stream(
-    //       (error, result) => {
-    //         if (result) {
-    //           console.log("result: ", result);
-    //           console.log("show");
-    //           return resolve(result);
-    //         } else {
-    //           return reject(error);
-    //         }
-    //       }
-    //     );
+    let streamUpload = (req: any) => {
+      return new Promise(async (resolve: any, reject: any) => {
+        let stream: string | any = await cloudinary.uploader.upload_stream(
+          (error: any, result: Buffer) => {
+            if (result) {
+              return resolve(result);
+            } else {
+              console.log("reading Error: ", error);
+              return reject(error);
+            }
+          }
+        );
 
-    //     streamifier.createReadStream(req?.file!.buffer).pipe(stream);
-    //   });
-    // };
-    // const image: any = await streamUpload(req);
+        streamifier.createReadStream(req?.file!.buffer!).pipe(stream);
+      });
+    };
 
-    const image: { secure_url: string } = await cloudinary.uploader.upload(
-      req?.file!.path
-    );
+    const image: any = await streamUpload(req);
 
     const user = await schoolModel.findByIdAndUpdate(
       req.params.id,
       { logo: image.secure_url! },
       { new: true }
     );
+
     return res.status(200).json({
       message: "school found",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(404).json({
+      message: "Error",
+    });
+  }
+};
+
+export const updateSchoolInfo = async (
+  req: any,
+  res: any
+): Promise<Response> => {
+  try {
+    const { address, contact, vision, mission } = req.body;
+
+    const user = await schoolModel.findByIdAndUpdate(
+      req.params.id,
+      { address, contact, vision, mission },
+      { new: true }
+    );
+    return res.status(200).json({
+      message: "school info has been updated",
       data: user,
     });
   } catch (err) {

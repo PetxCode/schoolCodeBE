@@ -4,12 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const schoolController_1 = require("../controller/schoolController");
-const multer_1 = __importDefault(require("../utils/multer"));
+const multer_1 = __importDefault(require("multer"));
 const express_1 = require("express");
+let uploadData = (0, multer_1.default)();
 const router = (0, express_1.Router)();
 router.route("/").get(schoolController_1.getSchools);
 router.route("/:id").get(schoolController_1.getSchool);
-router.route("/:id").patch(multer_1.default, schoolController_1.updateSchool);
+router.route("/:id").patch(uploadData.single("image"), schoolController_1.updateSchool);
+router.route("/:id/info").patch(schoolController_1.updateSchoolInfo);
 router.route("/verified/:id").get(schoolController_1.verifiedSchool);
 router.route("/create").post(schoolController_1.createSchool);
 router.route("/login").post(schoolController_1.loginSchool);

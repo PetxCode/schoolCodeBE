@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSchoolStudents = exports.getSchoolTeacher = exports.changePassword = exports.resetPassword = exports.verifiedSchool = exports.loginSchool = exports.createSchool = exports.updateSchool = exports.getSchool = exports.getSchools = void 0;
+exports.getSchoolStudents = exports.getSchoolTeacher = exports.changePassword = exports.resetPassword = exports.verifiedSchool = exports.loginSchool = exports.createSchool = exports.updateSchoolInfo = exports.updateSchool = exports.getSchool = exports.getSchools = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -32,6 +32,7 @@ const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const email_1 = require("../utils/email");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
+const streamifier_1 = __importDefault(require("streamifier"));
 const proc = (0, dotenv_1.config)().parsed;
 const getSchools = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -65,24 +66,21 @@ const getSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getSchool = getSchool;
 const updateSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // let streamUpload = (req) => {
-        //   return new Promise(async (resolve, reject) => {
-        //     let stream = await cloudinary.uploader.upload_stream(
-        //       (error, result) => {
-        //         if (result) {
-        //           console.log("result: ", result);
-        //           console.log("show");
-        //           return resolve(result);
-        //         } else {
-        //           return reject(error);
-        //         }
-        //       }
-        //     );
-        //     streamifier.createReadStream(req?.file!.buffer).pipe(stream);
-        //   });
-        // };
-        // const image: any = await streamUpload(req);
-        const image = yield cloudinary_1.default.uploader.upload(req === null || req === void 0 ? void 0 : req.file.path);
+        let streamUpload = (req) => {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                let stream = yield cloudinary_1.default.uploader.upload_stream((error, result) => {
+                    if (result) {
+                        return resolve(result);
+                    }
+                    else {
+                        console.log("reading Error: ", error);
+                        return reject(error);
+                    }
+                });
+                streamifier_1.default.createReadStream(req === null || req === void 0 ? void 0 : req.file.buffer).pipe(stream);
+            }));
+        };
+        const image = yield streamUpload(req);
         const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { logo: image.secure_url }, { new: true });
         return res.status(200).json({
             message: "school found",
@@ -96,6 +94,22 @@ const updateSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.updateSchool = updateSchool;
+const updateSchoolInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { address, contact, vision, mission } = req.body;
+        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { address, contact, vision, mission }, { new: true });
+        return res.status(200).json({
+            message: "school info has been updated",
+            data: user,
+        });
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: "Error",
+        });
+    }
+});
+exports.updateSchoolInfo = updateSchoolInfo;
 const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { schoolName, email, password } = req.body;
