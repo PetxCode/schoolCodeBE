@@ -337,9 +337,9 @@ const updateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             }));
         };
         const image = yield streamUpload(req);
-        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { image: image.secure_url }, { new: true });
+        const user = yield teacherModel_1.default.findByIdAndUpdate(req.params.id, { image: image.secure_url }, { new: true });
         return res.status(200).json({
-            message: "school found",
+            message: "uploading user's image",
             data: user,
         });
     }
@@ -353,7 +353,7 @@ exports.updateTeacher = updateTeacher;
 const updateTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { address, contact, bio, motivation } = req.body;
-        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { address, contact, bio, motivation }, { new: true });
+        const user = yield teacherModel_1.default.findByIdAndUpdate(req.params.id, { address, contact, bio, motivation }, { new: true });
         return res.status(200).json({
             message: "school info has been updated",
             data: user,

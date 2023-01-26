@@ -237,7 +237,7 @@ export const updateStudent = async (req: any, res: any): Promise<Response> => {
 
     const image: any = await streamUpload(req);
 
-    const user = await schoolModel.findByIdAndUpdate(
+    const user = await studentModel.findByIdAndUpdate(
       req.params.id,
       { image: image.secure_url! },
       { new: true }
@@ -261,7 +261,7 @@ export const updateStudentInfo = async (
   try {
     const { address, contact } = req.body;
 
-    const user = await schoolModel.findByIdAndUpdate(
+    const user = await studentModel.findByIdAndUpdate(
       req.params.id,
       { address, contact },
       { new: true }

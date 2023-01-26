@@ -376,14 +376,14 @@ export const updateTeacher = async (req: any, res: any): Promise<Response> => {
 
     const image: any = await streamUpload(req);
 
-    const user = await schoolModel.findByIdAndUpdate(
+    const user = await teacherModel.findByIdAndUpdate(
       req.params.id,
       { image: image.secure_url! },
       { new: true }
     );
 
     return res.status(200).json({
-      message: "school found",
+      message: "uploading user's image",
       data: user,
     });
   } catch (err) {
@@ -400,7 +400,7 @@ export const updateTeacherInfo = async (
   try {
     const { address, contact, bio, motivation } = req.body;
 
-    const user = await schoolModel.findByIdAndUpdate(
+    const user = await teacherModel.findByIdAndUpdate(
       req.params.id,
       { address, contact, bio, motivation },
       { new: true }
