@@ -12,6 +12,18 @@ const teacherModel = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
+    motivation: {
+        type: String,
+    },
+    contact: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    bio: {
+        type: String,
+    },
     salary: {
         type: Number,
         require: true,

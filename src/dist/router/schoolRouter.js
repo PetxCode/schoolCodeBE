@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const schoolController_1 = require("../controller/schoolController");
-const multer_1 = __importDefault(require("multer"));
 const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
 let uploadData = (0, multer_1.default)();
 const router = (0, express_1.Router)();
 router.route("/").get(schoolController_1.getSchools);

@@ -13,6 +13,10 @@ interface iTeacher {
   verified?: boolean;
   classes?: string[];
   resumedDate?: string;
+  address?: string;
+  contact?: string;
+  bio?: string;
+  motivation?: string;
   test?: {}[];
   lecture?: {}[];
   attendance?: {}[];
@@ -39,6 +43,22 @@ const teacherModel = new mongoose.Schema(
     resumedDate: {
       type: String,
       require: true,
+    },
+
+    motivation: {
+      type: String,
+    },
+
+    contact: {
+      type: String,
+    },
+
+    address: {
+      type: String,
+    },
+
+    bio: {
+      type: String,
     },
 
     salary: {

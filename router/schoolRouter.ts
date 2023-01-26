@@ -12,9 +12,9 @@ import {
   updateSchoolInfo,
 } from "../controller/schoolController";
 import upload from "../utils/multer";
-import multer from "multer";
-import { Router } from "express";
 
+import { Router } from "express";
+import multer from "multer";
 let uploadData = multer();
 
 const router = Router();

@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.assignTeacherPay = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
+exports.updateTeacherInfo = exports.updateTeacher = exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.assignTeacherPay = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -32,6 +32,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const crypto_1 = __importDefault(require("crypto"));
 const email_1 = require("../utils/email");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
+const streamifier_1 = __importDefault(require("streamifier"));
 const studentModel_1 = __importDefault(require("../model/studentModel"));
 const classModel_1 = __importDefault(require("../model/classModel"));
 const dotenv_1 = require("dotenv");
@@ -320,6 +321,52 @@ const getSchoolTeacherInfoForClasses = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.getSchoolTeacherInfoForClasses = getSchoolTeacherInfoForClasses;
+const updateTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let streamUpload = (req) => {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                let stream = yield cloudinary_1.default.uploader.upload_stream((error, result) => {
+                    if (result) {
+                        return resolve(result);
+                    }
+                    else {
+                        console.log("reading Error: ", error);
+                        return reject(error);
+                    }
+                });
+                streamifier_1.default.createReadStream(req === null || req === void 0 ? void 0 : req.file.buffer).pipe(stream);
+            }));
+        };
+        const image = yield streamUpload(req);
+        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { logo: image.secure_url }, { new: true });
+        return res.status(200).json({
+            message: "school found",
+            data: user,
+        });
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: "Error",
+        });
+    }
+});
+exports.updateTeacher = updateTeacher;
+const updateTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { address, contact, bio, motivation } = req.body;
+        const user = yield schoolModel_1.default.findByIdAndUpdate(req.params.id, { address, contact, bio, motivation }, { new: true });
+        return res.status(200).json({
+            message: "school info has been updated",
+            data: user,
+        });
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: "Error",
+        });
+    }
+});
+exports.updateTeacherInfo = updateTeacherInfo;
 // export const assignStudentToClass = async (
 //   req: Request,
 //   res: Response

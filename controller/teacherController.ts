@@ -356,6 +356,67 @@ export const getSchoolTeacherInfoForClasses = async (
   }
 };
 
+export const updateTeacher = async (req: any, res: any): Promise<Response> => {
+  try {
+    let streamUpload = (req: any) => {
+      return new Promise(async (resolve: any, reject: any) => {
+        let stream: string | any = await cloudinary.uploader.upload_stream(
+          (error: any, result: Buffer) => {
+            if (result) {
+              return resolve(result);
+            } else {
+              console.log("reading Error: ", error);
+              return reject(error);
+            }
+          }
+        );
+
+        streamifier.createReadStream(req?.file!.buffer!).pipe(stream);
+      });
+    };
+
+    const image: any = await streamUpload(req);
+
+    const user = await schoolModel.findByIdAndUpdate(
+      req.params.id,
+      { logo: image.secure_url! },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "school found",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(404).json({
+      message: "Error",
+    });
+  }
+};
+
+export const updateTeacherInfo = async (
+  req: any,
+  res: any
+): Promise<Response> => {
+  try {
+    const { address, contact, bio, motivation } = req.body;
+
+    const user = await schoolModel.findByIdAndUpdate(
+      req.params.id,
+      { address, contact, bio, motivation },
+      { new: true }
+    );
+    return res.status(200).json({
+      message: "school info has been updated",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(404).json({
+      message: "Error",
+    });
+  }
+};
+
 // export const assignStudentToClass = async (
 //   req: Request,
 //   res: Response

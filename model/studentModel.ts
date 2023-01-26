@@ -13,6 +13,8 @@ interface iStudent {
   verified?: boolean;
   className: string;
   registerDate: string;
+  contact: string;
+  address: string;
   performance?: {}[];
   attendance?: {}[];
   schoolFee?: {}[];
