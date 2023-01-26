@@ -148,7 +148,7 @@ const viewPresentAcademicSession = (req, res) => __awaiter(void 0, void 0, void 
         });
         return res.status(200).json({
             message: `Viewing present academic session detail...!`,
-            data: school.academicSession[0],
+            data: school,
         });
     }
     catch (error) {

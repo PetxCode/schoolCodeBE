@@ -95,7 +95,7 @@ export const AcademicSessionForTeacher = async (
 
     const session = await schoolModel.findOne({ schoolName: view?.schoolName });
     console.log(session);
-    
+
     if (view?.schoolName === session!.schoolName) {
       const school = await schoolModel.findById(session?._id).populate({
         path: "academicSession",
@@ -170,7 +170,7 @@ export const viewPresentAcademicSession = async (
 
     return res.status(200).json({
       message: `Viewing present academic session detail...!`,
-      data: school!.academicSession![0],
+      data: school,
     });
   } catch (error) {
     return res.status(404).json({ message: `Error: ${error}` });
