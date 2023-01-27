@@ -244,7 +244,7 @@ export const updateStudent = async (req: any, res: any): Promise<Response> => {
     );
 
     return res.status(200).json({
-      message: "school found",
+      message: "student found",
       data: user,
     });
   } catch (err) {
