@@ -29,6 +29,14 @@ interface iStudentData extends iStudent, mongoose.Document {
 
 const studentModel = new mongoose.Schema(
   {
+    contact: {
+      type: String,
+      require: true,
+    },
+    address: {
+      type: String,
+      require: true,
+    },
     classID: {
       type: String,
       require: true,
