@@ -78,7 +78,7 @@ const createAttendanceAbsent = (req, res) => __awaiter(void 0, void 0, void 0, f
                 absent: true,
                 studentName: getStudent.name,
                 classTeacher: getTeacher.name,
-                dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
+                dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY")}`,
                 date: `${(0, moment_1.default)(dater).format("dddd")}`,
             });
             getTeacher.attendance.push(new mongoose_1.default.Types.ObjectId(attendance._id));
