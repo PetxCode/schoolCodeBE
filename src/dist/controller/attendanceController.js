@@ -103,13 +103,13 @@ const createAttendanceAbsent = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.createAttendanceAbsent = createAttendanceAbsent;
 const viewStudentAttendanceByTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const student = yield teacherModel_1.default.findById(req.params.id).populate({
+        const attendance = yield classModel_1.default.findById(req.params.id).populate({
             path: "attendance",
-            options: { sort: { date: -1 } },
+            options: { sort: { createdAt: -1 } },
         });
         return res.status(200).json({
-            message: `Viewing student attendance detail...!`,
-            data: student,
+            message: `Viewing attendance attendance detail...!`,
+            data: attendance,
         });
     }
     catch (error) {

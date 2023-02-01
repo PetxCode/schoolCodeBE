@@ -121,8 +121,8 @@ export const viewStudentAttendanceByTeacher = async (
       message: `Viewing attendance attendance detail...!`,
       data: attendance,
     });
-  } catch (error: any) {
-    return res.status(404).json({ message: `Error: ${error.message}` });
+  } catch (error) {
+    return res.status(404).json({ message: `Error: ${error}` });
   }
 };
 

@@ -51,7 +51,7 @@ const classModel = new mongoose_1.default.Schema({
     attendance: [
         {
             type: mongoose_1.default.Types.ObjectId,
-            ref: "attendancess",
+            ref: "attendances",
         },
     ],
     test: [

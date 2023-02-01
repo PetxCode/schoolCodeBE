@@ -4,7 +4,6 @@ import {
   viewStudentAttendanceByTeacher,
   viewStudentAttendance,
 } from "../controller/attendanceController";
-import upload from "../utils/multer";
 
 import { Router } from "express";
 
