@@ -112,17 +112,17 @@ export const viewStudentAttendanceByTeacher = async (
   res: Response
 ) => {
   try {
-    const student = await teacherModel.findById(req.params.id).populate({
+    const attendance = await classModel.findById(req.params.id).populate({
       path: "attendance",
-      options: { sort: { date: -1 } },
+      options: { sort: { createdAt: -1 } },
     });
 
     return res.status(200).json({
-      message: `Viewing student attendance detail...!`,
-      data: student,
+      message: `Viewing attendance attendance detail...!`,
+      data: attendance,
     });
-  } catch (error) {
-    return res.status(404).json({ message: `Error: ${error}` });
+  } catch (error: any) {
+    return res.status(404).json({ message: `Error: ${error.message}` });
   }
 };
 

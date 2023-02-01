@@ -70,7 +70,7 @@ const classModel = new mongoose.Schema(
     attendance: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "attendancess",
+        ref: "attendances",
       },
     ],
     test: [
