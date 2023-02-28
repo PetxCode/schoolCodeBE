@@ -23,7 +23,7 @@ const ratingLectureRouter_1 = __importDefault(require("./router/ratingLectureRou
 const reportRouter_1 = __importDefault(require("./router/reportRouter"));
 const paymentRouter_1 = __importDefault(require("./router/paymentRouter"));
 const expenseRouter_1 = __importDefault(require("./router/expenseRouter"));
-const StudentRouter_1 = __importDefault(require("./router/StudentRouter"));
+// import newStudent from "./router/StudentRouter";
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
@@ -37,7 +37,7 @@ app.use("/api/class", classRouter_1.default);
 app.use("/api/test", testRouter_1.default);
 app.use("/api/performance", performanceRouter_1.default);
 app.use("/api/attendance", attendanceRouter_1.default);
-app.use("/api/student", StudentRouter_1.default);
+// app.use("/api/student", newStudent);
 app.use("/api/academic", academicSessionRouter_1.default);
 app.use("/api/schoolfee", schoolFeeRouter_1.default);
 app.use("/api/announcement", notificationRouter_1.default);
