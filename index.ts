@@ -9,7 +9,7 @@ import classes from "./router/classRouter";
 import viewTest from "./router/testRouter";
 import performance from "./router/performanceRouter";
 import attendance from "./router/attendanceRouter";
-import student from "./router/studentRouter";
+import student from "./router/StudentRouter";
 import academic from "./router/academicSessionRouter";
 import schoolfee from "./router/schoolFeeRouter";
 import announcement from "./router/notificationRouter";

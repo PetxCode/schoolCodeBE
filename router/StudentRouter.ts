@@ -8,7 +8,6 @@ import {
   updateStudent,
   updateStudentInfo,
 } from "../controller/studentController";
-import upload from "../utils/multer";
 import multer from "multer";
 let uploadData = multer();
 import { Router } from "express";

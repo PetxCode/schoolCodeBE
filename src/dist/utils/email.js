@@ -17,14 +17,12 @@ const googleapis_1 = require("googleapis");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const ejs_1 = __importDefault(require("ejs"));
 const path_1 = __importDefault(require("path"));
-const GOOGLE_SECRET = "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";
-const GOOGLE_ID = "1001238833498-cqm9f9c1mh3m1khppm3392npjalj8b4s.apps.googleusercontent.com";
-const GOOGLE_REFRESHTOKEN = "1//04h7d93kXEa_mCgYIARAAGAQSNwF-L9IrRBMf9gTPHHPp4rsWwU2m6arOFmIUgpZPaL-Cov37TXIF6SM2XIoFhScTFOD1ZDaezBY";
+const GOOGLE_SECRET = "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";
+const GOOGLE_ID = "799447380395-e19a21lgg2hb02tlt70mmshbp1m6fd8q.apps.googleusercontent.com";
+const GOOGLE_REFRESHTOKEN = "1//04jmkbCCBuKVjCgYIARAAGAQSNwF-L9IrLtvs325fZrBkGmDtO89bwkL8oCh_ne5wg0R3BVrCSNrhMUe8Z9E2hKRbQ21rcp5Ls0Q";
 const GOOGLE_REDIRECT = "https://developers.google.com/oauthplayground";
 const oAuth = new googleapis_1.google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
-// const url: string = "http:localhost:2244";
-// const url: string = "https://school-code.onrender.com/";
 const url = "https://schoolcode-project.web.app";
 const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -33,7 +31,7 @@ const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0,
             service: "gmail",
             auth: {
                 type: "OAuth2",
-                user: "ajwalletcoins@gmail.com",
+                user: "phoenixedurebirth@gmail.com",
                 refreshToken: accessToken.token,
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
@@ -56,7 +54,7 @@ const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0,
             url,
         });
         const mailOptions = {
-            from: "SchoolCode ❤❤❤ <newstudentsportal2@gmail.com>",
+            from: "Phoenix Edu ❤❤❤ <phoenixedurebirth@gmail.com>",
             to: school === null || school === void 0 ? void 0 : school.email,
             subject: "Reset Password",
             html: data,
@@ -75,7 +73,7 @@ const resetMyPasswordTeacherMail = (teacher, myToken) => __awaiter(void 0, void 
             service: "gmail",
             auth: {
                 type: "OAuth2",
-                user: "ajwalletcoins@gmail.com",
+                user: "phoenixedurebirth@gmail.com",
                 refreshToken: accessToken.token,
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
@@ -98,7 +96,7 @@ const resetMyPasswordTeacherMail = (teacher, myToken) => __awaiter(void 0, void 
             url,
         });
         const mailOptions = {
-            from: "SchoolCode ❤❤❤ <newstudentsportal2@gmail.com>",
+            from: "Phoenix Edu ❤❤❤ <phoenixedurebirth@gmail.com>",
             to: teacher === null || teacher === void 0 ? void 0 : teacher.email,
             subject: "Reset Password",
             html: data,
@@ -117,7 +115,7 @@ const verifiedSchoolMail = (school) => __awaiter(void 0, void 0, void 0, functio
             service: "gmail",
             auth: {
                 type: "OAuth2",
-                user: "ajwalletcoins@gmail.com",
+                user: "phoenixedurebirth@gmail.com",
                 refreshToken: accessToken.token,
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
@@ -139,7 +137,7 @@ const verifiedSchoolMail = (school) => __awaiter(void 0, void 0, void 0, functio
             url,
         });
         const mailOptions = {
-            from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
+            from: "Phoenix Edu ❤❤❤ <phoenixedurebirth@gmail.com>",
             to: school.email,
             subject: "Account Verification",
             html: data,
@@ -158,7 +156,7 @@ const verifiedTeacherMail = (teacher) => __awaiter(void 0, void 0, void 0, funct
             service: "gmail",
             auth: {
                 type: "OAuth2",
-                user: "ajwalletcoins@gmail.com",
+                user: "phoenixedurebirth@gmail.com",
                 refreshToken: accessToken.token,
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
@@ -181,7 +179,7 @@ const verifiedTeacherMail = (teacher) => __awaiter(void 0, void 0, void 0, funct
             url,
         });
         const mailOptions = {
-            from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
+            from: "Phoenix Edu ❤❤❤ <phoenixedurebirth@gmail.com>",
             to: teacher.email,
             subject: "Account Verification",
             html: data,
