@@ -13,7 +13,6 @@ const classRouter_1 = __importDefault(require("./router/classRouter"));
 const testRouter_1 = __importDefault(require("./router/testRouter"));
 const performanceRouter_1 = __importDefault(require("./router/performanceRouter"));
 const attendanceRouter_1 = __importDefault(require("./router/attendanceRouter"));
-const StudentRouter_1 = __importDefault(require("./router/StudentRouter"));
 const academicSessionRouter_1 = __importDefault(require("./router/academicSessionRouter"));
 const schoolFeeRouter_1 = __importDefault(require("./router/schoolFeeRouter"));
 const notificationRouter_1 = __importDefault(require("./router/notificationRouter"));
@@ -24,6 +23,7 @@ const ratingLectureRouter_1 = __importDefault(require("./router/ratingLectureRou
 const reportRouter_1 = __importDefault(require("./router/reportRouter"));
 const paymentRouter_1 = __importDefault(require("./router/paymentRouter"));
 const expenseRouter_1 = __importDefault(require("./router/expenseRouter"));
+const StudentRouter_1 = __importDefault(require("./router/StudentRouter"));
 (0, dotenv_1.config)();
 const proc = (0, dotenv_1.config)().parsed;
 const port = proc.LOCALPORT;
