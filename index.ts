@@ -19,7 +19,7 @@ import lectureRating from "./router/ratingLectureRouter";
 import report from "./router/reportRouter";
 import payment from "./router/paymentRouter";
 import expense from "./router/expenseRouter";
-// import newStudent from "./router/StudentRouter";
+import student from "./router/students";
 
 config();
 const proc: any = config().parsed;
@@ -37,7 +37,7 @@ app.use("/api/class", classes);
 app.use("/api/test", viewTest);
 app.use("/api/performance", performance);
 app.use("/api/attendance", attendance);
-// app.use("/api/student", newStudent);
+app.use("/api/student", student);
 app.use("/api/academic", academic);
 app.use("/api/schoolfee", schoolfee);
 app.use("/api/announcement", announcement);
