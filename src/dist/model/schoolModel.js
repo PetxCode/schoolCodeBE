@@ -8,7 +8,7 @@ const schoolModel = new mongoose_1.default.Schema({
     sessions: {
         type: Array,
         require: true,
-        unique: true,
+        // unique: true,
     },
     schoolName: {
         type: String,

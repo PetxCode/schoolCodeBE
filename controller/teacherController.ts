@@ -48,7 +48,11 @@ export const createTeacher = async (req: Request, res: Response) => {
       getSchool!.teachers!.push(new mongoose.Types.ObjectId(teacher._id));
       getSchool?.save();
 
-      verifiedTeacherMail(teacher);
+      verifiedTeacherMail(teacher)
+        .then((result) => {
+          console.log("message been sent to you: ", result);
+        })
+        .catch((error) => console.log(error));
 
       return res.status(201).json({
         message: "Teacher created",

@@ -11,7 +11,6 @@ import {
   getSchoolStudents,
   updateSchoolInfo,
 } from "../controller/schoolController";
-import upload from "../utils/multer";
 
 import { Router } from "express";
 import multer from "multer";

@@ -34,7 +34,7 @@ const schoolModel = new mongoose.Schema(
     sessions: {
       type: Array,
       require: true,
-      unique: true,
+      // unique: true,
     },
 
     schoolName: {
@@ -128,7 +128,7 @@ const schoolModel = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<iSchoolData>("schools", schoolModel);

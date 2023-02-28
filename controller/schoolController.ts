@@ -120,22 +120,24 @@ export const updateSchoolInfo = async (
 
 export const createSchool = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
-    const { schoolName, email, password } = req.body;
+    const { schoolName, email, password, sessions } = req.body;
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
     const token = jwt.sign({ hash }, proc.SECRET);
-
+    const code = crypto.randomBytes(2).toString("hex");
     const school = await schoolModel.create({
       schoolName,
       email,
       password: hash,
       token,
       status: "School",
+      sessions,
+      schoolCode: code,
     });
 
     verifiedSchoolMail(school)
@@ -145,19 +147,19 @@ export const createSchool = async (
       .catch((error) => console.log(error));
 
     return res.status(200).json({
-      message: "school found",
+      message: "school created",
       data: school,
     });
-  } catch (err) {
+  } catch (err: any) {
     return res.status(404).json({
-      message: "Error",
+      message: `Error for: ${err.message}`,
     });
   }
 };
 
 export const loginSchool = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const { email, password } = req.body;
@@ -200,7 +202,7 @@ export const loginSchool = async (
 
 export const verifiedSchool = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const school = await schoolModel.findById(req.params.id);
@@ -215,7 +217,7 @@ export const verifiedSchool = async (
             token: "",
             schoolCode: code,
           },
-          { new: true }
+          { new: true },
         );
 
         return res.status(200).json({
@@ -239,7 +241,7 @@ export const verifiedSchool = async (
 
 export const resetPassword = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const { email } = req.body;
@@ -253,12 +255,12 @@ export const resetPassword = async (
         await schoolModel.findByIdAndUpdate(
           school._id,
           { token: myToken },
-          { new: true }
+          { new: true },
         );
 
         resetMyPasswordSchoolMail(school, myToken)
           .then((result) => {
-            console.log("message been sent to you: ");
+            console.log("message been sent to you: ", result);
           })
           .catch((error) => console.log(error));
 

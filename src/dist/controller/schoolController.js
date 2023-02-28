@@ -112,16 +112,19 @@ const updateSchoolInfo = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.updateSchoolInfo = updateSchoolInfo;
 const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { schoolName, email, password } = req.body;
+        const { schoolName, email, password, sessions } = req.body;
         const salt = yield bcrypt_1.default.genSalt(10);
         const hash = yield bcrypt_1.default.hash(password, salt);
         const token = jsonwebtoken_1.default.sign({ hash }, proc.SECRET);
+        const code = crypto_1.default.randomBytes(2).toString("hex");
         const school = yield schoolModel_1.default.create({
             schoolName,
             email,
             password: hash,
             token,
             status: "School",
+            sessions,
+            schoolCode: code,
         });
         (0, email_1.verifiedSchoolMail)(school)
             .then((result) => {
@@ -129,13 +132,13 @@ const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         })
             .catch((error) => console.log(error));
         return res.status(200).json({
-            message: "school found",
+            message: "school created",
             data: school,
         });
     }
     catch (err) {
         return res.status(404).json({
-            message: "Error",
+            message: `Error for: ${err.message}`,
         });
     }
 });
@@ -223,7 +226,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 yield schoolModel_1.default.findByIdAndUpdate(school._id, { token: myToken }, { new: true });
                 (0, email_1.resetMyPasswordSchoolMail)(school, myToken)
                     .then((result) => {
-                    console.log("message been sent to you: ");
+                    console.log("message been sent to you: ", result);
                 })
                     .catch((error) => console.log(error));
                 return res.status(200).json({

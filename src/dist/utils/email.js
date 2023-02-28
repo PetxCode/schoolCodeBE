@@ -17,13 +17,19 @@ const googleapis_1 = require("googleapis");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const ejs_1 = __importDefault(require("ejs"));
 const path_1 = __importDefault(require("path"));
-const GOOGLE_SECRET = "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";
-const GOOGLE_ID = "799447380395-e19a21lgg2hb02tlt70mmshbp1m6fd8q.apps.googleusercontent.com";
-const GOOGLE_REFRESHTOKEN = "1//04jmkbCCBuKVjCgYIARAAGAQSNwF-L9IrLtvs325fZrBkGmDtO89bwkL8oCh_ne5wg0R3BVrCSNrhMUe8Z9E2hKRbQ21rcp5Ls0Q";
+// Phoenix
+// const GOOGLE_SECRET = "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";
+// const GOOGLE_ID =
+//   "1054310070984-bqesvn0ftgmhcn6p6292jskt91rk4n5e.apps.googleusercontent.com";
+// const GOOGLE_REFRESHTOKEN =
+//   "1//04dIMtDvNwamFCgYIARAAGAQSNwF-L9IrFJgJO7AzsDu8l4eJ0xQq5VcPSg9TL3sYVHufYPXj-inHC6ApFpP7hvl8goZR32Cd9TY";
+const GOOGLE_SECRET = "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";
+const GOOGLE_ID = "799447380395-alt9pcrb7ghqanpem58i1eu02pmav3q8.apps.googleusercontent.com";
+const GOOGLE_REFRESHTOKEN = "1//044F8tb0v_GKRCgYIARAAGAQSNwF-L9IrcWa2WKL8VbF9TNdA8fD-YLZSJprNk1ufJf6AEUTzUIQWfCNdgTVSIFW04ZLLDecuf7w";
 const GOOGLE_REDIRECT = "https://developers.google.com/oauthplayground";
 const oAuth = new googleapis_1.google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
-const url = "https://schoolcode-project.web.app";
+const url = "https://your-phoenix.web.app";
 const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accessToken = yield oAuth.getAccessToken();
@@ -38,7 +44,7 @@ const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0,
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const buildFile = path_1.default.join(__dirname, "../views/resetPassword.ejs");
+        const buildFile = path_1.default.join(__dirname, "./views/resetPassword.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
             name: school.schoolName,
             id: school._id,
@@ -73,7 +79,7 @@ const resetMyPasswordTeacherMail = (teacher, myToken) => __awaiter(void 0, void 
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const buildFile = path_1.default.join(__dirname, "../views/resetPasswordTeacher.ejs");
+        const buildFile = path_1.default.join(__dirname, "./views/resetPasswordTeacher.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
             name: teacher.name,
             id: teacher._id,
@@ -108,15 +114,17 @@ const verifiedSchoolMail = (school) => __awaiter(void 0, void 0, void 0, functio
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const buildFile = path_1.default.join(__dirname, "../views/AccountCreated.ejs");
+        const buildFile = path_1.default.join(__dirname, "./views/AccountCreated.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
-            schooName: school.schoolName,
+            schoolName: school === null || school === void 0 ? void 0 : school.schoolName,
+            email: school === null || school === void 0 ? void 0 : school.email,
             id: school === null || school === void 0 ? void 0 : school._id,
-            school: school.schoolName,
+            status: school.status,
+            schoolCode: school.schoolCode,
             url,
         });
         const mailOptions = {
-            from: "Phoenix Edu ❤❤❤ <phoenixedurebirth@gmail.com>",
+            from: "Verification Account ❤❤❤ <phoenixedurebirth@gmail.com>",
             to: school.email,
             subject: "Account Verification",
             html: data,
@@ -142,7 +150,7 @@ const verifiedTeacherMail = (teacher) => __awaiter(void 0, void 0, void 0, funct
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const buildFile = path_1.default.join(__dirname, "../views/AccountCreatedTeacher.ejs");
+        const buildFile = path_1.default.join(__dirname, "./views/AccountCreatedTeacher.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
             name: teacher.name,
             id: teacher === null || teacher === void 0 ? void 0 : teacher._id,
@@ -163,3 +171,45 @@ const verifiedTeacherMail = (teacher) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.verifiedTeacherMail = verifiedTeacherMail;
+// <body>
+//   <container>
+//     <row>
+//       <columns small="12" >
+//         <table class="one-column" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-spacing:0; border-left:1px solid #e8e7e5; border-right:1px solid #e8e7e5; border-bottom:1px solid #e8e7e5; padding: 10px" bg="#FFFFFF">
+//           <div width="650px" height="250px" align="center" style="border-radius: 4px">
+//            <img src="https://res.cloudinary.com/dxwae6kod/image/upload/v1677589329/download_tvwylk.png" width="250px" height="120px" style="padding-top:5px" alt="" border="0"/>
+//           </div>
+//           <tr>
+//             <td align="center" style="padding:0px 40px 40px 40px"><p style="color:#262626; font-size:32px; text-align:center; font-family: Verdana, Geneva, sans-serif">Hello <%= schooName %>!</p>
+//                 <b style="color:#000000; font-size:16px; text-align:left; font-family: Verdana, Geneva, sans-serif; line-height:22px ">
+//                 Congratulations!!!</b><br/>
+//                 Thank you for coming on-board with school code", 
+//                 <br/>Now you can track all activitives virtually that goes on in your school <br/>
+//                 <strong style="color: red">Please follow the instruction to finish up!</strong>  </br>
+//                 <br/>
+//                 <br/>
+//                 Use this Button below to get your school on track with <strong > <%= school %> virtual code</strong>!
+//                 <div>
+//                   <br/>
+//                   <br/>
+//                   <a 
+//                     href="<%= url %>/api/school/verified/<%= id %>" 
+//                   referrerpolicy="no-referrer" target="_blank" 
+//                   style="text-decoration: none;
+//                   padding: 20px 30px;
+//                   color: white;
+//                   margin-top: 50px;
+//                   background-color: #000269;
+//                   border-radius: 2px;
+//                   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+//                   "
+//                   >Activate <%= school %> </a>
+//                 </div>
+//                 <br />
+//             </p></td>
+//           </tr>
+//         </table>
+//       </columns>
+//     </row>
+// </container>
+// </body>

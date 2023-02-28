@@ -61,7 +61,11 @@ const createTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             getSchool.teachers.push(new mongoose_1.default.Types.ObjectId(teacher._id));
             getSchool === null || getSchool === void 0 ? void 0 : getSchool.save();
-            (0, email_1.verifiedTeacherMail)(teacher);
+            (0, email_1.verifiedTeacherMail)(teacher)
+                .then((result) => {
+                console.log("message been sent to you: ", result);
+            })
+                .catch((error) => console.log(error));
             return res.status(201).json({
                 message: "Teacher created",
                 data: teacher,
