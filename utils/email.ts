@@ -31,14 +31,6 @@ export const resetMyPasswordSchoolMail = async (school: any, myToken: any) => {
       },
     });
 
-    const myTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Gideonekeke64@gmail.com",
-        pass: "sgczftichnkcqksx",
-      },
-    });
-
     const buildFile = path.join(__dirname, "../views/resetPassword.ejs");
     const data = await ejs.renderFile(buildFile, {
       name: school.schoolName,
@@ -76,14 +68,6 @@ export const resetMyPasswordTeacherMail = async (
         clientId: GOOGLE_ID,
         clientSecret: GOOGLE_SECRET,
         accessToken: GOOGLE_REFRESHTOKEN,
-      },
-    });
-
-    const myTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Gideonekeke64@gmail.com",
-        pass: "sgczftichnkcqksx",
       },
     });
 
@@ -125,13 +109,6 @@ export const verifiedSchoolMail = async (school: any) => {
       },
     });
 
-    const myTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Gideonekeke64@gmail.com",
-        pass: "sgczftichnkcqksx",
-      },
-    });
     const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
 
     const data = await ejs.renderFile(buildFile, {
@@ -169,13 +146,6 @@ export const verifiedTeacherMail = async (teacher: any) => {
       },
     });
 
-    const myTransporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "Gideonekeke64@gmail.com",
-        pass: "sgczftichnkcqksx",
-      },
-    });
     const buildFile = path.join(
       __dirname,
       "../views/AccountCreatedTeacher.ejs",

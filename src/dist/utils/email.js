@@ -38,13 +38,6 @@ const resetMyPasswordSchoolMail = (school, myToken) => __awaiter(void 0, void 0,
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const myTransporter = nodemailer_1.default.createTransport({
-            service: "gmail",
-            auth: {
-                user: "Gideonekeke64@gmail.com",
-                pass: "sgczftichnkcqksx",
-            },
-        });
         const buildFile = path_1.default.join(__dirname, "../views/resetPassword.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
             name: school.schoolName,
@@ -78,13 +71,6 @@ const resetMyPasswordTeacherMail = (teacher, myToken) => __awaiter(void 0, void 
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
                 accessToken: GOOGLE_REFRESHTOKEN,
-            },
-        });
-        const myTransporter = nodemailer_1.default.createTransport({
-            service: "gmail",
-            auth: {
-                user: "Gideonekeke64@gmail.com",
-                pass: "sgczftichnkcqksx",
             },
         });
         const buildFile = path_1.default.join(__dirname, "../views/resetPasswordTeacher.ejs");
@@ -122,13 +108,6 @@ const verifiedSchoolMail = (school) => __awaiter(void 0, void 0, void 0, functio
                 accessToken: GOOGLE_REFRESHTOKEN,
             },
         });
-        const myTransporter = nodemailer_1.default.createTransport({
-            service: "gmail",
-            auth: {
-                user: "Gideonekeke64@gmail.com",
-                pass: "sgczftichnkcqksx",
-            },
-        });
         const buildFile = path_1.default.join(__dirname, "../views/AccountCreated.ejs");
         const data = yield ejs_1.default.renderFile(buildFile, {
             schooName: school.schoolName,
@@ -161,13 +140,6 @@ const verifiedTeacherMail = (teacher) => __awaiter(void 0, void 0, void 0, funct
                 clientId: GOOGLE_ID,
                 clientSecret: GOOGLE_SECRET,
                 accessToken: GOOGLE_REFRESHTOKEN,
-            },
-        });
-        const myTransporter = nodemailer_1.default.createTransport({
-            service: "gmail",
-            auth: {
-                user: "Gideonekeke64@gmail.com",
-                pass: "sgczftichnkcqksx",
             },
         });
         const buildFile = path_1.default.join(__dirname, "../views/AccountCreatedTeacher.ejs");
