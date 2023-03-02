@@ -15,24 +15,27 @@
         <table class="one-column" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-spacing:0; border-left:1px solid #e8e7e5; border-right:1px solid #e8e7e5; border-bottom:1px solid #e8e7e5; padding: 10px" bg="#FFFFFF">
           
           <div width="650px" height="250px" align="center" style="border-radius: 4px">
-            <img src="https://res.cloudinary.com/dxwae6kod/image/upload/v1677589329/download_tvwylk.png" width="250px" height="120px"  style="padding-top:5px; object-fit: contain" alt="" border="0"/>
-            
-           </div>
+           <img src="https://res.cloudinary.com/dxwae6kod/image/upload/v1677752396/phoenix_main_logo_t0inqr.png" width="250px" height="120px"  style="padding-top:5px; object-fit: contain" alt="" border="0"/>
+           
+          </div>
 
           <tr>
-            <td align="center" style="padding:0px 40px 40px 40px"><p style="color:#262626; font-size:32px; text-align:center; font-family: Verdana, Geneva, sans-serif">Hello! <br> <%= name %></p>
+            <td align="center" style="padding:0px 40px 40px 40px"><p style="color:#262626; font-size:32px; text-align:center; font-family: Verdana, Geneva, sans-serif">Hello <%= schoolName %>!</p>
                 <b style="color:#000000; font-size:16px; text-align:left; font-family: Verdana, Geneva, sans-serif; line-height:22px ">
-                Password Reset!!!</b><br/>
-                 if this is not comming from you, then there is high chances that you're being attacked... so, please ignore this mail else use the link below to finish up the process!</br>
+                Congratulations!!!</b><br/>
+                Thank you for coming on-board with Phoenix", 
+                <br/>Now you can track all activitives virtually that goes on in your school <br/>
+                
+                <strong style="color: red">Please follow the instruction to finish up!</strong>  </br>
                 <br/>
                 <br/>
-                Use this Button below to Reset your PASSWORD!!!
+                Use this Button below to get your school on track with <strong > <%= schoolCode %> virtual code</strong>!
 
                 <div>
                   <br/>
                   <br/>
                   <a 
-                    href="<%= url %>/api/teacher/<%= id %>/<%= myToken %>/reset" 
+                    href="<%= url %>/api/school/verified/<%= id %>" 
                   referrerpolicy="no-referrer" target="_blank" 
                   style="text-decoration: none;
                   padding: 20px 30px;
@@ -42,9 +45,9 @@
                   border-radius: 2px;
                   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
                   "
-                  >Reset my PASSWORD</a>
+                  >Activate </a>
                 </div>
-                
+          
                 <br />
             </p></td>
           </tr>
