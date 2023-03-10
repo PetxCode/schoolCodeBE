@@ -33,7 +33,7 @@ const schoolModel = new mongoose.Schema(
   {
     sessions: {
       type: Array,
-      require: true,
+      // require: true,
       // unique: true,
     },
 

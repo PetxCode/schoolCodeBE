@@ -123,22 +123,27 @@ export const createSchool = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const { schoolName, email, password, sessions } = req.body;
+    const { schoolName, email, password } = req.body;
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
     const token = jwt.sign({ hash }, proc.SECRET);
     const code = crypto.randomBytes(2).toString("hex");
+
+    let dater = new Date().toString();
+    console.log(parseInt(dater.split(":")[0].split(" ")[3]));
+
     const school = await schoolModel.create({
       schoolName,
       email,
       password: hash,
       token,
       status: "School",
-      sessions,
       schoolCode: code,
     });
+
+   
 
     verifiedSchoolMail(school)
       .then((result) => {

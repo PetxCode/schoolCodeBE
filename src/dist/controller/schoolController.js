@@ -112,18 +112,19 @@ const updateSchoolInfo = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.updateSchoolInfo = updateSchoolInfo;
 const createSchool = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { schoolName, email, password, sessions } = req.body;
+        const { schoolName, email, password } = req.body;
         const salt = yield bcrypt_1.default.genSalt(10);
         const hash = yield bcrypt_1.default.hash(password, salt);
         const token = jsonwebtoken_1.default.sign({ hash }, proc.SECRET);
         const code = crypto_1.default.randomBytes(2).toString("hex");
+        let dater = new Date().toString();
+        console.log(parseInt(dater.split(":")[0].split(" ")[3]));
         const school = yield schoolModel_1.default.create({
             schoolName,
             email,
             password: hash,
             token,
             status: "School",
-            sessions,
             schoolCode: code,
         });
         (0, email_1.verifiedSchoolMail)(school)

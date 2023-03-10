@@ -7,7 +7,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const schoolModel = new mongoose_1.default.Schema({
     sessions: {
         type: Array,
-        require: true,
+        // require: true,
         // unique: true,
     },
     schoolName: {
