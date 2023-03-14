@@ -23,7 +23,7 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { code, cost, item, description } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
         const getSession = yield academicSessionModel_1.default.findOne({
-            sessionCode: code,
+            schoolCode: code,
         });
         const dateTime = Date.now();
         const monthDate = (0, moment_1.default)(dateTime).format("MMMM Do YYYY, h:mm:ss");
@@ -40,7 +40,7 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             getSession === null || getSession === void 0 ? void 0 : getSession.save();
             return res.status(201).json({
                 message: `expense has been recorded for ${(0, moment_1.default)(dateTime).format("LLLL")}`,
-                // data: expense,
+                data: expense,
             });
         }
         else {
@@ -48,6 +48,7 @@ const createExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
     catch (error) {
+        console.log("Reading Error:");
         return res.status(404).json({ message: `Error: ${error}` });
     }
 });
@@ -57,7 +58,7 @@ const getExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { code } = req.body;
         const getSchool = yield schoolModel_1.default.findById(req.params.id);
         const getSession = yield academicSessionModel_1.default.findOne({
-            sessionCode: code,
+            schoolCode: code,
         });
         if (getSchool) {
             const expense = yield academicSessionModel_1.default

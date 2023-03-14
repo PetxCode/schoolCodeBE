@@ -13,7 +13,7 @@ export const createExpense = async (req: Request, res: Response) => {
 
     const getSchool = await schoolModel.findById(req.params.id);
     const getSession = await academicSessionModel.findOne({
-      sessionCode: code,
+      schoolCode: code,
     });
 
     const dateTime = Date.now();
@@ -34,14 +34,15 @@ export const createExpense = async (req: Request, res: Response) => {
 
       return res.status(201).json({
         message: `expense has been recorded for ${moment(dateTime).format(
-          "LLLL"
+          "LLLL",
         )}`,
-        // data: expense,
+        data: expense,
       });
     } else {
       return res.status(404).json({ message: "school can't be found" });
     }
   } catch (error) {
+    console.log("Reading Error:");
     return res.status(404).json({ message: `Error: ${error}` });
   }
 };
@@ -52,7 +53,7 @@ export const getExpense = async (req: Request, res: Response) => {
 
     const getSchool = await schoolModel.findById(req.params.id);
     const getSession = await academicSessionModel.findOne({
-      sessionCode: code,
+      schoolCode: code,
     });
 
     if (getSchool) {

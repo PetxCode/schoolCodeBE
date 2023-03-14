@@ -38,8 +38,12 @@ const expenseModel = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "schools",
     },
+    acedemicSession: {
+      type: mongoose.Types.ObjectId,
+      ref: "acedemicSession",
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<iExpenseData>("expenses", expenseModel);

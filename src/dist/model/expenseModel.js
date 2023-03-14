@@ -27,5 +27,9 @@ const expenseModel = new mongoose_1.default.Schema({
         type: mongoose_1.default.Types.ObjectId,
         ref: "schools",
     },
+    acedemicSession: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "acedemicSession",
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("expenses", expenseModel);
