@@ -10,6 +10,7 @@ import {
   assignTeacherPay,
   updateTeacher,
   updateTeacherInfo,
+  updateTeacherSalary,
 } from "../controller/teacherController";
 import upload from "../utils/multer";
 
@@ -33,5 +34,7 @@ router.route("/:id").get(getSchoolTeacherInfo);
 router.route("/:id/get-classes").get(getSchoolTeacherInfoForClasses);
 
 router.route("/:id/:teacherID/update-teacher-payment").patch(assignTeacherPay);
+
+router.route("/:id/:teacherID/update-teacher-salary").post(updateTeacherSalary);
 
 export default router;

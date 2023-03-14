@@ -63,7 +63,6 @@ const teacherModel = new mongoose.Schema(
 
     salary: {
       type: Number,
-      require: true,
     },
 
     name: {
@@ -167,7 +166,7 @@ const teacherModel = new mongoose.Schema(
       ref: "schools",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<iTeacherData>("teachers", teacherModel);

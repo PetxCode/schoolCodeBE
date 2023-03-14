@@ -420,6 +420,41 @@ export const updateTeacherInfo = async (
   }
 };
 
+export const updateTeacherSalary = async (
+  req: any,
+  res: any,
+): Promise<Response> => {
+  try {
+    const { salary } = req.body;
+
+    const user = await schoolModel.findById(req.params.id);
+
+    if (user) {
+      const user = await teacherModel.findByIdAndUpdate(
+        req.params.teacherID,
+        { salary },
+        { new: true },
+      );
+
+      console.log(user);
+      console.log(salary);
+
+      return res.status(200).json({
+        message: "Teacher salary has been updated",
+        data: user,
+      });
+    } else {
+      return res.status(200).json({
+        message: "You can't do this",
+      });
+    }
+  } catch (err) {
+    return res.status(404).json({
+      message: "Error",
+    });
+  }
+};
+
 // export const assignStudentToClass = async (
 //   req: Request,
 //   res: Response

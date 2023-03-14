@@ -30,6 +30,7 @@ export const createPayTeacher = async (req: Request, res: Response) => {
         salary: getTeacher!.salary,
       });
 
+
       getSchool!.payRolls!.push(new mongoose.Types.ObjectId(pay._id));
       getSchool?.save();
 
@@ -38,6 +39,7 @@ export const createPayTeacher = async (req: Request, res: Response) => {
 
       getTeacher!.payRolls!.push(new mongoose.Types.ObjectId(pay._id));
       getTeacher?.save();
+
       return res.status(201).json({
         message: `Payment has been made for ${moment(dateTime).format("LLLL")}`,
         data: pay,
