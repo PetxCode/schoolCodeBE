@@ -34,13 +34,13 @@ const createEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const event = yield eventModel_1.default.create({
                 title,
                 desc,
-                month,
-                time,
-                year,
-                fixedDate,
+                month: `${(0, moment_1.default)(dater).format("LLL")}`.split(" ")[0],
+                time: "10:00AM",
+                year: (0, moment_1.default)().format("LL").split(",")[1],
+                fixedDate: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
                 schoolName: getSchool.schoolName,
                 dateTime: `${(0, moment_1.default)(dater).format("dddd")}, ${(0, moment_1.default)(dater).format("MMMM Do YYYY, h:mm:ss")}`,
-                date: `${(0, moment_1.default)(dater).format("dddd")}`,
+                date: `${(0, moment_1.default)(dater).format("dddd")} ${(0, moment_1.default)(dater).format("MMM Do YY")}`,
             });
             getSession.event.push(new mongoose_1.default.Types.ObjectId(event._id));
             getSession === null || getSession === void 0 ? void 0 : getSession.save();

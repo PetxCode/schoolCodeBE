@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTeacherInfo = exports.updateTeacher = exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.assignTeacherPay = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
+exports.updateTeacherSalary = exports.updateTeacherInfo = exports.updateTeacher = exports.getSchoolTeacherInfoForClasses = exports.assignStudentToClass = exports.assignTeacherPay = exports.getSchoolTeacherInfo = exports.updateTeacherImage = exports.loginTeacher = exports.changePassword = exports.resetPassword = exports.verifiedTeacher = exports.createTeacher = void 0;
 const schoolModel_1 = __importDefault(require("../model/schoolModel"));
 const teacherModel_1 = __importDefault(require("../model/teacherModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -370,6 +370,32 @@ const updateTeacherInfo = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.updateTeacherInfo = updateTeacherInfo;
+const updateTeacherSalary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { salary } = req.body;
+        const user = yield schoolModel_1.default.findById(req.params.id);
+        if (user) {
+            const user = yield teacherModel_1.default.findByIdAndUpdate(req.params.teacherID, { salary }, { new: true });
+            console.log(user);
+            console.log(salary);
+            return res.status(200).json({
+                message: "Teacher salary has been updated",
+                data: user,
+            });
+        }
+        else {
+            return res.status(200).json({
+                message: "You can't do this",
+            });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: "Error",
+        });
+    }
+});
+exports.updateTeacherSalary = updateTeacherSalary;
 // export const assignStudentToClass = async (
 //   req: Request,
 //   res: Response

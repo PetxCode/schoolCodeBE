@@ -26,7 +26,6 @@ const teacherModel = new mongoose_1.default.Schema({
     },
     salary: {
         type: Number,
-        require: true,
     },
     name: {
         type: String,

@@ -29,15 +29,19 @@ export const createEvent = async (req: Request, res: Response) => {
       const event = await eventModel.create({
         title,
         desc,
-        month,
-        time,
-        year,
-        fixedDate,
+        month: `${moment(dater).format("LLL")}`.split(" ")[0],
+        time: "10:00AM",
+        year: moment().format("LL").split(",")[1],
+        fixedDate: `${moment(dater).format("dddd")}, ${moment(dater).format(
+          "MMMM Do YYYY, h:mm:ss",
+        )}`,
         schoolName: getSchool!.schoolName,
         dateTime: `${moment(dater).format("dddd")}, ${moment(dater).format(
-          "MMMM Do YYYY, h:mm:ss"
+          "MMMM Do YYYY, h:mm:ss",
         )}`,
-        date: `${moment(dater).format("dddd")}`,
+        date: `${moment(dater).format("dddd")} ${moment(dater).format(
+          "MMM Do YY",
+        )}`,
       });
 
       getSession!.event!.push(new mongoose.Types.ObjectId(event._id));
