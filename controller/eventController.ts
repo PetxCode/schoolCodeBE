@@ -72,7 +72,7 @@ export const updateEvent = async (req: Request, res: Response) => {
         {
           done: true,
         },
-        { new: true }
+        { new: true },
       );
 
       return res.status(201).json({
@@ -89,11 +89,20 @@ export const updateEvent = async (req: Request, res: Response) => {
 
 export const viewSchoolEvent = async (req: Request, res: Response) => {
   try {
-    const event = await academicSessionModel.findById(req.params.id).populate({
-      path: "event",
-      options: { sort: { createdAt: -1 } },
+    const user = await studentModel.findById(req.params.id);
+    const school = await schoolModel.findOne({ schoolName: user?.schoolName });
+
+    const academic = await academicSessionModel.findOne({
+      schoolName: user?.schoolName,
     });
-    console.log(event!.event);
+
+    const event = await academicSessionModel
+      .findById(school?.academicSession)
+      .populate({
+        path: "event",
+        options: { sort: { createdAt: -1 } },
+      });
+
     return res.status(200).json({
       message: `Viewing events...!`,
       data: event?.event,

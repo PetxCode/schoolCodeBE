@@ -83,11 +83,17 @@ const updateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateEvent = updateEvent;
 const viewSchoolEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const event = yield academicSessionModel_1.default.findById(req.params.id).populate({
+        const user = yield studentModel_1.default.findById(req.params.id);
+        const school = yield schoolModel_1.default.findOne({ schoolName: user === null || user === void 0 ? void 0 : user.schoolName });
+        const academic = yield academicSessionModel_1.default.findOne({
+            schoolName: user === null || user === void 0 ? void 0 : user.schoolName,
+        });
+        const event = yield academicSessionModel_1.default
+            .findById(school === null || school === void 0 ? void 0 : school.academicSession)
+            .populate({
             path: "event",
             options: { sort: { createdAt: -1 } },
         });
-        console.log(event.event);
         return res.status(200).json({
             message: `Viewing events...!`,
             data: event === null || event === void 0 ? void 0 : event.event,
