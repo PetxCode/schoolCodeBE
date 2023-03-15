@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import testModel from "../model/testModel";
 import crypto from "crypto";
 import subjectModel from "../model/subjectModel";
+import studentModel from "../model/studentModel";
 
 export const createTest = async (req: Request, res: Response) => {
   try {
@@ -82,8 +83,12 @@ export const viewTest = async (req: Request, res: Response) => {
 
 export const viewClassTest = async (req: Request, res: Response) => {
   try {
+    // const user = await studentModel.findById(req.params.id);
+
+    // console.log(user);
+
     const test = await classModel.findById(req.params.id).populate({
-      path: "test",
+      path: "subject",
       options: {
         sort: { createdAt: -1 },
       },

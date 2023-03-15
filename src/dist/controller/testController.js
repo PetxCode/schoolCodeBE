@@ -81,8 +81,10 @@ const viewTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.viewTest = viewTest;
 const viewClassTest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // const user = await studentModel.findById(req.params.id);
+        // console.log(user);
         const test = yield classModel_1.default.findById(req.params.id).populate({
-            path: "test",
+            path: "subject",
             options: {
                 sort: { createdAt: -1 },
             },
